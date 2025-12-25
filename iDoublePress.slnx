@@ -1,5 +1,7 @@
 <Solution>
   <Project Path="iDoublePress.AppHost/iDoublePress.AppHost.csproj" />
   <Project Path="iDoublePress.ServiceDefaults/iDoublePress.ServiceDefaults.csproj" />
-  <Project Path="iDoublePress/iDoublePress.csproj" />
+  <Project Path="iDoublePress/iDoublePress.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>
