@@ -4,3 +4,26 @@
 
 The Golf Scoring App follows a clean MVVM (Model-View-ViewModel) architecture with a repository pattern for data access.
 
+```mermaid
+graph TB subgraph "Presentation Layer" V[Views/Pages] C[Custom Controls] end
+subgraph "Application Layer"
+    VM[ViewModels/PageModels]
+    S[Services]
+end
+
+subgraph "Data Layer"
+    R[Repositories]
+    DB[(SQLite Database)]
+end
+
+V --> VM
+C --> VM
+VM --> S
+VM --> R
+R --> DB
+S --> R
+
+style V fill:#e1f5ff
+style VM fill:#fff4e1
+style R fill:#f0f0f0
+style DB fill:#d4edda
