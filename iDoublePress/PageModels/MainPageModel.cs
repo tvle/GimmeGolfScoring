@@ -13,6 +13,10 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 	private readonly CategoryRepository _categoryRepository;
 	private readonly ModalErrorHandler _errorHandler;
 	private readonly SeedDataService _seedDataService;
+	private readonly GolfSeedDataService _golfSeedDataService;
+	private readonly PlayerRepository _playerRepository;
+	private readonly CourseRepository _courseRepository;
+	private readonly RoundRepository _roundRepository;
 
 	[ObservableProperty]
 	private List<CategoryChartData> _todoCategoryData = [];
@@ -25,6 +29,9 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 
 	[ObservableProperty]
 	private List<Project> _projects = [];
+
+	[ObservableProperty]
+	private List<Round> _recentRounds = [];
 
 	[ObservableProperty]
 	bool _isBusy;
@@ -41,14 +48,20 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 	public bool HasCompletedTasks
 		=> Tasks?.Any(t => t.IsCompleted) ?? false;
 
-	public MainPageModel(SeedDataService seedDataService, ProjectRepository projectRepository,
-		TaskRepository taskRepository, CategoryRepository categoryRepository, ModalErrorHandler errorHandler)
+	public MainPageModel(SeedDataService seedDataService, GolfSeedDataService golfSeedDataService,
+		ProjectRepository projectRepository, TaskRepository taskRepository, 
+		CategoryRepository categoryRepository, ModalErrorHandler errorHandler,
+		PlayerRepository playerRepository, CourseRepository courseRepository, RoundRepository roundRepository)
 	{
 		_projectRepository = projectRepository;
 		_taskRepository = taskRepository;
 		_categoryRepository = categoryRepository;
 		_errorHandler = errorHandler;
 		_seedDataService = seedDataService;
+		_golfSeedDataService = golfSeedDataService;
+		_playerRepository = playerRepository;
+		_courseRepository = courseRepository;
+		_roundRepository = roundRepository;
 	}
 
 	private async Task LoadData()
@@ -77,6 +90,23 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 			TodoCategoryColors = chartColors;
 
 			Tasks = await _taskRepository.ListAsync();
+
+			// Load recent golf rounds - wrap in try-catch to prevent crashes
+			try
+			{
+				var allRounds = await _roundRepository.ListAsync();
+				RecentRounds = allRounds
+					.Where(r => r.Status == RoundStatus.Completed)
+					.OrderByDescending(r => r.StartTime)
+					.Take(5)
+					.ToList();
+			}
+			catch (Exception ex)
+			{
+				// If golf data fails to load, just leave it empty
+				RecentRounds = new List<Round>();
+				System.Diagnostics.Debug.WriteLine($"Failed to load golf rounds: {ex.Message}");
+			}
 		}
 		finally
 		{
@@ -95,6 +125,15 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 		}
 
 		Preferences.Default.Set("is_seeded", true);
+
+		// Initialize golf data
+		bool isGolfSeeded = Preferences.Default.ContainsKey("is_golf_seeded");
+		if (!isGolfSeeded)
+		{
+			await _golfSeedDataService.LoadSeedDataAsync();
+			Preferences.Default.Set("is_golf_seeded", true);
+		}
+
 		await Refresh();
 	}
 
@@ -172,5 +211,89 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 		OnPropertyChanged(nameof(HasCompletedTasks));
 		Tasks = new(Tasks);
 		await AppShell.DisplayToastAsync("All cleaned up!");
+	}
+
+	[RelayCommand]
+	private async Task StartNewRound()
+	{
+		try
+		{
+			IsBusy = true;
+
+			// Get default player
+			var players = await _playerRepository.ListAsync();
+			var player = players.FirstOrDefault();
+			
+			if (player == null)
+			{
+				_errorHandler.HandleError(new Exception("No player found. Please restart the app."));
+				return;
+			}
+
+			// Check for in-progress round
+			var inProgressRound = await _roundRepository.GetInProgressRoundAsync(player.ID);
+			if (inProgressRound != null)
+			{
+				var resume = await Shell.Current.DisplayAlert(
+					"Resume Round?",
+					$"You have a round in progress at {inProgressRound.Course?.Name}. Resume it?",
+					"Resume",
+					"Start New");
+
+				if (resume)
+				{
+					await Shell.Current.GoToAsync($"active-round?roundId={inProgressRound.ID}");
+					return;
+				}
+			}
+
+			// Show course selection
+			var courses = await _courseRepository.ListAsync();
+			var courseNames = courses.Select(c => c.Name).ToArray();
+			
+			var selectedCourse = await Shell.Current.DisplayActionSheet(
+				"Select Course",
+				"Cancel",
+				null,
+				courseNames);
+
+			if (selectedCourse == "Cancel" || string.IsNullOrEmpty(selectedCourse))
+				return;
+
+			var course = courses.FirstOrDefault(c => c.Name == selectedCourse);
+			if (course == null)
+				return;
+
+			// Create new round
+			var round = await _roundRepository.CreateNewRoundAsync(player.ID, course.ID);
+			
+			// Navigate to active round page
+			await Shell.Current.GoToAsync($"active-round?roundId={round.ID}");
+		}
+		catch (Exception e)
+		{
+			_errorHandler.HandleError(e);
+		}
+		finally
+		{
+			IsBusy = false;
+		}
+	}
+
+	[RelayCommand]
+	private async Task NavigateToRound(Round round)
+	{
+		if (round == null) return;
+
+		if (round.Status == RoundStatus.InProgress)
+		{
+			await Shell.Current.GoToAsync($"active-round?roundId={round.ID}");
+		}
+		else
+		{
+			// For now, just navigate to active round in view-only mode
+			// In Phase 2/3 we'll add a dedicated round detail/summary page
+			await Shell.Current.GoToAsync($"active-round?roundId={round.ID}");
+		}
 	}
 }

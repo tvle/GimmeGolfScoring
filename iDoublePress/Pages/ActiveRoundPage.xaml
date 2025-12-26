@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:iDoublePress.PageModels"
+             xmlns:models="clr-namespace:iDoublePress.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:iDoublePress.Converters"
+             x:Class="iDoublePress.Pages.ActiveRoundPage"
+             x:DataType="pageModels:ActiveRoundPageModel"
+             x:Name="RoundPage"
+             Title="Active Round">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:SubtractOneConverter x:Key="SubtractOneConverter" />
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Header: Score Summary -->
+        <Border Grid.Row="0" 
+                Style="{StaticResource CardStyle}"
+                Margin="{StaticResource LayoutPadding}"
+                IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
+            <Grid ColumnDefinitions="*,Auto,*">
+                <VerticalStackLayout Grid.Column="0" HorizontalOptions="Start">
+                    <Label Text="{Binding CurrentRound.Course.Name, FallbackValue='Loading...'}" 
+                           Style="{StaticResource Title3}"/>
+                    <Label Text="{Binding HolesCompleted, FallbackValue='0/18'}" 
+                           Style="{StaticResource Caption1}"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                    <Label Text="{Binding CurrentRound.TotalScore, FallbackValue='0'}" 
+                           Style="{StaticResource LargeTitle}"
+                           HorizontalTextAlignment="Center"/>
+                    <Label Text="{Binding TotalScoreDisplay, FallbackValue='E'}" 
+                           Style="{StaticResource Title2}"
+                           HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2" HorizontalOptions="End">
+                    <Label Text="{Binding CurrentRound.StartTime, StringFormat='{0:h:mm tt}', FallbackValue='--:--'}" 
+                           Style="{StaticResource Caption1}"/>
+                    <Label Text="{Binding CurrentRound.Duration, StringFormat='{0:h\\:mm}', FallbackValue='0:00'}" 
+                           Style="{StaticResource Caption1}"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <!-- Main Scorecard -->
+        <ScrollView Grid.Row="1" IsVisible="{Binding CurrentHole, Converter={StaticResource IsNotNullConverter}}">
+            <VerticalStackLayout Padding="{StaticResource LayoutPadding}" 
+                                 Spacing="{StaticResource LayoutSpacing}">
+                
+                <Border Style="{StaticResource CardStyle}" Padding="20">
+                    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto">
+                        
+                        <!-- Hole Header -->
+                        <HorizontalStackLayout Grid.Row="0" 
+                                               Spacing="10" 
+                                               HorizontalOptions="Center"
+                                               Margin="0,0,0,20">
+                            <Label Text="{Binding CurrentHole.HoleNumber, StringFormat='Hole {0}', FallbackValue='Hole 1'}" 
+                                   Style="{StaticResource Title1}"/>
+                            <Label Text="{Binding CurrentHole.Par, StringFormat='Par {0}', FallbackValue='Par 4'}" 
+                                   Style="{StaticResource Title2}"
+                                   VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Decrease Button -->
+                        <Button Grid.Row="1"
+                                Text="-"
+                                Command="{Binding DecreaseScoreCommand}"
+                                IsEnabled="{Binding CanDecreaseScore}"
+                                HeightRequest="80"
+                                FontSize="48"
+                                Margin="0,10"/>
+
+                        <!-- Score Display -->
+                        <Border Grid.Row="2" 
+                                BackgroundColor="{Binding CurrentHole.ScoreColor, FallbackValue={StaticResource Primary}}"
+                                StrokeThickness="0"
+                                Padding="20"
+                                Margin="0,20"
+                                VerticalOptions="Center">
+                            <Label Text="{Binding CurrentHole.Score, FallbackValue='4'}" 
+                                   Style="{StaticResource Display}"
+                                   TextColor="White"
+                                   HorizontalTextAlignment="Center"/>
+                        </Border>
+
+                        <!-- Increase Button -->
+                        <Button Grid.Row="3"
+                                Text="+"
+                                Command="{Binding IncreaseScoreCommand}"
+                                HeightRequest="80"
+                                FontSize="48"
+                                Margin="0,10"/>
+
+                        <!-- Score Type Label -->
+                        <Label Grid.Row="4"
+                               Text="{Binding CurrentHole.ScoreRelativeToPar, StringFormat='{0:+0;-#;E}', FallbackValue='E'}"
+                               Style="{StaticResource Title2}"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,10,0,0"/>
+
+                        <!-- Navigation Buttons -->
+                        <Grid Grid.Row="5" 
+                              ColumnDefinitions="*,Auto,*"
+                              Margin="0,20,0,0">
+                            <Button Grid.Column="0"
+                                    Text="? Previous"
+                                    Command="{Binding PreviousHoleCommand}"
+                                    IsEnabled="{Binding CanGoBack}"
+                                    HorizontalOptions="Start"/>
+                            
+                            <Label Grid.Column="1"
+                                   Text="{Binding CurrentHole.HoleNumber, StringFormat='Hole {0}', FallbackValue='Hole 1'}"
+                                   Style="{StaticResource Title3}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"/>
+                            
+                            <Button Grid.Column="2"
+                                    Text="Next ?"
+                                    Command="{Binding NextHoleCommand}"
+                                    IsEnabled="{Binding CanGoForward}"
+                                    HorizontalOptions="End"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom Action Buttons -->
+        <Grid Grid.Row="2" 
+              ColumnDefinitions="*,*"
+              Padding="{StaticResource LayoutPadding}"
+              ColumnSpacing="10"
+              IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
+            
+            <Button Grid.Column="0"
+                    Text="Abandon"
+                    Command="{Binding AbandonRoundCommand}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
+            
+            <Button Grid.Column="1"
+                    Text="Complete Round"
+                    Command="{Binding CompleteRoundCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    IsVisible="{Binding IsLastHole}"/>
+        </Grid>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="3" 
+              IsVisible="{Binding IsBusy}"
+              BackgroundColor="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}">
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             Color="{StaticResource Primary}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

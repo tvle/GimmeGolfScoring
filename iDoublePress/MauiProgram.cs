@@ -43,18 +43,33 @@ public static class MauiProgram
 		builder.Services.AddLogging(configure => configure.AddDebug());
 #endif
 
+		// Existing repositories
 		builder.Services.AddSingleton<ProjectRepository>();
 		builder.Services.AddSingleton<TaskRepository>();
 		builder.Services.AddSingleton<CategoryRepository>();
 		builder.Services.AddSingleton<TagRepository>();
 		builder.Services.AddSingleton<SeedDataService>();
 		builder.Services.AddSingleton<ModalErrorHandler>();
+		
+		// Golf repositories
+		builder.Services.AddSingleton<PlayerRepository>();
+		builder.Services.AddSingleton<CourseRepository>();
+		builder.Services.AddSingleton<RoundRepository>();
+		builder.Services.AddSingleton<GolfSeedDataService>();
+
+		// Existing PageModels
 		builder.Services.AddSingleton<MainPageModel>();
 		builder.Services.AddSingleton<ProjectListPageModel>();
 		builder.Services.AddSingleton<ManageMetaPageModel>();
 
+		// Golf PageModels
+		builder.Services.AddTransient<ActiveRoundPageModel>();
+
 		builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
 		builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
+		
+		// Golf Pages
+		builder.Services.AddTransientWithShellRoute<ActiveRoundPage, ActiveRoundPageModel>("active-round");
 		
 		return builder.Build();
 	}
