@@ -80,30 +80,38 @@ public partial class ActiveRoundPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task IncreaseScore()
+    private void IncreaseScore()
     {
-        if (CurrentHole == null) return;
-        
-        CurrentHole.Score++;
-        await SaveCurrentHole();
-        UpdateDisplay();
+        if (CurrentHole != null)
+        {
+            CurrentHole.Score++;
+            CurrentHole.IsScored = true;
+            UpdateScoreDisplay();
+        }
     }
 
     [RelayCommand]
-    private async Task DecreaseScore()
+    private void DecreaseScore()
     {
-        if (CurrentHole == null || CurrentHole.Score <= 1) return;
-        
-        CurrentHole.Score--;
-        await SaveCurrentHole();
-        UpdateDisplay();
+        if (CurrentHole != null && CurrentHole.Score > 0)
+        {
+            CurrentHole.Score--;
+            CurrentHole.IsScored = true;
+            UpdateScoreDisplay();
+        }
     }
 
     [RelayCommand]
     private async Task NextHole()
     {
         if (CurrentRound == null || CurrentHoleIndex >= CurrentRound.Holes.Count - 1) return;
+
+        if (CurrentHole != null)
+        {
+            CurrentHole.IsScored = true;
+        }
         
+        await SaveCurrentHole();
         CurrentHoleIndex++;
         CurrentHole = CurrentRound.Holes[CurrentHoleIndex];
         UpdateDisplay();
@@ -114,6 +122,12 @@ public partial class ActiveRoundPageModel : ObservableObject
     {
         if (CurrentHoleIndex <= 0) return;
         
+        if (CurrentHole != null)
+        {
+            CurrentHole.IsScored = true;
+        }
+        
+        await SaveCurrentHole();
         CurrentHoleIndex--;
         CurrentHole = CurrentRound!.Holes[CurrentHoleIndex];
         UpdateDisplay();
@@ -123,6 +137,15 @@ public partial class ActiveRoundPageModel : ObservableObject
     private async Task CompleteRound()
     {
         if (CurrentRound == null) return;
+
+        // Mark the current (last) hole as scored before completing
+        if (CurrentHole != null)
+        {
+            CurrentHole.IsScored = true;
+        }
+        
+        // Save the last hole
+        await SaveCurrentHole();
 
         var confirm = await Shell.Current.DisplayAlert(
             "Complete Round?",
@@ -193,8 +216,9 @@ public partial class ActiveRoundPageModel : ObservableObject
             
             if (CurrentRound != null)
             {
-                CurrentRound.TotalScore = CurrentRound.Holes.Sum(h => h.Score);
+                CurrentRound.TotalScore = CurrentRound.Holes.Where(h => h.IsScored).Sum(h => h.Score);
                 await _roundRepository.SaveItemAsync(CurrentRound);
+                UpdateScoreDisplay();
             }
         }
         catch (Exception e)
@@ -211,5 +235,18 @@ public partial class ActiveRoundPageModel : ObservableObject
         OnPropertyChanged(nameof(CanGoBack));
         OnPropertyChanged(nameof(CanGoForward));
         OnPropertyChanged(nameof(IsLastHole));
+    }
+
+    private void UpdateScoreDisplay()
+    {
+        OnPropertyChanged(nameof(CurrentHole));
+        OnPropertyChanged(nameof(CanDecreaseScore));
+        
+        if (CurrentRound != null)
+        {
+            CurrentRound.TotalScore = CurrentRound.Holes.Where(h => h.IsScored).Sum(h => h.Score);
+            OnPropertyChanged(nameof(CurrentRound));
+            OnPropertyChanged(nameof(TotalScoreDisplay));
+        }
     }
 }

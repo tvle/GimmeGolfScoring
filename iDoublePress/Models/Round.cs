@@ -23,7 +23,19 @@ public class Round
     public List<Hole> Holes { get; set; } = new();
 
     // Calculated properties
-    public int ScoreRelativeToPar => TotalScore - (Course?.TotalPar ?? 0);
+    public int ScoreRelativeToPar
+    {
+        get
+        {
+            var scoredHoles = Holes.Where(h => h.IsScored).ToList();
+            if (!scoredHoles.Any())
+                return 0;
+
+            var totalScore = scoredHoles.Sum(h => h.Score);
+            var totalPar = scoredHoles.Sum(h => h.Par);
+            return totalScore - totalPar;
+        }
+    }
     public TimeSpan Duration => (EndTime ?? DateTime.Now) - StartTime;
 
     public string ScoreDisplay => ScoreRelativeToPar switch

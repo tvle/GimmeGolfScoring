@@ -58,6 +58,7 @@ public class RoundRepository
                     HoleNumber INTEGER NOT NULL,
                     Par INTEGER NOT NULL,
                     Score INTEGER DEFAULT 0,
+                    IsScored INTEGER DEFAULT 0,
                     Putts INTEGER DEFAULT 0,
                     FairwayHit INTEGER,
                     GreenInRegulation INTEGER,
@@ -69,6 +70,32 @@ public class RoundRepository
                     UNIQUE(RoundID, HoleNumber)
                 );";
             await createHoleTableCmd.ExecuteNonQueryAsync();
+
+            // Migration: Add IsScored column if it doesn't exist
+            var checkColumnCmd = connection.CreateCommand();
+            checkColumnCmd.CommandText = "PRAGMA table_info(Hole);";
+            var hasIsScoredColumn = false;
+            
+            await using (var reader = await checkColumnCmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    var columnName = reader.GetString(1);
+                    if (columnName == "IsScored")
+                    {
+                        hasIsScoredColumn = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasIsScoredColumn)
+            {
+                _logger.LogInformation("Adding IsScored column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN IsScored INTEGER DEFAULT 0;";
+                await addColumnCmd.ExecuteNonQueryAsync();
+            }
 
             // Create indexes
             var createIndexes = connection.CreateCommand();
@@ -175,7 +202,11 @@ public class RoundRepository
     private async Task<List<Hole>> GetHolesAsync(SqliteConnection connection, int roundId)
     {
         var selectHolesCmd = connection.CreateCommand();
-        selectHolesCmd.CommandText = "SELECT * FROM Hole WHERE RoundID = @roundId ORDER BY HoleNumber";
+        selectHolesCmd.CommandText = @"
+            SELECT ID, RoundID, HoleNumber, Par, Score, IsScored, Putts, FairwayHit, GreenInRegulation, Penalties, Notes, CreatedAt, UpdatedAt 
+            FROM Hole 
+            WHERE RoundID = @roundId 
+            ORDER BY HoleNumber";
         selectHolesCmd.Parameters.AddWithValue("@roundId", roundId);
 
         var holes = new List<Hole>();
@@ -189,13 +220,14 @@ public class RoundRepository
                 HoleNumber = reader.GetInt32(2),
                 Par = reader.GetInt32(3),
                 Score = reader.GetInt32(4),
-                Putts = reader.GetInt32(5),
-                FairwayHit = reader.IsDBNull(6) ? null : reader.GetInt32(6) == 1,
-                GreenInRegulation = reader.IsDBNull(7) ? null : reader.GetInt32(7) == 1,
-                Penalties = reader.GetInt32(8),
-                Notes = reader.IsDBNull(9) ? null : reader.GetString(9),
-                CreatedAt = DateTime.Parse(reader.GetString(10)),
-                UpdatedAt = DateTime.Parse(reader.GetString(11))
+                IsScored = reader.GetInt32(5) == 1,
+                Putts = reader.GetInt32(6),
+                FairwayHit = reader.IsDBNull(7) ? null : reader.GetInt32(7) == 1,
+                GreenInRegulation = reader.IsDBNull(8) ? null : reader.GetInt32(8) == 1,
+                Penalties = reader.GetInt32(9),
+                Notes = reader.IsDBNull(10) ? null : reader.GetString(10),
+                CreatedAt = DateTime.Parse(reader.GetString(11)),
+                UpdatedAt = DateTime.Parse(reader.GetString(12))
             });
         }
 
@@ -248,7 +280,8 @@ public class RoundRepository
                 RoundID = round.ID,
                 HoleNumber = courseHole.HoleNumber,
                 Par = courseHole.Par,
-                Score = courseHole.Par, // Default to par
+                Score = courseHole.Par,
+                IsScored = false,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
@@ -268,8 +301,8 @@ public class RoundRepository
 
         item.UpdatedAt = DateTime.Now;
 
-        // Calculate total score
-        item.TotalScore = item.Holes.Sum(h => h.Score);
+        // Calculate total score from only scored holes
+        item.TotalScore = item.Holes.Where(h => h.IsScored).Sum(h => h.Score);
 
         var saveCmd = connection.CreateCommand();
         saveCmd.CommandText = @"
@@ -319,15 +352,15 @@ public class RoundRepository
             hole.CreatedAt = DateTime.Now;
             
             saveCmd.CommandText = @"
-                INSERT INTO Hole (RoundID, HoleNumber, Par, Score, Putts, FairwayHit, GreenInRegulation, Penalties, Notes, CreatedAt, UpdatedAt)
-                VALUES (@RoundID, @HoleNumber, @Par, @Score, @Putts, @FairwayHit, @GreenInRegulation, @Penalties, @Notes, @CreatedAt, @UpdatedAt);
+                INSERT INTO Hole (RoundID, HoleNumber, Par, Score, IsScored, Putts, FairwayHit, GreenInRegulation, Penalties, Notes, CreatedAt, UpdatedAt)
+                VALUES (@RoundID, @HoleNumber, @Par, @Score, @IsScored, @Putts, @FairwayHit, @GreenInRegulation, @Penalties, @Notes, @CreatedAt, @UpdatedAt);
                 SELECT last_insert_rowid();";
         }
         else
         {
             saveCmd.CommandText = @"
                 UPDATE Hole
-                SET RoundID = @RoundID, HoleNumber = @HoleNumber, Par = @Par, Score = @Score, Putts = @Putts,
+                SET RoundID = @RoundID, HoleNumber = @HoleNumber, Par = @Par, Score = @Score, IsScored = @IsScored, Putts = @Putts,
                     FairwayHit = @FairwayHit, GreenInRegulation = @GreenInRegulation, Penalties = @Penalties, Notes = @Notes, UpdatedAt = @UpdatedAt
                 WHERE ID = @ID";
             saveCmd.Parameters.AddWithValue("@ID", hole.ID);
@@ -337,6 +370,7 @@ public class RoundRepository
         saveCmd.Parameters.AddWithValue("@HoleNumber", hole.HoleNumber);
         saveCmd.Parameters.AddWithValue("@Par", hole.Par);
         saveCmd.Parameters.AddWithValue("@Score", hole.Score);
+        saveCmd.Parameters.AddWithValue("@IsScored", hole.IsScored ? 1 : 0);
         saveCmd.Parameters.AddWithValue("@Putts", hole.Putts);
         saveCmd.Parameters.AddWithValue("@FairwayHit", hole.FairwayHit.HasValue ? (hole.FairwayHit.Value ? 1 : 0) : DBNull.Value);
         saveCmd.Parameters.AddWithValue("@GreenInRegulation", hole.GreenInRegulation.HasValue ? (hole.GreenInRegulation.Value ? 1 : 0) : DBNull.Value);

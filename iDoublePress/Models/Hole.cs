@@ -10,6 +10,7 @@ public class Hole
     public int HoleNumber { get; set; }
     public int Par { get; set; }
     public int Score { get; set; }
+    public bool IsScored { get; set; }
     public int Putts { get; set; }
     public bool? FairwayHit { get; set; }
     public bool? GreenInRegulation { get; set; }
