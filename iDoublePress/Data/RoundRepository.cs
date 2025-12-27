@@ -174,6 +174,27 @@ public class RoundRepository
         return null;
     }
 
+    public async Task<List<Round>> GetInProgressRoundsAsync(int playerId)
+    {
+        await Init();
+        await using var connection = new SqliteConnection(Constants.DatabasePath);
+        await connection.OpenAsync();
+
+        var selectCmd = connection.CreateCommand();
+        selectCmd.CommandText = "SELECT * FROM Round WHERE PlayerID = @playerId AND Status = 'InProgress' ORDER BY StartTime DESC";
+        selectCmd.Parameters.AddWithValue("@playerId", playerId);
+
+        var rounds = new List<Round>();
+        await using var reader = await selectCmd.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
+        {
+            var round = await ReadRoundFromReader(reader, connection);
+            rounds.Add(round);
+        }
+
+        return rounds;
+    }
+
     private async Task<Round> ReadRoundFromReader(SqliteDataReader reader, SqliteConnection connection)
     {
         var round = new Round

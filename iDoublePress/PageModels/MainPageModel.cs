@@ -230,20 +230,69 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 				return;
 			}
 
-			// Check for in-progress round
-			var inProgressRound = await _roundRepository.GetInProgressRoundAsync(player.ID);
-			if (inProgressRound != null)
+			// Check for in-progress rounds (plural)
+			var inProgressRounds = await _roundRepository.GetInProgressRoundsAsync(player.ID);
+			if (inProgressRounds.Any())
 			{
-				var resume = await Shell.Current.DisplayAlert(
-					"Resume Round?",
-					$"You have a round in progress at {inProgressRound.Course?.Name}. Resume it?",
-					"Resume",
-					"Start New");
-
-				if (resume)
+				if (inProgressRounds.Count == 1)
 				{
-					await Shell.Current.GoToAsync($"active-round?roundId={inProgressRound.ID}");
-					return;
+					// Single in-progress round - show simple dialog
+					var inProgressRound = inProgressRounds[0];
+					var timeAgo = GetTimeAgo(inProgressRound.StartTime);
+					var holesCompleted = inProgressRound.Holes.Count(h => h.IsScored);
+					var totalHoles = inProgressRound.Holes.Count;
+					
+					var resume = await Shell.Current.DisplayAlert(
+						"Resume Round?",
+						$"You have a round in progress at {inProgressRound.Course?.Name}.\n" +
+						$"Started: {timeAgo}\n" +
+						$"Progress: {holesCompleted}/{totalHoles} holes\n\n" +
+						$"Resume it?",
+						"Resume",
+						"Start New");
+
+					if (resume)
+					{
+						await Shell.Current.GoToAsync($"active-round?roundId={inProgressRound.ID}");
+						return;
+					}
+				}
+				else
+				{
+					// Multiple in-progress rounds - show action sheet with details
+					var options = new List<string>();
+					foreach (var r in inProgressRounds)
+					{
+						var timeAgo = GetTimeAgo(r.StartTime);
+						var holesCompleted = r.Holes.Count(h => h.IsScored);
+						var totalHoles = r.Holes.Count;
+						options.Add($"{r.Course?.Name} - {timeAgo} ({holesCompleted}/{totalHoles})");
+					}
+					options.Add("Start New Round");
+
+					var selected = await Shell.Current.DisplayActionSheet(
+						$"You have {inProgressRounds.Count} rounds in progress",
+						"Cancel",
+						null,
+						options.ToArray());
+
+					if (selected == "Cancel" || string.IsNullOrEmpty(selected))
+						return;
+
+					if (selected == "Start New Round")
+					{
+						// Continue to course selection below
+					}
+					else
+					{
+						// Find and resume the selected round
+						var selectedIndex = options.IndexOf(selected);
+						if (selectedIndex >= 0 && selectedIndex < inProgressRounds.Count)
+						{
+							await Shell.Current.GoToAsync($"active-round?roundId={inProgressRounds[selectedIndex].ID}");
+							return;
+						}
+					}
 				}
 			}
 
@@ -265,10 +314,10 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 				return;
 
 			// Create new round
-			var round = await _roundRepository.CreateNewRoundAsync(player.ID, course.ID);
+			var newRound = await _roundRepository.CreateNewRoundAsync(player.ID, course.ID);
 			
 			// Navigate to active round page
-			await Shell.Current.GoToAsync($"active-round?roundId={round.ID}");
+			await Shell.Current.GoToAsync($"active-round?roundId={newRound.ID}");
 		}
 		catch (Exception e)
 		{
@@ -295,5 +344,21 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 			// In Phase 2/3 we'll add a dedicated round detail/summary page
 			await Shell.Current.GoToAsync($"active-round?roundId={round.ID}");
 		}
+	}
+
+	private string GetTimeAgo(DateTime startTime)
+	{
+		var timeSpan = DateTime.Now - startTime;
+		
+		if (timeSpan.TotalMinutes < 1)
+			return "Just now";
+		if (timeSpan.TotalMinutes < 60)
+			return $"{(int)timeSpan.TotalMinutes} min ago";
+		if (timeSpan.TotalHours < 24)
+			return $"{(int)timeSpan.TotalHours} hour{((int)timeSpan.TotalHours > 1 ? "s" : "")} ago";
+		if (timeSpan.TotalDays < 7)
+			return $"{(int)timeSpan.TotalDays} day{((int)timeSpan.TotalDays > 1 ? "s" : "")} ago";
+		
+		return startTime.ToString("MMM d, h:mm tt");
 	}
 }
