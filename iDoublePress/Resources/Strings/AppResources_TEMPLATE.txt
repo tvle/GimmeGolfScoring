@@ -1,0 +1,333 @@
+Copy this entire content and save as AppResources.resx in iDoublePress/Resources/Strings/
+
+================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Common UI Strings -->
+  <data name="AppName" xml:space="preserve">
+    <value>iDoublePress</value>
+    <comment>Application name</comment>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Cancel button text</comment>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+    <comment>OK button text</comment>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+    <comment>Yes button text</comment>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+    <comment>No button text</comment>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>Error dialog title</comment>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+    <comment>Loading indicator text</comment>
+  </data>
+  
+  <!-- Golf Round Management -->
+  <data name="Resume" xml:space="preserve">
+    <value>Resume</value>
+    <comment>Resume button text</comment>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Start New</value>
+    <comment>Start new button text</comment>
+  </data>
+  <data name="ResumeRoundTitle" xml:space="preserve">
+    <value>Resume Round?</value>
+    <comment>Title for resume round dialog</comment>
+  </data>
+  <data name="ResumeRoundMessage" xml:space="preserve">
+    <value>You have a round in progress at {0}.
+Started: {1}
+Progress: {2}/{3} holes
+
+Resume it?</value>
+    <comment>Message for resume round dialog. {0}=course name, {1}=time ago, {2}=holes completed, {3}=total holes</comment>
+  </data>
+  <data name="MultipleRoundsTitle" xml:space="preserve">
+    <value>You have {0} rounds in progress</value>
+    <comment>Title when multiple rounds are in progress. {0}=number of rounds</comment>
+  </data>
+  <data name="StartNewRound" xml:space="preserve">
+    <value>Start New Round</value>
+    <comment>Start new round button/option</comment>
+  </data>
+  <data name="SelectCourse" xml:space="preserve">
+    <value>Select Course</value>
+    <comment>Select course dialog title</comment>
+  </data>
+  
+  <!-- Complete/Abandon Round -->
+  <data name="CompleteRoundTitle" xml:space="preserve">
+    <value>Complete Round?</value>
+    <comment>Title for complete round confirmation</comment>
+  </data>
+  <data name="CompleteRoundMessage" xml:space="preserve">
+    <value>Your final score is {0} ({1}). Mark this round as complete?</value>
+    <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>
+  </data>
+  <data name="CompleteRound" xml:space="preserve">
+    <value>Complete Round</value>
+    <comment>Complete round button text</comment>
+  </data>
+  <data name="RoundCompleted" xml:space="preserve">
+    <value>Round completed! Score: {0}</value>
+    <comment>Toast message when round is completed. {0}=final score</comment>
+  </data>
+  <data name="AbandonRoundTitle" xml:space="preserve">
+    <value>Abandon Round?</value>
+    <comment>Title for abandon round confirmation</comment>
+  </data>
+  <data name="AbandonRoundMessage" xml:space="preserve">
+    <value>Are you sure you want to abandon this round? It will not be saved.</value>
+    <comment>Warning message for abandoning a round</comment>
+  </data>
+  <data name="YesAbandon" xml:space="preserve">
+    <value>Yes, Abandon</value>
+    <comment>Confirm abandon button</comment>
+  </data>
+  <data name="Abandon" xml:space="preserve">
+    <value>Abandon</value>
+    <comment>Abandon button text</comment>
+  </data>
+  
+  <!-- Active Round Page -->
+  <data name="ActiveRound" xml:space="preserve">
+    <value>Active Round</value>
+    <comment>Active round page title</comment>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+    <comment>Previous hole button</comment>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+    <comment>Next hole button</comment>
+  </data>
+  <data name="HoleFormat" xml:space="preserve">
+    <value>Hole {0}</value>
+    <comment>Hole number display. {0}=hole number</comment>
+  </data>
+  <data name="ParFormat" xml:space="preserve">
+    <value>Par {0}</value>
+    <comment>Par value display. {0}=par value</comment>
+  </data>
+  
+  <!-- Error Messages -->
+  <data name="RoundNotFound" xml:space="preserve">
+    <value>Round not found or has no holes</value>
+    <comment>Error when round cannot be loaded</comment>
+  </data>
+  <data name="NoPlayerFound" xml:space="preserve">
+    <value>No player found. Please restart the app.</value>
+    <comment>Error when no player exists</comment>
+  </data>
+  
+  <!-- Time Formatting -->
+  <data name="JustNow" xml:space="preserve">
+    <value>Just now</value>
+    <comment>Time ago: less than 1 minute</comment>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0} min ago</value>
+    <comment>Time ago in minutes. {0}=number of minutes</comment>
+  </data>
+  <data name="HourAgo" xml:space="preserve">
+    <value>{0} hour ago</value>
+    <comment>Time ago: 1 hour. {0}=number of hours</comment>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0} hours ago</value>
+    <comment>Time ago: multiple hours. {0}=number of hours</comment>
+  </data>
+  <data name="DayAgo" xml:space="preserve">
+    <value>{0} day ago</value>
+    <comment>Time ago: 1 day. {0}=number of days</comment>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0} days ago</value>
+    <comment>Time ago: multiple days. {0}=number of days</comment>
+  </data>
+  
+  <!-- Default Course/Player Names -->
+  <data name="StandardCourse" xml:space="preserve">
+    <value>Standard Course</value>
+    <comment>Default 18-hole par 72 course name</comment>
+  </data>
+  <data name="NineHoleCourse" xml:space="preserve">
+    <value>9-Hole Course</value>
+    <comment>Default 9-hole par 36 course name</comment>
+  </data>
+  <data name="PracticeCourse" xml:space="preserve">
+    <value>Practice Course</value>
+    <comment>Default practice course name (all par 3s)</comment>
+  </data>
+  <data name="DefaultLocation" xml:space="preserve">
+    <value>Default</value>
+    <comment>Default course location</comment>
+  </data>
+  <data name="Me" xml:space="preserve">
+    <value>Me</value>
+    <comment>Default player name</comment>
+  </data>
+  
+  <!-- Seed Data Messages -->
+  <data name="DefaultPlayerCreated" xml:space="preserve">
+    <value>Default player created</value>
+    <comment>Log message when default player is created</comment>
+  </data>
+  <data name="Par72CourseCreated" xml:space="preserve">
+    <value>Par 72 course created</value>
+    <comment>Log message when par 72 course is created</comment>
+  </data>
+  <data name="Par36CourseCreated" xml:space="preserve">
+    <value>Par 36 course created</value>
+    <comment>Log message when par 36 course is created</comment>
+  </data>
+  <data name="PracticeCourseCreated" xml:space="preserve">
+    <value>Practice course created</value>
+    <comment>Log message when practice course is created</comment>
+  </data>
+  
+  <!-- Golf Scoring Terms -->
+  <data name="Eagle" xml:space="preserve">
+    <value>Eagle</value>
+    <comment>2 under par</comment>
+  </data>
+  <data name="Birdie" xml:space="preserve">
+    <value>Birdie</value>
+    <comment>1 under par</comment>
+  </data>
+  <data name="Par" xml:space="preserve">
+    <value>Par</value>
+    <comment>Even with par</comment>
+  </data>
+  <data name="Bogey" xml:space="preserve">
+    <value>Bogey</value>
+    <comment>1 over par</comment>
+  </data>
+  <data name="DoubleBogey" xml:space="preserve">
+    <value>Double Bogey</value>
+    <comment>2 over par</comment>
+  </data>
+  <data name="TripleBogey" xml:space="preserve">
+    <value>Triple Bogey</value>
+    <comment>3 over par</comment>
+  </data>
+  
+  <!-- Score Display -->
+  <data name="ScoreEven" xml:space="preserve">
+    <value>E</value>
+    <comment>Even par score display</comment>
+  </data>
+  <data name="ScoreUnder" xml:space="preserve">
+    <value>-{0}</value>
+    <comment>Under par score display. {0}=strokes under</comment>
+  </data>
+  <data name="ScoreOver" xml:space="preserve">
+    <value>+{0}</value>
+    <comment>Over par score display. {0}=strokes over</comment>
+  </data>
+  
+  <!-- Navigation -->
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+    <comment>Home page navigation</comment>
+  </data>
+  <data name="Rounds" xml:space="preserve">
+    <value>Rounds</value>
+    <comment>Rounds page navigation</comment>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+    <comment>Statistics page navigation</comment>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Settings page navigation</comment>
+  </data>
+  
+  <!-- Language Selection -->
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Select Language</value>
+    <comment>Language selection dialog title</comment>
+  </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>Language Changed</value>
+    <comment>Language changed confirmation title</comment>
+  </data>
+  <data name="RestartAppMessage" xml:space="preserve">
+    <value>Please restart the app for the language change to take full effect.</value>
+    <comment>Message shown after language change</comment>
+  </data>
+</root>
