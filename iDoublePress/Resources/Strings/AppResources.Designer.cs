@@ -223,6 +223,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Golf.
+        /// </summary>
+        public static string Golf {
+            get {
+                return ResourceManager.GetString("Golf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hole {0}.
         /// </summary>
         public static string HoleFormat {
@@ -421,6 +430,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recent Rounds.
+        /// </summary>
+        public static string RecentRounds {
+            get {
+                return ResourceManager.GetString("RecentRounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please restart the app for the language change to take full effect..
         /// </summary>
         public static string RestartAppMessage {
@@ -565,6 +583,24 @@ namespace iDoublePress.Resources.Strings {
         public static string StartNewRound {
             get {
                 return ResourceManager.GetString("StartNewRound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⛳ Start New Round.
+        /// </summary>
+        public static string StartNewRoundButton {
+            get {
+                return ResourceManager.GetString("StartNewRoundButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start a new round.
+        /// </summary>
+        public static string StartNewRoundDescription {
+            get {
+                return ResourceManager.GetString("StartNewRoundDescription", resourceCulture);
             }
         }
         

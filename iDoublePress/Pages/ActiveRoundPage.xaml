@@ -65,9 +65,9 @@
                                                Spacing="10" 
                                                HorizontalOptions="Center"
                                                Margin="0,0,0,20">
-                            <Label Text="{Binding CurrentHole.HoleNumber, StringFormat='Hole {0}', FallbackValue='Hole 1'}" 
+                            <Label Text="{Binding CurrentHoleDisplay, FallbackValue='Hole 1'}" 
                                    Style="{StaticResource Title1}"/>
-                            <Label Text="{Binding CurrentHole.Par, StringFormat='Par {0}', FallbackValue='Par 4'}" 
+                            <Label Text="{Binding CurrentParDisplay, FallbackValue='Par 4'}" 
                                    Style="{StaticResource Title2}"
                                    VerticalOptions="Center"/>
                         </HorizontalStackLayout>
@@ -120,7 +120,7 @@
                                     HorizontalOptions="Start"/>
                             
                             <Label Grid.Column="1"
-                                   Text="{Binding CurrentHole.HoleNumber, StringFormat='Hole {0}', FallbackValue='Hole 1'}"
+                                   Text="{Binding CurrentHoleDisplay, FallbackValue='Hole 1'}"
                                    Style="{StaticResource Title3}"
                                    VerticalOptions="Center"
                                    HorizontalOptions="Center"/>

@@ -7,6 +7,7 @@
              xmlns:pullToRefresh="clr-namespace:Syncfusion.Maui.Toolkit.PullToRefresh;assembly=Syncfusion.Maui.Toolkit"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:iDoublePress.Converters"
+             xmlns:ext="clr-namespace:iDoublePress.Extensions"
              x:Class="iDoublePress.Pages.MainPage"
              x:DataType="pageModels:MainPageModel"
              x:Name="OverviewPage"
@@ -53,17 +54,17 @@
                         </Grid.RowDefinitions>
                         
                         <!-- Golf Rounds Section -->
-                        <Label Grid.Row="2" Text="Golf" Style="{StaticResource Title2}" SemanticProperties.HeadingLevel="Level1"/>
+                        <Label Grid.Row="2" Text="{ext:Translate Golf}" Style="{StaticResource Title2}" SemanticProperties.HeadingLevel="Level1"/>
                         <VerticalStackLayout Grid.Row="3" Spacing="10" Margin="0,10">
-                            <Button Text="⛳ Start New Round"
+                            <Button Text="{ext:Translate StartNewRoundButton}"
                                     Command="{Binding StartNewRoundCommand}"
                                     BackgroundColor="{StaticResource Primary}"
                                     TextColor="White"
                                     HeightRequest="50"
                                     FontSize="18"
-                                    SemanticProperties.Description="Start a new golf round"/>
+                                    SemanticProperties.Description="{ext:Translate StartNewRoundDescription}"/>
                             
-                            <Label Text="Recent Rounds" Style="{StaticResource Title3}" Margin="0,10,0,0"/>
+                            <Label Text="{ext:Translate RecentRounds}" Style="{StaticResource Title3}" Margin="0,10,0,0"/>
                             <VerticalStackLayout BindableLayout.ItemsSource="{Binding RecentRounds}"
                                                  Spacing="5">
                                 <BindableLayout.ItemTemplate>

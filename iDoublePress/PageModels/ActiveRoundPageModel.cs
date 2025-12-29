@@ -32,6 +32,16 @@ public partial class ActiveRoundPageModel : ObservableObject
     public string HolesCompleted =>
         CurrentRound != null ? $"{CurrentHoleIndex + 1}/{CurrentRound.Holes.Count}" : "0/18";
 
+    public string CurrentHoleDisplay =>
+        CurrentHole != null
+            ? string.Format(AppResources.HoleFormat, CurrentHole.HoleNumber)
+            : string.Format(AppResources.HoleFormat, 1);
+
+    public string CurrentParDisplay =>
+        CurrentHole != null
+            ? string.Format(AppResources.ParFormat, CurrentHole.Par)
+            : string.Format(AppResources.ParFormat, 4);
+
     public bool CanDecreaseScore => CurrentHole != null && CurrentHole.Score > 1;
     public bool CanGoBack => CurrentHoleIndex > 0;
     public bool CanGoForward => CurrentRound != null && CurrentHoleIndex < CurrentRound.Holes.Count - 1;
@@ -238,6 +248,8 @@ public partial class ActiveRoundPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(TotalScoreDisplay));
         OnPropertyChanged(nameof(HolesCompleted));
+        OnPropertyChanged(nameof(CurrentHoleDisplay));
+        OnPropertyChanged(nameof(CurrentParDisplay));
         OnPropertyChanged(nameof(CanDecreaseScore));
         OnPropertyChanged(nameof(CanGoBack));
         OnPropertyChanged(nameof(CanGoForward));
@@ -247,8 +259,10 @@ public partial class ActiveRoundPageModel : ObservableObject
     private void UpdateScoreDisplay()
     {
         OnPropertyChanged(nameof(CurrentHole));
+        OnPropertyChanged(nameof(CurrentHoleDisplay));
+        OnPropertyChanged(nameof(CurrentParDisplay));
         OnPropertyChanged(nameof(CanDecreaseScore));
-        
+
         if (CurrentRound != null)
         {
             CurrentRound.TotalScore = CurrentRound.Holes.Where(h => h.IsScored).Sum(h => h.Score);
