@@ -1,5 +1,6 @@
 using iDoublePress.Models;
 using Microsoft.Extensions.Logging;
+using iDoublePress.Resources.Strings;
 
 namespace iDoublePress.Data;
 
@@ -41,14 +42,14 @@ public class GolfSeedDataService
 
         var defaultPlayer = new Player
         {
-            Name = "Me",
+            Name = AppResources.Me,
             Handicap = 0,
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now
         };
 
         await _playerRepository.SaveItemAsync(defaultPlayer);
-        _logger.LogInformation("Default player created");
+        _logger.LogInformation(AppResources.DefaultPlayerCreated);
     }
 
     private async Task SeedDefaultCoursesAsync()
@@ -60,8 +61,8 @@ public class GolfSeedDataService
         // Create standard par 72 course
         var par72Course = new Course
         {
-            Name = "Standard Course",
-            Location = "Default",
+            Name = AppResources.StandardCourse,
+            Location = AppResources.DefaultLocation,
             TotalPar = 72,
             Holes = 18,
             Rating = 72.0m,
@@ -93,13 +94,13 @@ public class GolfSeedDataService
         
         par72Course.CourseHoles = par72Holes;
         await _courseRepository.SaveItemAsync(par72Course);
-        _logger.LogInformation("Par 72 course created");
+        _logger.LogInformation(AppResources.Par72CourseCreated);
 
         // Create 9-hole par 36 course
         var par36Course = new Course
         {
-            Name = "9-Hole Course",
-            Location = "Default",
+            Name = AppResources.NineHoleCourse,
+            Location = AppResources.DefaultLocation,
             TotalPar = 36,
             Holes = 9,
             Rating = 36.0m,
@@ -130,13 +131,13 @@ public class GolfSeedDataService
         
         par36Course.CourseHoles = par36Holes;
         await _courseRepository.SaveItemAsync(par36Course);
-        _logger.LogInformation("Par 36 course created");
+        _logger.LogInformation(AppResources.Par36CourseCreated);
 
         // Create practice course (18 holes, all par 3)
         var practiceCourse = new Course
         {
-            Name = "Practice Course",
-            Location = "Default",
+            Name = AppResources.PracticeCourse,
+            Location = AppResources.DefaultLocation,
             TotalPar = 54,
             Holes = 18,
             IsCustom = false,
@@ -157,6 +158,6 @@ public class GolfSeedDataService
         
         practiceCourse.CourseHoles = practiceHoles;
         await _courseRepository.SaveItemAsync(practiceCourse);
-        _logger.LogInformation("Practice course created");
+        _logger.LogInformation(AppResources.PracticeCourseCreated);
     }
 }

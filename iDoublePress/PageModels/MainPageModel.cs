@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using iDoublePress.Models;
+using iDoublePress.Resources.Strings;
 
 namespace iDoublePress.PageModels;
 
@@ -226,7 +227,7 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 			
 			if (player == null)
 			{
-				_errorHandler.HandleError(new Exception("No player found. Please restart the app."));
+				_errorHandler.HandleError(new Exception(AppResources.NoPlayerFound));
 				return;
 			}
 
@@ -242,14 +243,18 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 					var holesCompleted = inProgressRound.Holes.Count(h => h.IsScored);
 					var totalHoles = inProgressRound.Holes.Count;
 					
+					var message = string.Format(
+						AppResources.ResumeRoundMessage,
+						inProgressRound.Course?.Name,
+						timeAgo,
+						holesCompleted,
+						totalHoles);
+					
 					var resume = await Shell.Current.DisplayAlert(
-						"Resume Round?",
-						$"You have a round in progress at {inProgressRound.Course?.Name}.\n" +
-						$"Started: {timeAgo}\n" +
-						$"Progress: {holesCompleted}/{totalHoles} holes\n\n" +
-						$"Resume it?",
-						"Resume",
-						"Start New");
+						AppResources.ResumeRoundTitle,
+						message,
+						AppResources.Resume,
+						AppResources.StartNew);
 
 					if (resume)
 					{
@@ -268,18 +273,19 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 						var totalHoles = r.Holes.Count;
 						options.Add($"{r.Course?.Name} - {timeAgo} ({holesCompleted}/{totalHoles})");
 					}
-					options.Add("Start New Round");
+					options.Add(AppResources.StartNewRound);
 
+					var title = string.Format(AppResources.MultipleRoundsTitle, inProgressRounds.Count);
 					var selected = await Shell.Current.DisplayActionSheet(
-						$"You have {inProgressRounds.Count} rounds in progress",
-						"Cancel",
+						title,
+						AppResources.Cancel,
 						null,
 						options.ToArray());
 
-					if (selected == "Cancel" || string.IsNullOrEmpty(selected))
+					if (selected == AppResources.Cancel || string.IsNullOrEmpty(selected))
 						return;
 
-					if (selected == "Start New Round")
+					if (selected == AppResources.StartNewRound)
 					{
 						// Continue to course selection below
 					}
@@ -301,12 +307,12 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 			var courseNames = courses.Select(c => c.Name).ToArray();
 			
 			var selectedCourse = await Shell.Current.DisplayActionSheet(
-				"Select Course",
-				"Cancel",
+				AppResources.SelectCourse,
+				AppResources.Cancel,
 				null,
 				courseNames);
 
-			if (selectedCourse == "Cancel" || string.IsNullOrEmpty(selectedCourse))
+			if (selectedCourse == AppResources.Cancel || string.IsNullOrEmpty(selectedCourse))
 				return;
 
 			var course = courses.FirstOrDefault(c => c.Name == selectedCourse);
@@ -351,13 +357,23 @@ public partial class MainPageModel : ObservableObject, IProjectTaskPageModel
 		var timeSpan = DateTime.Now - startTime;
 		
 		if (timeSpan.TotalMinutes < 1)
-			return "Just now";
+			return AppResources.JustNow;
 		if (timeSpan.TotalMinutes < 60)
-			return $"{(int)timeSpan.TotalMinutes} min ago";
+			return string.Format(AppResources.MinutesAgo, (int)timeSpan.TotalMinutes);
 		if (timeSpan.TotalHours < 24)
-			return $"{(int)timeSpan.TotalHours} hour{((int)timeSpan.TotalHours > 1 ? "s" : "")} ago";
+		{
+			var hours = (int)timeSpan.TotalHours;
+			return hours == 1 
+				? string.Format(AppResources.HourAgo, hours)
+				: string.Format(AppResources.HoursAgo, hours);
+		}
 		if (timeSpan.TotalDays < 7)
-			return $"{(int)timeSpan.TotalDays} day{((int)timeSpan.TotalDays > 1 ? "s" : "")} ago";
+		{
+			var days = (int)timeSpan.TotalDays;
+			return days == 1
+				? string.Format(AppResources.DayAgo, days)
+				: string.Format(AppResources.DaysAgo, days);
+		}
 		
 		return startTime.ToString("MMM d, h:mm tt");
 	}

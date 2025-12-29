@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using iDoublePress.Models;
+using iDoublePress.Resources.Strings;
 
 namespace iDoublePress.PageModels;
 
@@ -64,7 +65,7 @@ public partial class ActiveRoundPageModel : ObservableObject
             }
             else
             {
-                await Shell.Current.DisplayAlert("Error", "Round not found or has no holes", "OK");
+                await Shell.Current.DisplayAlert(AppResources.Error, AppResources.RoundNotFound, AppResources.OK);
                 await Shell.Current.GoToAsync("..");
             }
         }
@@ -147,11 +148,16 @@ public partial class ActiveRoundPageModel : ObservableObject
         // Save the last hole
         await SaveCurrentHole();
 
+        var message = string.Format(
+            AppResources.CompleteRoundMessage,
+            CurrentRound.TotalScore,
+            CurrentRound.ScoreDisplay);
+
         var confirm = await Shell.Current.DisplayAlert(
-            "Complete Round?",
-            $"Your final score is {CurrentRound.TotalScore} ({CurrentRound.ScoreDisplay}). Mark this round as complete?",
-            "Yes",
-            "No");
+            AppResources.CompleteRoundTitle,
+            message,
+            AppResources.Yes,
+            AppResources.No);
 
         if (!confirm) return;
 
@@ -163,7 +169,8 @@ public partial class ActiveRoundPageModel : ObservableObject
             await _roundRepository.SaveItemAsync(CurrentRound);
             
             await Shell.Current.GoToAsync("..");
-            await AppShell.DisplayToastAsync($"Round completed! Score: {CurrentRound.TotalScore}");
+            var completedMessage = string.Format(AppResources.RoundCompleted, CurrentRound.TotalScore);
+            await AppShell.DisplayToastAsync(completedMessage);
         }
         catch (Exception e)
         {
@@ -181,10 +188,10 @@ public partial class ActiveRoundPageModel : ObservableObject
         if (CurrentRound == null) return;
 
         var confirm = await Shell.Current.DisplayAlert(
-            "Abandon Round?",
-            "Are you sure you want to abandon this round? It will not be saved.",
-            "Yes, Abandon",
-            "No");
+            AppResources.AbandonRoundTitle,
+            AppResources.AbandonRoundMessage,
+            AppResources.YesAbandon,
+            AppResources.No);
 
         if (!confirm) return;
 
