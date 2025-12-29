@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <data name="AppName" xml:space="preserve">
+    <value>iDoublePress</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>はい</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>いいえ</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>読み込み中...</value>
+  </data>
+  
+  <data name="Resume" xml:space="preserve">
+    <value>再開</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>新規作成</value>
+  </data>
+  <data name="ResumeRoundTitle" xml:space="preserve">
+    <value>ラウンドを再開？</value>
+  </data>
+  <data name="ResumeRoundMessage" xml:space="preserve">
+    <value>{0} でのラウンドが進行中です。
+開始: {1}
+進行状況: {2}/{3} ホール
+
+再開しますか？</value>
+  </data>
+  <data name="MultipleRoundsTitle" xml:space="preserve">
+    <value>{0} 件のラウンドが進行中です</value>
+  </data>
+  <data name="StartNewRound" xml:space="preserve">
+    <value>新しいラウンドを開始</value>
+  </data>
+  <data name="SelectCourse" xml:space="preserve">
+    <value>コースを選択</value>
+  </data>
+  
+  <data name="CompleteRoundTitle" xml:space="preserve">
+    <value>ラウンドを完了？</value>
+  </data>
+  <data name="CompleteRoundMessage" xml:space="preserve">
+    <value>最終スコアは {0} ({1}) です。
+このラウンドを完了としてマークしますか？</value>
+  </data>
+  <data name="CompleteRound" xml:space="preserve">
+    <value>ラウンドを完了</value>
+  </data>
+  <data name="RoundCompleted" xml:space="preserve">
+    <value>ラウンド完了！
+スコア: {0}</value>
+  </data>
+  <data name="AbandonRoundTitle" xml:space="preserve">
+    <value>ラウンドを破棄？</value>
+  </data>
+  <data name="AbandonRoundMessage" xml:space="preserve">
+    <value>本当にこのラウンドを破棄しますか？
+保存されません。</value>
+  </data>
+  <data name="YesAbandon" xml:space="preserve">
+    <value>はい、破棄します</value>
+  </data>
+  <data name="Abandon" xml:space="preserve">
+    <value>破棄</value>
+  </data>
+  
+  <data name="ActiveRound" xml:space="preserve">
+    <value>プレイ中のラウンド</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>前へ</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>次へ</value>
+  </data>
+  <data name="HoleFormat" xml:space="preserve">
+    <value>ホール {0}</value>
+  </data>
+  <data name="ParFormat" xml:space="preserve">
+    <value>パー {0}</value>
+  </data>
+  
+  <data name="RoundNotFound" xml:space="preserve">
+    <value>ラウンドが見つからないか、ホールがありません</value>
+  </data>
+  <data name="NoPlayerFound" xml:space="preserve">
+    <value>プレイヤーが見つかりません。
+アプリを再起動してください。</value>
+  </data>
+  
+  <data name="JustNow" xml:space="preserve">
+    <value>たった今</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0} 分前</value>
+  </data>
+  <data name="HourAgo" xml:space="preserve">
+    <value>{0} 時間前</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0} 時間前</value>
+  </data>
+  <data name="DayAgo" xml:space="preserve">
+    <value>{0} 日前</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0} 日前</value>
+  </data>
+  
+  <data name="StandardCourse" xml:space="preserve">
+    <value>標準コース</value>
+  </data>
+  <data name="NineHoleCourse" xml:space="preserve">
+    <value>9ホールコース</value>
+  </data>
+  <data name="PracticeCourse" xml:space="preserve">
+    <value>練習コース</value>
+  </data>
+  <data name="DefaultLocation" xml:space="preserve">
+    <value>デフォルト</value>
+  </data>
+  <data name="Me" xml:space="preserve">
+    <value>自分</value>
+  </data>
+  
+  <data name="DefaultPlayerCreated" xml:space="preserve">
+    <value>デフォルトプレイヤーを作成しました</value>
+  </data>
+  <data name="Par72CourseCreated" xml:space="preserve">
+    <value>パー72コースを作成しました</value>
+  </data>
+  <data name="Par36CourseCreated" xml:space="preserve">
+    <value>パー36コースを作成しました</value>
+  </data>
+  <data name="PracticeCourseCreated" xml:space="preserve">
+    <value>練習コースを作成しました</value>
+  </data>
+  
+  <data name="Eagle" xml:space="preserve">
+    <value>イーグル</value>
+  </data>
+  <data name="Birdie" xml:space="preserve">
+    <value>バーディー</value>
+  </data>
+  <data name="Par" xml:space="preserve">
+    <value>パー</value>
+  </data>
+  <data name="Bogey" xml:space="preserve">
+    <value>ボギー</value>
+  </data>
+  <data name="DoubleBogey" xml:space="preserve">
+    <value>ダブルボギー</value>
+  </data>
+  <data name="TripleBogey" xml:space="preserve">
+    <value>トリプルボギー</value>
+  </data>
+  
+  <data name="ScoreEven" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="ScoreUnder" xml:space="preserve">
+    <value>-{0}</value>
+  </data>
+  <data name="ScoreOver" xml:space="preserve">
+    <value>+{0}</value>
+  </data>
+  
+  <data name="Home" xml:space="preserve">
+    <value>ホーム</value>
+  </data>
+  <data name="Rounds" xml:space="preserve">
+    <value>ラウンド</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>統計</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>言語を選択</value>
+  </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>言語が変更されました</value>
+  </data>
+  <data name="RestartAppMessage" xml:space="preserve">
+    <value>言語の変更を完全に反映させるには、アプリを再起動してください。</value>
+  </data>
+  <data name="Golf" xml:space="preserve">
+    <value>ゴルフ</value>
+  </data>
+  <data name="StartNewRoundButton" xml:space="preserve">
+    <value>⛳ 新しいラウンドを開始</value>
+  </data>
+  <data name="StartNewRoundDescription" xml:space="preserve">
+    <value>新しいラウンドを開始</value>
+  </data>
+  <data name="RecentRounds" xml:space="preserve">
+    <value>最近のラウンド</value>
+  </data>
+</root>
