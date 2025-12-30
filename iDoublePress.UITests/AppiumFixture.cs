@@ -12,9 +12,9 @@ public sealed class AppiumFixture : IDisposable
 
     public AppiumFixture()
     {
-        var serverUrl = Environment.GetEnvironmentVariable("APPIUM_SERVER_URL") ?? "http://127.0.0.1:4723/";
-        var platformName = Environment.GetEnvironmentVariable("PLATFORM_NAME") ?? "Android";
-        var appPath = Environment.GetEnvironmentVariable("APP_PATH") ?? string.Empty;
+        var serverUrl = GetEnv("APPIUM_SERVER_URL") ?? "http://127.0.0.1:4723/";
+        var platformName = GetEnv("PLATFORM_NAME") ?? "Android";
+        var appPath = GetEnv("APP_PATH") ?? string.Empty;
 
         if (string.IsNullOrWhiteSpace(appPath))
             throw new InvalidOperationException("Set APP_PATH to the built app package (.apk/.app/.msix/.exe). See iDoublePress.UITests/README.md");
@@ -30,6 +30,23 @@ public sealed class AppiumFixture : IDisposable
 
         Driver = CreateDriver(new Uri(serverUrl), platformName, options);
         Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+    }
+
+    private static string? GetEnv(string name)
+    {
+        var value = Environment.GetEnvironmentVariable(name);
+        if (!string.IsNullOrWhiteSpace(value))
+            return value;
+
+        value = Environment.GetEnvironmentVariable("TEST_" + name);
+        if (!string.IsNullOrWhiteSpace(value))
+            return value;
+
+        value = Environment.GetEnvironmentVariable("Test_" + name);
+        if (!string.IsNullOrWhiteSpace(value))
+            return value;
+
+        return null;
     }
 
     private static string ExpandHome(string path)
