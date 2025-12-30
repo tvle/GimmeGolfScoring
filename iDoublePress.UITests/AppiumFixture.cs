@@ -28,6 +28,25 @@ public sealed class AppiumFixture : IDisposable
 
         options.AddAdditionalAppiumOption("noReset", true);
 
+        if (platformName.Equals("Android", StringComparison.OrdinalIgnoreCase))
+        {
+            // Helps with emulator/device selection and first-time bootstrap.
+            var deviceName = GetEnv("DEVICE_NAME");
+            if (!string.IsNullOrWhiteSpace(deviceName))
+                options.AddAdditionalAppiumOption("deviceName", deviceName);
+            else
+                options.AddAdditionalAppiumOption("deviceName", "Android Emulator");
+
+            var udid = GetEnv("UDID");
+            if (!string.IsNullOrWhiteSpace(udid))
+                options.AddAdditionalAppiumOption("udid", udid);
+
+            // Appium Settings bootstrap can be slow on fresh emulators.
+            options.AddAdditionalAppiumOption("settingsAppStartupTimeout", 120000);
+            options.AddAdditionalAppiumOption("uiautomator2ServerLaunchTimeout", 120000);
+            options.AddAdditionalAppiumOption("uiautomator2ServerInstallTimeout", 120000);
+        }
+
         Driver = CreateDriver(new Uri(serverUrl), platformName, options);
         Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
     }
