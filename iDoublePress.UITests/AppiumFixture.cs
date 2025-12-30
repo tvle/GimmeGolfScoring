@@ -23,9 +23,9 @@ public sealed class AppiumFixture : IDisposable
         var options = new AppiumOptions
         {
             PlatformName = platformName,
+            AutomationName = GetAutomationName(platformName),
         };
 
-        options.AddAdditionalAppiumOption(MobileCapabilityType.AutomationName, GetAutomationName(platformName));
         options.AddAdditionalAppiumOption(MobileCapabilityType.App, appPath);
         options.AddAdditionalAppiumOption("noReset", true);
 
