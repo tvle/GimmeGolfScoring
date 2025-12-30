@@ -20,7 +20,7 @@
 		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
 		<!-- Display name -->
-		<ApplicationTitle>iDoublePress</ApplicationTitle>
+		<ApplicationTitle>Gimme</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.idoublepress.gimme</ApplicationId>
