@@ -1,0 +1,12 @@
+<Project>
+  <!--
+    Prevent accidental bundling of source files (e.g., FluentUI.cs) as iOS fonts.
+
+    iOS reads UIAppFonts at startup and will attempt to parse every entry as a font.
+    If a non-font file is included, startup may fail.
+  -->
+  <ItemGroup>
+    <MauiFont Remove="**\*.cs" />
+    <BundleResource Remove="**\*.cs" />
+  </ItemGroup>
+</Project>
