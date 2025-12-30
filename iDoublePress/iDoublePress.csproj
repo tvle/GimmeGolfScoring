@@ -23,7 +23,7 @@
 		<ApplicationTitle>iDoublePress</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.idoublepress</ApplicationId>
+		<ApplicationId>com.idoublepress.gimme</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>

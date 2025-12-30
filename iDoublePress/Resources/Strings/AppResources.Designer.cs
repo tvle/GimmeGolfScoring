@@ -97,7 +97,7 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to iDoublePress.
+        ///   Looks up a localized string similar to Gimme.
         /// </summary>
         public static string AppName {
             get {
@@ -318,6 +318,15 @@ namespace iDoublePress.Resources.Strings {
         public static string MultipleRoundsTitle {
             get {
                 return ResourceManager.GetString("MultipleRoundsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scoring.
+        /// </summary>
+        public static string Nav_Scoring {
+            get {
+                return ResourceManager.GetString("Nav_Scoring", resourceCulture);
             }
         }
         
@@ -610,6 +619,24 @@ namespace iDoublePress.Resources.Strings {
         public static string Statistics {
             get {
                 return ResourceManager.GetString("Statistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark mode.
+        /// </summary>
+        public static string Theme_Dark {
+            get {
+                return ResourceManager.GetString("Theme_Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light mode.
+        /// </summary>
+        public static string Theme_Light {
+            get {
+                return ResourceManager.GetString("Theme_Light", resourceCulture);
             }
         }
         

@@ -120,7 +120,7 @@
   
   <!-- Common UI Strings -->
   <data name="AppName" xml:space="preserve">
-    <value>iDoublePress</value>
+    <value>Gimme</value>
     <comment>Application name</comment>
   </data>
   <data name="Cancel" xml:space="preserve">
@@ -400,5 +400,19 @@ Resume it?</value>
   <data name="RecentRounds" xml:space="preserve">
     <value>Recent Rounds</value>
     <comment>Recent Rounds</comment>
+  </data>
+  <!-- Navigation -->
+  <data name="Nav_Scoring" xml:space="preserve">
+    <value>Scoring</value>
+    <comment>Flyout/menu item for scoring</comment>
+  </data>
+  <!-- Theme -->
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Light mode</value>
+    <comment>Accessibility description for light theme toggle</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Dark mode</value>
+    <comment>Accessibility description for dark theme toggle</comment>
   </data>
 </root>

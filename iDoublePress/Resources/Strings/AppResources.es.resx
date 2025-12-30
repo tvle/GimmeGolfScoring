@@ -61,7 +61,7 @@
   
   <!-- Common UI Strings -->
   <data name="AppName" xml:space="preserve">
-    <value>iDoublePress</value>
+    <value>Gimme</value>
     <comment>Application name</comment>
   </data>
   <data name="Cancel" xml:space="preserve">
@@ -343,6 +343,22 @@ Progreso: {2}/{3} hoyos
   <data name="RestartAppMessage" xml:space="preserve">
     <value>Por favor reinicia la aplicación para que el cambio de idioma tenga efecto completo.</value>
     <comment>Message shown after language change</comment>
+  </data>
+
+  <!-- Navigation -->
+  <data name="Nav_Scoring" xml:space="preserve">
+    <value>Puntuación</value>
+    <comment>Flyout/menu item for scoring</comment>
+  </data>
+
+  <!-- Theme -->
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Modo claro</value>
+    <comment>Accessibility description for light theme toggle</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Modo oscuro</value>
+    <comment>Accessibility description for dark theme toggle</comment>
   </data>
 </root>
 
