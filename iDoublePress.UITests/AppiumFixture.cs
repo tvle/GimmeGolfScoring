@@ -1,7 +1,6 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Appium.Enums;
 using OpenQA.Selenium.Appium.iOS;
 using OpenQA.Selenium.Appium.Windows;
 
@@ -24,13 +23,30 @@ public sealed class AppiumFixture : IDisposable
         {
             PlatformName = platformName,
             AutomationName = GetAutomationName(platformName),
+            App = ExpandHome(appPath),
         };
 
-        options.AddAdditionalAppiumOption(MobileCapabilityType.App, appPath);
         options.AddAdditionalAppiumOption("noReset", true);
 
         Driver = CreateDriver(new Uri(serverUrl), platformName, options);
         Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+    }
+
+    private static string ExpandHome(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+            return path;
+
+        if (path.StartsWith("~" + Path.DirectorySeparatorChar) || path is "~")
+        {
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            if (path.Length == 1)
+                return home;
+
+            return Path.Combine(home, path[2..]);
+        }
+
+        return path;
     }
 
     private static string GetAutomationName(string platformName)
