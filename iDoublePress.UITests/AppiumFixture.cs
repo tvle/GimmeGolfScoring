@@ -1,14 +1,15 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
+using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Appium.Enums;
 
 namespace iDoublePress.UITests;
 
-public sealed class AppiumFixture : IAsyncLifetime
+public sealed class AppiumFixture : IDisposable
 {
     public AppiumDriver? Driver { get; private set; }
 
-    public async Task InitializeAsync()
+    public AppiumFixture()
     {
         var serverUrl = Environment.GetEnvironmentVariable("APPIUM_SERVER_URL") ?? "http://127.0.0.1:4723/";
         var platformName = Environment.GetEnvironmentVariable("PLATFORM_NAME") ?? "Android";
@@ -17,22 +18,21 @@ public sealed class AppiumFixture : IAsyncLifetime
         if (string.IsNullOrWhiteSpace(appPath))
             throw new InvalidOperationException("Set APP_PATH to the built app package (.apk/.app/.msix/.exe). See iDoublePress.UITests/README.md");
 
-        var options = new AppiumOptions();
-        options.PlatformName = platformName;
+        var options = new AppiumOptions
+        {
+            PlatformName = platformName,
+        };
 
-        options.AddAdditionalAppiumOption(MobileCapabilityType.AutomationName, platformName.Equals("iOS", StringComparison.OrdinalIgnoreCase) ? "XCUITest" : "UiAutomator2");
+        options.AddAdditionalAppiumOption(MobileCapabilityType.AutomationName,
+            platformName.Equals("iOS", StringComparison.OrdinalIgnoreCase) ? "XCUITest" : "UiAutomator2");
         options.AddAdditionalAppiumOption(MobileCapabilityType.App, appPath);
-
-        // Keep the app stable between tests; individual tests can reset if needed.
         options.AddAdditionalAppiumOption("noReset", true);
 
-        Driver = new AppiumDriver(new Uri(serverUrl), options);
+        Driver = new AndroidDriver(new Uri(serverUrl), options);
         Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-
-        await Task.CompletedTask;
     }
 
-    public async Task DisposeAsync()
+    public void Dispose()
     {
         try
         {
@@ -43,7 +43,5 @@ public sealed class AppiumFixture : IAsyncLifetime
         {
             Driver = null;
         }
-
-        await Task.CompletedTask;
     }
 }
