@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <data name="AppName" xml:space="preserve">
+    <value>iDoublePress</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Có</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Không</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Đang tải...</value>
+  </data>
+  
+  <data name="Resume" xml:space="preserve">
+    <value>Tiếp tục</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Mới</value>
+  </data>
+  <data name="ResumeRoundTitle" xml:space="preserve">
+    <value>Tiếp tục vòng chơi?</value>
+  </data>
+  <data name="ResumeRoundMessage" xml:space="preserve">
+    <value>Bạn đang có một vòng chơi dở dang tại {0}.
+Bắt đầu: {1}
+Tiến độ: {2}/{3} hố
+
+Bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="MultipleRoundsTitle" xml:space="preserve">
+    <value>Bạn đang có {0} vòng chơi dở dang</value>
+  </data>
+  <data name="StartNewRound" xml:space="preserve">
+    <value>Bắt đầu vòng chơi mới</value>
+  </data>
+  <data name="SelectCourse" xml:space="preserve">
+    <value>Chọn sân</value>
+  </data>
+  
+  <data name="CompleteRoundTitle" xml:space="preserve">
+    <value>Hoàn thành vòng chơi?</value>
+  </data>
+  <data name="CompleteRoundMessage" xml:space="preserve">
+    <value>Điểm số cuối cùng của bạn là {0} ({1}).
+Đánh dấu vòng chơi này là đã hoàn thành?</value>
+  </data>
+  <data name="CompleteRound" xml:space="preserve">
+    <value>Hoàn thành vòng chơi</value>
+  </data>
+  <data name="RoundCompleted" xml:space="preserve">
+    <value>Vòng chơi đã hoàn thành!
+Điểm: {0}</value>
+  </data>
+  <data name="AbandonRoundTitle" xml:space="preserve">
+    <value>Hủy bỏ vòng chơi?</value>
+  </data>
+  <data name="AbandonRoundMessage" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn hủy bỏ vòng chơi này không?
+Nó sẽ không được lưu.</value>
+  </data>
+  <data name="YesAbandon" xml:space="preserve">
+    <value>Vâng, Hủy bỏ</value>
+  </data>
+  <data name="Abandon" xml:space="preserve">
+    <value>Hủy bỏ</value>
+  </data>
+  
+  <data name="ActiveRound" xml:space="preserve">
+    <value>Vòng chơi hiện tại</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Trước</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Tiếp</value>
+  </data>
+  <data name="HoleFormat" xml:space="preserve">
+    <value>Hố {0}</value>
+  </data>
+  <data name="ParFormat" xml:space="preserve">
+    <value>Par {0}</value>
+  </data>
+  
+  <data name="RoundNotFound" xml:space="preserve">
+    <value>Không tìm thấy vòng chơi hoặc không có hố nào</value>
+  </data>
+  <data name="NoPlayerFound" xml:space="preserve">
+    <value>Không tìm thấy người chơi.
+Vui lòng khởi động lại ứng dụng.</value>
+  </data>
+  
+  <data name="JustNow" xml:space="preserve">
+    <value>Vừa xong</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0} phút trước</value>
+  </data>
+  <data name="HourAgo" xml:space="preserve">
+    <value>{0} giờ trước</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0} giờ trước</value>
+  </data>
+  <data name="DayAgo" xml:space="preserve">
+    <value>{0} ngày trước</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0} ngày trước</value>
+  </data>
+  
+  <data name="StandardCourse" xml:space="preserve">
+    <value>Sân tiêu chuẩn</value>
+  </data>
+  <data name="NineHoleCourse" xml:space="preserve">
+    <value>Sân 9 hố</value>
+  </data>
+  <data name="PracticeCourse" xml:space="preserve">
+    <value>Sân tập</value>
+  </data>
+  <data name="DefaultLocation" xml:space="preserve">
+    <value>Mặc định</value>
+  </data>
+  <data name="Me" xml:space="preserve">
+    <value>Tôi</value>
+  </data>
+  
+  <data name="DefaultPlayerCreated" xml:space="preserve">
+    <value>Đã tạo người chơi mặc định</value>
+  </data>
+  <data name="Par72CourseCreated" xml:space="preserve">
+    <value>Đã tạo sân Par 72</value>
+  </data>
+  <data name="Par36CourseCreated" xml:space="preserve">
+    <value>Đã tạo sân Par 36</value>
+  </data>
+  <data name="PracticeCourseCreated" xml:space="preserve">
+    <value>Đã tạo sân tập</value>
+  </data>
+  
+  <data name="Eagle" xml:space="preserve">
+    <value>Eagle</value>
+  </data>
+  <data name="Birdie" xml:space="preserve">
+    <value>Birdie</value>
+  </data>
+  <data name="Par" xml:space="preserve">
+    <value>Par</value>
+  </data>
+  <data name="Bogey" xml:space="preserve">
+    <value>Bogey</value>
+  </data>
+  <data name="DoubleBogey" xml:space="preserve">
+    <value>Double Bogey</value>
+  </data>
+  <data name="TripleBogey" xml:space="preserve">
+    <value>Triple Bogey</value>
+  </data>
+  
+  <data name="ScoreEven" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="ScoreUnder" xml:space="preserve">
+    <value>-{0}</value>
+  </data>
+  <data name="ScoreOver" xml:space="preserve">
+    <value>+{0}</value>
+  </data>
+  
+  <data name="Home" xml:space="preserve">
+    <value>Trang chủ</value>
+  </data>
+  <data name="Rounds" xml:space="preserve">
+    <value>Vòng chơi</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Thống kê</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Cài đặt</value>
+  </data>
+  
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Chọn ngôn ngữ</value>
+  </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>Đã đổi ngôn ngữ</value>
+  </data>
+  <data name="RestartAppMessage" xml:space="preserve">
+    <value>Vui lòng khởi động lại ứng dụng để thay đổi ngôn ngữ có hiệu lực đầy đủ.</value>
+  </data>
+  <data name="Golf" xml:space="preserve">
+    <value>Golf</value>
+  </data>
+  <data name="StartNewRoundButton" xml:space="preserve">
+    <value>⛳ Bắt đầu vòng mới</value>
+  </data>
+  <data name="StartNewRoundDescription" xml:space="preserve">
+    <value>Bắt đầu một vòng chơi mới</value>
+  </data>
+  <data name="RecentRounds" xml:space="preserve">
+    <value>Các vòng chơi gần đây</value>
+  </data>
+</root>

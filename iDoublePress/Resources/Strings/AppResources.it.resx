@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <data name="AppName" xml:space="preserve">
+    <value>iDoublePress</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sì</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Caricamento...</value>
+  </data>
+  
+  <data name="Resume" xml:space="preserve">
+    <value>Riprendi</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Nuovo</value>
+  </data>
+  <data name="ResumeRoundTitle" xml:space="preserve">
+    <value>Riprendere il giro?</value>
+  </data>
+  <data name="ResumeRoundMessage" xml:space="preserve">
+    <value>Hai un giro in corso a {0}.
+Iniziato: {1}
+Progresso: {2}/{3} buche
+
+Vuoi riprenderlo?</value>
+  </data>
+  <data name="MultipleRoundsTitle" xml:space="preserve">
+    <value>Hai {0} giri in corso</value>
+  </data>
+  <data name="StartNewRound" xml:space="preserve">
+    <value>Inizia nuovo giro</value>
+  </data>
+  <data name="SelectCourse" xml:space="preserve">
+    <value>Seleziona campo</value>
+  </data>
+  
+  <data name="CompleteRoundTitle" xml:space="preserve">
+    <value>Completare il giro?</value>
+  </data>
+  <data name="CompleteRoundMessage" xml:space="preserve">
+    <value>Il tuo punteggio finale è {0} ({1}).
+Segnare questo giro come completato?</value>
+  </data>
+  <data name="CompleteRound" xml:space="preserve">
+    <value>Completa giro</value>
+  </data>
+  <data name="RoundCompleted" xml:space="preserve">
+    <value>Giro completato!
+Punteggio: {0}</value>
+  </data>
+  <data name="AbandonRoundTitle" xml:space="preserve">
+    <value>Abbandonare il giro?</value>
+  </data>
+  <data name="AbandonRoundMessage" xml:space="preserve">
+    <value>Sei sicuro di voler abbandonare questo giro?
+Non verrà salvato.</value>
+  </data>
+  <data name="YesAbandon" xml:space="preserve">
+    <value>Sì, abbandona</value>
+  </data>
+  <data name="Abandon" xml:space="preserve">
+    <value>Abbandona</value>
+  </data>
+  
+  <data name="ActiveRound" xml:space="preserve">
+    <value>Giro attivo</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Precedente</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Successivo</value>
+  </data>
+  <data name="HoleFormat" xml:space="preserve">
+    <value>Buca {0}</value>
+  </data>
+  <data name="ParFormat" xml:space="preserve">
+    <value>Par {0}</value>
+  </data>
+  
+  <data name="RoundNotFound" xml:space="preserve">
+    <value>Giro non trovato o senza buche</value>
+  </data>
+  <data name="NoPlayerFound" xml:space="preserve">
+    <value>Nessun giocatore trovato.
+Riavvia l'applicazione.</value>
+  </data>
+  
+  <data name="JustNow" xml:space="preserve">
+    <value>Appena adesso</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0} min fa</value>
+  </data>
+  <data name="HourAgo" xml:space="preserve">
+    <value>{0} ora fa</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0} ore fa</value>
+  </data>
+  <data name="DayAgo" xml:space="preserve">
+    <value>{0} giorno fa</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0} giorni fa</value>
+  </data>
+  
+  <data name="StandardCourse" xml:space="preserve">
+    <value>Campo Standard</value>
+  </data>
+  <data name="NineHoleCourse" xml:space="preserve">
+    <value>Campo 9 Buche</value>
+  </data>
+  <data name="PracticeCourse" xml:space="preserve">
+    <value>Campo Pratica</value>
+  </data>
+  <data name="DefaultLocation" xml:space="preserve">
+    <value>Predefinito</value>
+  </data>
+  <data name="Me" xml:space="preserve">
+    <value>Io</value>
+  </data>
+  
+  <data name="DefaultPlayerCreated" xml:space="preserve">
+    <value>Giocatore predefinito creato</value>
+  </data>
+  <data name="Par72CourseCreated" xml:space="preserve">
+    <value>Campo Par 72 creato</value>
+  </data>
+  <data name="Par36CourseCreated" xml:space="preserve">
+    <value>Campo Par 36 creato</value>
+  </data>
+  <data name="PracticeCourseCreated" xml:space="preserve">
+    <value>Campo pratica creato</value>
+  </data>
+  
+  <data name="Eagle" xml:space="preserve">
+    <value>Eagle</value>
+  </data>
+  <data name="Birdie" xml:space="preserve">
+    <value>Birdie</value>
+  </data>
+  <data name="Par" xml:space="preserve">
+    <value>Par</value>
+  </data>
+  <data name="Bogey" xml:space="preserve">
+    <value>Bogey</value>
+  </data>
+  <data name="DoubleBogey" xml:space="preserve">
+    <value>Doppio Bogey</value>
+  </data>
+  <data name="TripleBogey" xml:space="preserve">
+    <value>Triplo Bogey</value>
+  </data>
+  
+  <data name="ScoreEven" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="ScoreUnder" xml:space="preserve">
+    <value>-{0}</value>
+  </data>
+  <data name="ScoreOver" xml:space="preserve">
+    <value>+{0}</value>
+  </data>
+  
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Rounds" xml:space="preserve">
+    <value>Giri</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistiche</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Seleziona Lingua</value>
+  </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>Lingua Modificata</value>
+  </data>
+  <data name="RestartAppMessage" xml:space="preserve">
+    <value>Riavvia l'applicazione per rendere effettive le modifiche alla lingua.</value>
+  </data>
+  <data name="Golf" xml:space="preserve">
+    <value>Golf</value>
+  </data>
+  <data name="StartNewRoundButton" xml:space="preserve">
+    <value>⛳ Inizia Nuovo Giro</value>
+  </data>
+  <data name="StartNewRoundDescription" xml:space="preserve">
+    <value>Inizia un nuovo giro di golf</value>
+  </data>
+  <data name="RecentRounds" xml:space="preserve">
+    <value>Giri Recenti</value>
+  </data>
+</root>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <data name="AppName" xml:space="preserve">
+    <value>iDoublePress</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Avbryt</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nej</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fel</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Laddar...</value>
+  </data>
+  
+  <data name="Resume" xml:space="preserve">
+    <value>Fortsätt</value>
+  </data>
+  <data name="StartNew" xml:space="preserve">
+    <value>Starta ny</value>
+  </data>
+  <data name="ResumeRoundTitle" xml:space="preserve">
+    <value>Fortsätt runda?</value>
+  </data>
+  <data name="ResumeRoundMessage" xml:space="preserve">
+    <value>Du har en pågående runda på {0}.
+Startad: {1}
+Framsteg: {2}/{3} hål
+
+Vill du fortsätta?</value>
+  </data>
+  <data name="MultipleRoundsTitle" xml:space="preserve">
+    <value>Du har {0} pågående rundor</value>
+  </data>
+  <data name="StartNewRound" xml:space="preserve">
+    <value>Starta ny runda</value>
+  </data>
+  <data name="SelectCourse" xml:space="preserve">
+    <value>Välj bana</value>
+  </data>
+  
+  <data name="CompleteRoundTitle" xml:space="preserve">
+    <value>Avsluta runda?</value>
+  </data>
+  <data name="CompleteRoundMessage" xml:space="preserve">
+    <value>Ditt slutresultat är {0} ({1}).
+Markera denna runda som slutförd?</value>
+  </data>
+  <data name="CompleteRound" xml:space="preserve">
+    <value>Avsluta runda</value>
+  </data>
+  <data name="RoundCompleted" xml:space="preserve">
+    <value>Runda slutförd!
+Resultat: {0}</value>
+  </data>
+  <data name="AbandonRoundTitle" xml:space="preserve">
+    <value>Avbryt runda?</value>
+  </data>
+  <data name="AbandonRoundMessage" xml:space="preserve">
+    <value>Är du säker på att du vill avbryta denna runda?
+Den kommer inte att sparas.</value>
+  </data>
+  <data name="YesAbandon" xml:space="preserve">
+    <value>Ja, avbryt</value>
+  </data>
+  <data name="Abandon" xml:space="preserve">
+    <value>Avbryt</value>
+  </data>
+  
+  <data name="ActiveRound" xml:space="preserve">
+    <value>Pågående runda</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Föregående</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Nästa</value>
+  </data>
+  <data name="HoleFormat" xml:space="preserve">
+    <value>Hål {0}</value>
+  </data>
+  <data name="ParFormat" xml:space="preserve">
+    <value>Par {0}</value>
+  </data>
+  
+  <data name="RoundNotFound" xml:space="preserve">
+    <value>Runda hittades inte eller saknar hål</value>
+  </data>
+  <data name="NoPlayerFound" xml:space="preserve">
+    <value>Ingen spelare hittades.
+Vänligen starta om appen.</value>
+  </data>
+  
+  <data name="JustNow" xml:space="preserve">
+    <value>Just nu</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0} min sedan</value>
+  </data>
+  <data name="HourAgo" xml:space="preserve">
+    <value>{0} timme sedan</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>{0} timmar sedan</value>
+  </data>
+  <data name="DayAgo" xml:space="preserve">
+    <value>{0} dag sedan</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0} dagar sedan</value>
+  </data>
+  
+  <data name="StandardCourse" xml:space="preserve">
+    <value>Standardbana</value>
+  </data>
+  <data name="NineHoleCourse" xml:space="preserve">
+    <value>9-hålsbana</value>
+  </data>
+  <data name="PracticeCourse" xml:space="preserve">
+    <value>Övningsbana</value>
+  </data>
+  <data name="DefaultLocation" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Me" xml:space="preserve">
+    <value>Jag</value>
+  </data>
+  
+  <data name="DefaultPlayerCreated" xml:space="preserve">
+    <value>Standardspelare skapad</value>
+  </data>
+  <data name="Par72CourseCreated" xml:space="preserve">
+    <value>Par 72-bana skapad</value>
+  </data>
+  <data name="Par36CourseCreated" xml:space="preserve">
+    <value>Par 36-bana skapad</value>
+  </data>
+  <data name="PracticeCourseCreated" xml:space="preserve">
+    <value>Övningsbana skapad</value>
+  </data>
+  
+  <data name="Eagle" xml:space="preserve">
+    <value>Eagle</value>
+  </data>
+  <data name="Birdie" xml:space="preserve">
+    <value>Birdie</value>
+  </data>
+  <data name="Par" xml:space="preserve">
+    <value>Par</value>
+  </data>
+  <data name="Bogey" xml:space="preserve">
+    <value>Bogey</value>
+  </data>
+  <data name="DoubleBogey" xml:space="preserve">
+    <value>Dubbelbogey</value>
+  </data>
+  <data name="TripleBogey" xml:space="preserve">
+    <value>Trippelbogey</value>
+  </data>
+  
+  <data name="ScoreEven" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="ScoreUnder" xml:space="preserve">
+    <value>-{0}</value>
+  </data>
+  <data name="ScoreOver" xml:space="preserve">
+    <value>+{0}</value>
+  </data>
+  
+  <data name="Home" xml:space="preserve">
+    <value>Hem</value>
+  </data>
+  <data name="Rounds" xml:space="preserve">
+    <value>Rundor</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistik</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Inställningar</value>
+  </data>
+  
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Välj språk</value>
+  </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>Språk ändrat</value>
+  </data>
+  <data name="RestartAppMessage" xml:space="preserve">
+    <value>Vänligen starta om appen för att språkbytet ska slå igenom helt.</value>
+  </data>
+  <data name="Golf" xml:space="preserve">
+    <value>Golf</value>
+  </data>
+  <data name="StartNewRoundButton" xml:space="preserve">
+    <value>⛳ Starta ny runda</value>
+  </data>
+  <data name="StartNewRoundDescription" xml:space="preserve">
+    <value>Starta en ny runda</value>
+  </data>
+  <data name="RecentRounds" xml:space="preserve">
+    <value>Senaste rundor</value>
+  </data>
+</root>
