@@ -33,9 +33,9 @@ public sealed class AppiumFixture : IDisposable
             // Helps with emulator/device selection and first-time bootstrap.
             var deviceName = GetEnv("DEVICE_NAME");
             if (!string.IsNullOrWhiteSpace(deviceName))
-                options.AddAdditionalAppiumOption("deviceName", deviceName);
+                options.DeviceName = deviceName;
             else
-                options.AddAdditionalAppiumOption("deviceName", "Android Emulator");
+                options.DeviceName = "Android Emulator";
 
             var udid = GetEnv("UDID");
             if (!string.IsNullOrWhiteSpace(udid))
