@@ -2,6 +2,8 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Appium.Enums;
+using OpenQA.Selenium.Appium.iOS;
+using OpenQA.Selenium.Appium.Windows;
 
 namespace iDoublePress.UITests;
 
@@ -23,13 +25,37 @@ public sealed class AppiumFixture : IDisposable
             PlatformName = platformName,
         };
 
-        options.AddAdditionalAppiumOption(MobileCapabilityType.AutomationName,
-            platformName.Equals("iOS", StringComparison.OrdinalIgnoreCase) ? "XCUITest" : "UiAutomator2");
+        options.AddAdditionalAppiumOption(MobileCapabilityType.AutomationName, GetAutomationName(platformName));
         options.AddAdditionalAppiumOption(MobileCapabilityType.App, appPath);
         options.AddAdditionalAppiumOption("noReset", true);
 
-        Driver = new AndroidDriver(new Uri(serverUrl), options);
+        Driver = CreateDriver(new Uri(serverUrl), platformName, options);
         Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+    }
+
+    private static string GetAutomationName(string platformName)
+    {
+        if (platformName.Equals("iOS", StringComparison.OrdinalIgnoreCase))
+            return "XCUITest";
+
+        if (platformName.Equals("Windows", StringComparison.OrdinalIgnoreCase))
+            return "Windows";
+
+        return "UiAutomator2";
+    }
+
+    private static AppiumDriver CreateDriver(Uri serverUrl, string platformName, AppiumOptions options)
+    {
+        if (platformName.Equals("Android", StringComparison.OrdinalIgnoreCase))
+            return new AndroidDriver(serverUrl, options);
+
+        if (platformName.Equals("iOS", StringComparison.OrdinalIgnoreCase))
+            return new IOSDriver(serverUrl, options);
+
+        if (platformName.Equals("Windows", StringComparison.OrdinalIgnoreCase))
+            return new WindowsDriver(serverUrl, options);
+
+        throw new InvalidOperationException($"Unsupported PLATFORM_NAME '{platformName}'. Use Android, iOS, or Windows.");
     }
 
     public void Dispose()
