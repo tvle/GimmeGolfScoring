@@ -9,6 +9,7 @@
              x:Class="iDoublePress.Pages.ActiveRoundPage"
              x:DataType="pageModels:ActiveRoundPageModel"
              x:Name="RoundPage"
+             AutomationId="ActiveRoundPage"
              Title="{ext:Translate ActiveRound}">
 
     <ContentPage.Resources>
@@ -25,35 +26,42 @@
         <Border Grid.Row="0" 
                 Style="{StaticResource CardStyle}"
                 Margin="{StaticResource LayoutPadding}"
+                AutomationId="ActiveRoundPage.Header"
                 IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
             <Grid ColumnDefinitions="*,Auto,*">
                 <VerticalStackLayout Grid.Column="0" HorizontalOptions="Start">
                     <Label Text="{Binding CurrentRound.Course.Name, FallbackValue='Loading...'}" 
+                           AutomationId="ActiveRoundPage.CourseName"
                            Style="{StaticResource Title3}"/>
                     <Label Text="{Binding HolesCompleted, FallbackValue='0/18'}" 
+                           AutomationId="ActiveRoundPage.HolesCompleted"
                            Style="{StaticResource Caption1}"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
                     <Label Text="{Binding CurrentRound.TotalScore, FallbackValue='0'}" 
+                           AutomationId="ActiveRoundPage.TotalScore"
                            Style="{StaticResource LargeTitle}"
                            HorizontalTextAlignment="Center"/>
                     <Label Text="{Binding TotalScoreDisplay, FallbackValue='E'}" 
+                           AutomationId="ActiveRoundPage.TotalScoreDisplay"
                            Style="{StaticResource Title2}"
                            HorizontalTextAlignment="Center"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Grid.Column="2" HorizontalOptions="End">
                     <Label Text="{Binding CurrentRound.StartTime, StringFormat='{0:h:mm tt}', FallbackValue='--:--'}" 
+                           AutomationId="ActiveRoundPage.StartTime"
                            Style="{StaticResource Caption1}"/>
                     <Label Text="{Binding CurrentRound.Duration, StringFormat='{0:h\\:mm}', FallbackValue='0:00'}" 
+                           AutomationId="ActiveRoundPage.Duration"
                            Style="{StaticResource Caption1}"/>
                 </VerticalStackLayout>
             </Grid>
         </Border>
 
         <!-- Main Scorecard -->
-        <ScrollView Grid.Row="1" IsVisible="{Binding CurrentHole, Converter={StaticResource IsNotNullConverter}}">
+        <ScrollView Grid.Row="1" AutomationId="ActiveRoundPage.Scorecard" IsVisible="{Binding CurrentHole, Converter={StaticResource IsNotNullConverter}}">
             <VerticalStackLayout Padding="{StaticResource LayoutPadding}" 
                                  Spacing="{StaticResource LayoutSpacing}">
                 
@@ -64,10 +72,13 @@
                         <HorizontalStackLayout Grid.Row="0" 
                                                Spacing="10" 
                                                HorizontalOptions="Center"
-                                               Margin="0,0,0,20">
+                                               Margin="0,0,0,20"
+                                               AutomationId="ActiveRoundPage.HoleHeader">
                             <Label Text="{Binding CurrentHoleDisplay, FallbackValue='Hole 1'}" 
+                                   AutomationId="ActiveRoundPage.CurrentHoleDisplay"
                                    Style="{StaticResource Title1}"/>
                             <Label Text="{Binding CurrentParDisplay, FallbackValue='Par 4'}" 
+                                   AutomationId="ActiveRoundPage.CurrentParDisplay"
                                    Style="{StaticResource Title2}"
                                    VerticalOptions="Center"/>
                         </HorizontalStackLayout>
@@ -75,6 +86,7 @@
                         <!-- Decrease Button -->
                         <Button Grid.Row="1"
                                 Text="-"
+                                AutomationId="ActiveRoundPage.DecreaseScore"
                                 Command="{Binding DecreaseScoreCommand}"
                                 IsEnabled="{Binding CanDecreaseScore}"
                                 HeightRequest="80"
@@ -83,12 +95,14 @@
 
                         <!-- Score Display -->
                         <Border Grid.Row="2" 
+                                AutomationId="ActiveRoundPage.ScoreDisplayContainer"
                                 BackgroundColor="{Binding CurrentHole.ScoreColor, FallbackValue={StaticResource Primary}}"
                                 StrokeThickness="0"
                                 Padding="0"
                                 Margin="0,20"
                                 VerticalOptions="Center">
                             <Label Text="{Binding CurrentHole.Score, FallbackValue='4'}" 
+                                   AutomationId="ActiveRoundPage.ScoreValue"
                                    Style="{StaticResource Display}"
                                    TextColor="White"
                                    HorizontalTextAlignment="Center"/>
@@ -97,6 +111,7 @@
                         <!-- Increase Button -->
                         <Button Grid.Row="3"
                                 Text="+"
+                                AutomationId="ActiveRoundPage.IncreaseScore"
                                 Command="{Binding IncreaseScoreCommand}"
                                 HeightRequest="80"
                                 FontSize="48"
@@ -105,6 +120,7 @@
                         <!-- Score Type Label -->
                         <Label Grid.Row="4"
                                Text="{Binding CurrentHole.ScoreRelativeToPar, StringFormat='{0:+0;-#;E}', FallbackValue='E'}"
+                               AutomationId="ActiveRoundPage.ScoreRelativeToPar"
                                Style="{StaticResource Title2}"
                                HorizontalTextAlignment="Center"
                                Margin="0,10,0,0"/>
@@ -115,6 +131,7 @@
         <Border Grid.Row="2" 
                 Style="{StaticResource CardStyle}"
                 Margin="{StaticResource LayoutPadding}"
+                AutomationId="ActiveRoundPage.NavigationBar"
                 IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
             <!-- Navigation Buttons -->
             <Grid Grid.Row="5" 
@@ -122,18 +139,21 @@
                               Margin="0,20,0,0">
                 <Button Grid.Column="0"
                                     Text="{ext:Translate Previous}"
+                                    AutomationId="ActiveRoundPage.PreviousHole"
                                     Command="{Binding PreviousHoleCommand}"
                                     IsEnabled="{Binding CanGoBack}"
                                     HorizontalOptions="Start"/>
 
                 <Label Grid.Column="1"
                                    Text="{Binding CurrentHoleDisplay, FallbackValue='Hole 1'}"
+                                   AutomationId="ActiveRoundPage.Navigation.CurrentHoleDisplay"
                                    Style="{StaticResource Title3}"
                                    VerticalOptions="Center"
                                    HorizontalOptions="Center"/>
 
                 <Button Grid.Column="2"
                                     Text="{ext:Translate Next}"
+                                    AutomationId="ActiveRoundPage.NextHole"
                                     Command="{Binding NextHoleCommand}"
                                     IsEnabled="{Binding CanGoForward}"
                                     HorizontalOptions="End"/>
@@ -145,15 +165,18 @@
               ColumnDefinitions="*,*"
               Padding="{StaticResource LayoutPadding}"
               ColumnSpacing="10"
+              AutomationId="ActiveRoundPage.Actions"
               IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
             
             <Button Grid.Column="0"
                     Text="{ext:Translate Abandon}"
+                    AutomationId="ActiveRoundPage.Abandon"
                     Command="{Binding AbandonRoundCommand}"
                     BackgroundColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
             
             <Button Grid.Column="1"
                     Text="{ext:Translate CompleteRound}"
+                    AutomationId="ActiveRoundPage.Complete"
                     Command="{Binding CompleteRoundCommand}"
                     BackgroundColor="{StaticResource Primary}"
                     IsVisible="{Binding IsLastHole}"/>
@@ -161,9 +184,11 @@
 
         <!-- Loading Overlay -->
         <Grid Grid.RowSpan="3" 
+              AutomationId="ActiveRoundPage.LoadingOverlay"
               IsVisible="{Binding IsBusy}"
               BackgroundColor="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}">
             <ActivityIndicator IsRunning="{Binding IsBusy}"
+                             AutomationId="ActiveRoundPage.LoadingIndicator"
                              VerticalOptions="Center"
                              HorizontalOptions="Center"
                              Color="{StaticResource Primary}"/>

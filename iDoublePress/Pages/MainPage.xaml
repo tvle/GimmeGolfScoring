@@ -11,6 +11,7 @@
              x:Class="iDoublePress.Pages.MainPage"
              x:DataType="pageModels:MainPageModel"
              x:Name="OverviewPage"
+             AutomationId="MainPage"
              Title="{Binding Today}">
 
     <ContentPage.Behaviors>
@@ -37,10 +38,11 @@
 
     <Grid>
         <pullToRefresh:SfPullToRefresh
+            AutomationId="MainPage.PullToRefresh"
             IsRefreshing="{Binding IsRefreshing}"
             RefreshCommand="{Binding RefreshCommand}">
             <pullToRefresh:SfPullToRefresh.PullableContent>
-                <ScrollView>
+                <ScrollView AutomationId="MainPage.ScrollView">
                     <Grid Padding="{StaticResource LayoutPadding}" RowSpacing="{StaticResource LayoutSpacing}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -54,8 +56,9 @@
                         </Grid.RowDefinitions>
                         
                         <!-- Golf Rounds Section -->
-                        <VerticalStackLayout Grid.Row="3" Spacing="10" Margin="0,10">
+                        <VerticalStackLayout Grid.Row="3" Spacing="10" Margin="0,10" AutomationId="MainPage.RoundsSection">
                             <Button Text="{ext:Translate StartNewRoundButton}"
+                                    AutomationId="MainPage.StartNewRound"
                                     Command="{Binding StartNewRoundCommand}"
                                     BackgroundColor="{StaticResource Primary}"
                                     TextColor="White"
@@ -63,8 +66,9 @@
                                     FontSize="18"
                                     SemanticProperties.Description="{ext:Translate StartNewRoundDescription}"/>
                             
-                            <Label Text="{ext:Translate RecentRounds}" Style="{StaticResource Title3}" Margin="0,10,0,0"/>
+                            <Label Text="{ext:Translate RecentRounds}" Style="{StaticResource Title3}" Margin="0,10,0,0" AutomationId="MainPage.RecentRoundsLabel"/>
                             <VerticalStackLayout BindableLayout.ItemsSource="{Binding RecentRounds}"
+                                                 AutomationId="MainPage.RecentRoundsList"
                                                  Spacing="5">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="models:Round">
