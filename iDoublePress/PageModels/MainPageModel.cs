@@ -201,6 +201,13 @@ public partial class MainPageModel : ObservableObject
 					}
 					else if (result.Action == InProgressRoundsResultAction.Resume && result.Round != null)
 					{
+						// Ensure the modal is dismissed before navigating (Windows can otherwise land back on MainPage).
+						if (Shell.Current.Navigation.ModalStack.Count > 0)
+						{
+							await Shell.Current.Navigation.PopModalAsync();
+							await Task.Delay(50);
+						}
+
 						var nextHoleIndex = result.Round.Holes.FindIndex(h => !h.IsScored);
 						if (nextHoleIndex < 0) nextHoleIndex = 0;
 						await Shell.Current.GoToAsync($"active-round?roundId={result.Round.ID}&holeIndex={nextHoleIndex}");

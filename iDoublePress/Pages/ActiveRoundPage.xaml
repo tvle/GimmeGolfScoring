@@ -86,16 +86,15 @@
                         <HorizontalStackLayout Grid.Column="1" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
                             <Label Text="FH" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="15" />
                             <sf:SfSegmentedControl SegmentHeight="30"
-                                                   SegmentWidth="64"
+                                                   SegmentWidth="56"
                                                    CornerRadius="16"
-                                                   AllowNullSelection="True"
                                                    HorizontalOptions="Center"
                                                    SelectedIndex="{Binding CurrentHole.FairwayResult, Mode=TwoWay, Converter={StaticResource SubtractOneConverter}}">
                                 <sf:SfSegmentedControl.ItemsSource>
                                     <x:Array Type="{x:Type sf:SfSegmentItem}">
-                                        <sf:SfSegmentItem Text="&lt;&lt;" FontSize="15" FontAttributes="Bold" />
-                                        <sf:SfSegmentItem Text="O" FontSize="15" FontAttributes="Bold" />
-                                        <sf:SfSegmentItem Text="&gt;&gt;" FontSize="15" FontAttributes="Bold" />
+                                        <sf:SfSegmentItem Text="&lt;&lt;" />
+                                        <sf:SfSegmentItem Text="O" />
+                                        <sf:SfSegmentItem Text="&gt;&gt;" />
                                     </x:Array>
                                 </sf:SfSegmentedControl.ItemsSource>
                             </sf:SfSegmentedControl>
@@ -113,7 +112,6 @@
                         <HorizontalStackLayout Grid.Column="0" Spacing="6" VerticalOptions="Center">
                             <Label Text="Penalty" Style="{StaticResource Caption1}" VerticalOptions="Center" FontSize="11" />
                             <Switch IsToggled="{Binding CurrentHole.FairwayMissPenalty, Mode=TwoWay}"
-                                    IsEnabled="{Binding CurrentHole.FairwayResult, Converter={StaticResource FairwayPenaltyEnabledConverter}}"
                                     OnColor="{StaticResource Primary}"
                                     Scale="0.8" />
                         </HorizontalStackLayout>

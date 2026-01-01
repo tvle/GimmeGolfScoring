@@ -22,14 +22,14 @@
                             BackgroundColor="{AppThemeBinding Light=#F2F2F2, Dark=#2A2A2A}"
                             StrokeShape="RoundRectangle 18"
                             Padding="14">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnRoundTapped" />
+                        </Border.GestureRecognizers>
+
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                             <Label Grid.Column="0"
                                    Text="{Binding .}"
-                                   VerticalOptions="Center">
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnRoundTapped" />
-                                </Label.GestureRecognizers>
-                            </Label>
+                                   VerticalOptions="Center" />
 
                             <Button Grid.Column="1"
                                     Text="X"
