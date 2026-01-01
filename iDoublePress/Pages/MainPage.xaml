@@ -67,17 +67,18 @@
                                     SemanticProperties.Description="{ext:Translate StartNewRoundDescription}"/>
                             
                             <Label Text="{ext:Translate RecentRounds}" Style="{StaticResource Title3}" Margin="0,10,0,0" AutomationId="MainPage.RecentRoundsLabel"/>
-                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding RecentRounds}"
-                                                 AutomationId="MainPage.RecentRoundsList"
-                                                 Spacing="5">
-                                <BindableLayout.ItemTemplate>
+
+                            <!-- Scrollable Recent Rounds list (independent of the page ScrollView) -->
+                            <CollectionView ItemsSource="{Binding RecentRounds}"
+                                            AutomationId="MainPage.RecentRoundsList"
+                                            HeightRequest="420"
+                                            SelectionMode="Single"
+                                            SelectedItem="{Binding SelectedRecentRound, Mode=TwoWay}"
+                                            SelectionChangedCommand="{Binding NavigateToRoundCommand}"
+                                            SelectionChangedCommandParameter="{Binding SelectedRecentRound}">
+                                <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="models:Round">
                                         <Border Style="{StaticResource CardStyle}" Margin="0,5">
-                                            <Border.GestureRecognizers>
-                                                <TapGestureRecognizer 
-                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:MainPageModel}}, Path=NavigateToRoundCommand}"
-                                                    CommandParameter="{Binding .}"/>
-                                            </Border.GestureRecognizers>
                                             <Grid ColumnDefinitions="*,Auto">
                                                 <VerticalStackLayout Grid.Column="0">
                                                     <Label Text="{Binding Course.Name, FallbackValue='Golf Course'}" Style="{StaticResource Title3}"/>
@@ -90,8 +91,8 @@
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </VerticalStackLayout>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
                         </VerticalStackLayout>
                        
                     </Grid>

@@ -19,6 +19,9 @@ public partial class MainPageModel : ObservableObject
 	private List<Round> _recentRounds = [];
 
 	[ObservableProperty]
+	private Round? selectedRecentRound;
+
+	[ObservableProperty]
 	bool _isBusy;
 
 	[ObservableProperty]
@@ -28,7 +31,7 @@ public partial class MainPageModel : ObservableObject
 	private string _today = DateTime.Now.ToString("dddd, MMM d");
 
 	public MainPageModel(GolfSeedDataService golfSeedDataService, PlayerRepository playerRepository, CourseRepository courseRepository, RoundRepository roundRepository, 
-							ModalErrorHandler errorHandler)
+						ModalErrorHandler errorHandler)
 	{
         _errorHandler = errorHandler;
         _golfSeedDataService = golfSeedDataService;
@@ -251,20 +254,14 @@ public partial class MainPageModel : ObservableObject
 	}
 
 	[RelayCommand]
-	private async Task NavigateToRound(Round round)
+	private async Task NavigateToRound(object? parameter)
 	{
+		var round = parameter as Round ?? SelectedRecentRound;
 		if (round == null) return;
 
-		if (round.Status == RoundStatus.InProgress)
-		{
-			await Shell.Current.GoToAsync($"active-round?roundId={round.ID}");
-		}
-		else
-		{
-			// For now, just navigate to active round in view-only mode
-			// In Phase 2/3 we'll add a dedicated round detail/summary page
-			await Shell.Current.GoToAsync($"active-round?roundId={round.ID}");
-		}
+		await Shell.Current.GoToAsync($"active-round?roundId={round.ID}");
+
+		SelectedRecentRound = null;
 	}
 
 	private string GetTimeAgo(DateTime startTime)
