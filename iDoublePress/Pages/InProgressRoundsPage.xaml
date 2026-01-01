@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:iDoublePress.Models"
+             x:Class="iDoublePress.Pages.InProgressRoundsPage"
+             x:Name="PageRoot"
+             Title="">
+
+    <Grid Padding="20" RowDefinitions="Auto,*,Auto" RowSpacing="12">
+        <Label Grid.Row="0"
+               Text="{Binding TitleText}"
+               FontSize="22"
+               HorizontalTextAlignment="Center" />
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Rounds}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Round">
+                    <Border Margin="0,6"
+                            StrokeThickness="0"
+                            BackgroundColor="{AppThemeBinding Light=#F2F2F2, Dark=#2A2A2A}"
+                            StrokeShape="RoundRectangle 18"
+                            Padding="14">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                            <Label Grid.Column="0"
+                                   Text="{Binding .}"
+                                   VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnRoundTapped" />
+                                </Label.GestureRecognizers>
+                            </Label>
+
+                            <Button Grid.Column="1"
+                                    Text="X"
+                                    TextColor="Red"
+                                    BackgroundColor="Transparent"
+                                    BorderColor="Red"
+                                    BorderWidth="1"
+                                    CornerRadius="10"
+                                    WidthRequest="38"
+                                    HeightRequest="38"
+                                    Clicked="OnDeleteClicked" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="12">
+            <Button Grid.Column="0" Text="Cancel" Clicked="OnCancelClicked" />
+            <Button Grid.Column="1" Text="Start New" Clicked="OnStartNewClicked" />
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -12,7 +12,12 @@ public class Hole
     public int Score { get; set; }
     public bool IsScored { get; set; }
     public int Putts { get; set; }
-    public bool? FairwayHit { get; set; }
+
+    public FairwayResult FairwayResult { get; set; } = FairwayResult.None;
+
+    // If the tee shot missed (Left/Right) and this is checked, treat as OB/Hazard miss.
+    public bool FairwayMissPenalty { get; set; }
+
     public bool? GreenInRegulation { get; set; }
     public int Penalties { get; set; }
     public string? Notes { get; set; }
@@ -54,6 +59,14 @@ public class Hole
             > 1 => $"{ScoreRelativeToPar} over par",
             < -1 => $"{Math.Abs(ScoreRelativeToPar)} under par"
         }}";
+}
+
+public enum FairwayResult
+{
+    None = 0,
+    Left = 1,
+    Fairway = 2,
+    Right = 3
 }
 
 /// <summary>

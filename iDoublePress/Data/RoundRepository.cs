@@ -74,26 +74,52 @@ public class RoundRepository
             // Migration: Add IsScored column if it doesn't exist
             var checkColumnCmd = connection.CreateCommand();
             checkColumnCmd.CommandText = "PRAGMA table_info(Hole);";
-            var hasIsScoredColumn = false;
-            
+
+            var existingColumns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             await using (var reader = await checkColumnCmd.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
                 {
-                    var columnName = reader.GetString(1);
-                    if (columnName == "IsScored")
-                    {
-                        hasIsScoredColumn = true;
-                        break;
-                    }
+                    existingColumns.Add(reader.GetString(1));
                 }
             }
 
-            if (!hasIsScoredColumn)
+            if (!existingColumns.Contains("IsScored"))
             {
                 _logger.LogInformation("Adding IsScored column to Hole table");
                 var addColumnCmd = connection.CreateCommand();
                 addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN IsScored INTEGER DEFAULT 0;";
+                await addColumnCmd.ExecuteNonQueryAsync();
+            }
+
+            if (!existingColumns.Contains("FairwayResult"))
+            {
+                _logger.LogInformation("Adding FairwayResult column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayResult INTEGER DEFAULT 0;";
+                await addColumnCmd.ExecuteNonQueryAsync();
+
+                // Best-effort migration from legacy FairwayHit (nullable bool)
+                if (existingColumns.Contains("FairwayHit"))
+                {
+                    var migrateCmd = connection.CreateCommand();
+                    migrateCmd.CommandText = @"
+                        UPDATE Hole
+                        SET FairwayResult = CASE
+                            WHEN FairwayHit IS NULL THEN 0
+                            WHEN FairwayHit = 1 THEN 2
+                            ELSE 0
+                        END
+                        WHERE FairwayResult = 0;";
+                    await migrateCmd.ExecuteNonQueryAsync();
+                }
+            }
+
+            if (!existingColumns.Contains("FairwayMissPenalty"))
+            {
+                _logger.LogInformation("Adding FairwayMissPenalty column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayMissPenalty INTEGER DEFAULT 0;";
                 await addColumnCmd.ExecuteNonQueryAsync();
             }
 
@@ -224,7 +250,9 @@ public class RoundRepository
     {
         var selectHolesCmd = connection.CreateCommand();
         selectHolesCmd.CommandText = @"
-            SELECT ID, RoundID, HoleNumber, Par, Score, IsScored, Putts, FairwayHit, GreenInRegulation, Penalties, Notes, CreatedAt, UpdatedAt 
+            SELECT ID, RoundID, HoleNumber, Par, Score, IsScored, Putts,
+                   FairwayHit, FairwayResult, FairwayMissPenalty,
+                   GreenInRegulation, Penalties, Notes, CreatedAt, UpdatedAt 
             FROM Hole 
             WHERE RoundID = @roundId 
             ORDER BY HoleNumber";
@@ -234,6 +262,34 @@ public class RoundRepository
         await using var reader = await selectHolesCmd.ExecuteReaderAsync();
         while (await reader.ReadAsync())
         {
+            // Column indices:
+            // 0 ID
+            // 1 RoundID
+            // 2 HoleNumber
+            // 3 Par
+            // 4 Score
+            // 5 IsScored
+            // 6 Putts
+            // 7 FairwayHit (legacy)
+            // 8 FairwayResult
+            // 9 FairwayMissPenalty
+            // 10 GreenInRegulation
+            // 11 Penalties
+            // 12 Notes
+            // 13 CreatedAt
+            // 14 UpdatedAt
+
+            var fairwayResult = FairwayResult.None;
+            if (!reader.IsDBNull(8))
+            {
+                fairwayResult = (FairwayResult)reader.GetInt32(8);
+            }
+            else if (!reader.IsDBNull(7))
+            {
+                // legacy fallback (FairwayHit = 1 => Fairway)
+                fairwayResult = reader.GetInt32(7) == 1 ? FairwayResult.Fairway : FairwayResult.None;
+            }
+
             holes.Add(new Hole
             {
                 ID = reader.GetInt32(0),
@@ -243,12 +299,13 @@ public class RoundRepository
                 Score = reader.GetInt32(4),
                 IsScored = reader.GetInt32(5) == 1,
                 Putts = reader.GetInt32(6),
-                FairwayHit = reader.IsDBNull(7) ? null : reader.GetInt32(7) == 1,
-                GreenInRegulation = reader.IsDBNull(8) ? null : reader.GetInt32(8) == 1,
-                Penalties = reader.GetInt32(9),
-                Notes = reader.IsDBNull(10) ? null : reader.GetString(10),
-                CreatedAt = DateTime.Parse(reader.GetString(11)),
-                UpdatedAt = DateTime.Parse(reader.GetString(12))
+                FairwayResult = fairwayResult,
+                FairwayMissPenalty = !reader.IsDBNull(9) && reader.GetInt32(9) == 1,
+                GreenInRegulation = reader.IsDBNull(10) ? null : reader.GetInt32(10) == 1,
+                Penalties = reader.GetInt32(11),
+                Notes = reader.IsDBNull(12) ? null : reader.GetString(12),
+                CreatedAt = DateTime.Parse(reader.GetString(13)),
+                UpdatedAt = DateTime.Parse(reader.GetString(14))
             });
         }
 
@@ -373,8 +430,8 @@ public class RoundRepository
             hole.CreatedAt = DateTime.Now;
             
             saveCmd.CommandText = @"
-                INSERT INTO Hole (RoundID, HoleNumber, Par, Score, IsScored, Putts, FairwayHit, GreenInRegulation, Penalties, Notes, CreatedAt, UpdatedAt)
-                VALUES (@RoundID, @HoleNumber, @Par, @Score, @IsScored, @Putts, @FairwayHit, @GreenInRegulation, @Penalties, @Notes, @CreatedAt, @UpdatedAt);
+                INSERT INTO Hole (RoundID, HoleNumber, Par, Score, IsScored, Putts, FairwayHit, FairwayResult, FairwayMissPenalty, GreenInRegulation, Penalties, Notes, CreatedAt, UpdatedAt)
+                VALUES (@RoundID, @HoleNumber, @Par, @Score, @IsScored, @Putts, @FairwayHit, @FairwayResult, @FairwayMissPenalty, @GreenInRegulation, @Penalties, @Notes, @CreatedAt, @UpdatedAt);
                 SELECT last_insert_rowid();";
         }
         else
@@ -382,7 +439,11 @@ public class RoundRepository
             saveCmd.CommandText = @"
                 UPDATE Hole
                 SET RoundID = @RoundID, HoleNumber = @HoleNumber, Par = @Par, Score = @Score, IsScored = @IsScored, Putts = @Putts,
-                    FairwayHit = @FairwayHit, GreenInRegulation = @GreenInRegulation, Penalties = @Penalties, Notes = @Notes, UpdatedAt = @UpdatedAt
+                    FairwayHit = @FairwayHit,
+                    FairwayResult = @FairwayResult,
+                    FairwayMissPenalty = @FairwayMissPenalty,
+                    GreenInRegulation = @GreenInRegulation,
+                    Penalties = @Penalties, Notes = @Notes, UpdatedAt = @UpdatedAt
                 WHERE ID = @ID";
             saveCmd.Parameters.AddWithValue("@ID", hole.ID);
         }
@@ -393,7 +454,13 @@ public class RoundRepository
         saveCmd.Parameters.AddWithValue("@Score", hole.Score);
         saveCmd.Parameters.AddWithValue("@IsScored", hole.IsScored ? 1 : 0);
         saveCmd.Parameters.AddWithValue("@Putts", hole.Putts);
-        saveCmd.Parameters.AddWithValue("@FairwayHit", hole.FairwayHit.HasValue ? (hole.FairwayHit.Value ? 1 : 0) : DBNull.Value);
+
+        // Keep legacy column populated for older app versions / compatibility.
+        saveCmd.Parameters.AddWithValue("@FairwayHit", hole.FairwayResult == FairwayResult.Fairway ? 1 : 0);
+
+        saveCmd.Parameters.AddWithValue("@FairwayResult", (int)hole.FairwayResult);
+        saveCmd.Parameters.AddWithValue("@FairwayMissPenalty", hole.FairwayMissPenalty ? 1 : 0);
+
         saveCmd.Parameters.AddWithValue("@GreenInRegulation", hole.GreenInRegulation.HasValue ? (hole.GreenInRegulation.Value ? 1 : 0) : DBNull.Value);
         saveCmd.Parameters.AddWithValue("@Penalties", hole.Penalties);
         saveCmd.Parameters.AddWithValue("@Notes", (object?)hole.Notes ?? DBNull.Value);

@@ -67,6 +67,31 @@ public partial class ActiveRoundPageModel : ObservableObject
         }
     }
 
+    private static void EnsureStatsDefaults(Hole? hole)
+    {
+        if (hole == null) return;
+
+        // New/unscored holes should start with stats off.
+        if (!hole.IsScored)
+        {
+            hole.FairwayResult = FairwayResult.None;
+            hole.FairwayMissPenalty = false;
+            hole.GreenInRegulation = false;
+        }
+
+        // Penalty only makes sense for a miss.
+        if (hole.FairwayResult is not (FairwayResult.Left or FairwayResult.Right))
+        {
+            hole.FairwayMissPenalty = false;
+        }
+    }
+
+    async partial void OnCurrentHoleChanged(Hole? value)
+    {
+        EnsureStatsDefaults(value);
+        UpdateDisplay();
+    }
+
     private async Task LoadRound(int roundId)
     {
         try
@@ -87,6 +112,7 @@ public partial class ActiveRoundPageModel : ObservableObject
                 }
 
                 CurrentHole = CurrentRound.Holes[CurrentHoleIndex];
+                EnsureStatsDefaults(CurrentHole);
                 UpdateDisplay();
             }
             else
@@ -137,10 +163,11 @@ public partial class ActiveRoundPageModel : ObservableObject
         {
             CurrentHole.IsScored = true;
         }
-        
+
         await SaveCurrentHole();
         CurrentHoleIndex++;
         CurrentHole = CurrentRound.Holes[CurrentHoleIndex];
+        EnsureStatsDefaults(CurrentHole);
         UpdateDisplay();
     }
 
@@ -148,15 +175,16 @@ public partial class ActiveRoundPageModel : ObservableObject
     private async Task PreviousHole()
     {
         if (CurrentHoleIndex <= 0) return;
-        
+
         if (CurrentHole != null)
         {
             CurrentHole.IsScored = true;
         }
-        
+
         await SaveCurrentHole();
         CurrentHoleIndex--;
         CurrentHole = CurrentRound!.Holes[CurrentHoleIndex];
+        EnsureStatsDefaults(CurrentHole);
         UpdateDisplay();
     }
 
@@ -243,10 +271,12 @@ public partial class ActiveRoundPageModel : ObservableObject
     {
         if (CurrentHole == null) return;
 
+        EnsureStatsDefaults(CurrentHole);
+
         try
         {
             await _roundRepository.SaveHoleAsync(CurrentHole);
-            
+
             if (CurrentRound != null)
             {
                 CurrentRound.TotalScore = CurrentRound.Holes.Where(h => h.IsScored).Sum(h => h.Score);
@@ -260,12 +290,41 @@ public partial class ActiveRoundPageModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private void TogglePenalty()
+    {
+        if (CurrentHole == null) return;
+
+        // Only allow penalty when it makes sense.
+        if (CurrentHole.FairwayResult is not (FairwayResult.Left or FairwayResult.Right))
+        {
+            CurrentHole.FairwayMissPenalty = false;
+            return;
+        }
+
+        CurrentHole.FairwayMissPenalty = !CurrentHole.FairwayMissPenalty;
+        CurrentHole.IsScored = true;
+
+        // Ensure any dependent defaults are enforced.
+        EnsureStatsDefaults(CurrentHole);
+
+        OnPropertyChanged(nameof(CurrentHole));
+    }
+
+    public string CurrentHoleNumberDisplay =>
+        CurrentHole != null ? CurrentHole.HoleNumber.ToString() : "1";
+
+    public string CurrentParNumberDisplay =>
+        CurrentHole != null ? $"Par {CurrentHole.Par}" : "Par 4";
+
     private void UpdateDisplay()
     {
         OnPropertyChanged(nameof(TotalScoreDisplay));
         OnPropertyChanged(nameof(HolesCompleted));
         OnPropertyChanged(nameof(CurrentHoleDisplay));
         OnPropertyChanged(nameof(CurrentParDisplay));
+        OnPropertyChanged(nameof(CurrentHoleNumberDisplay));
+        OnPropertyChanged(nameof(CurrentParNumberDisplay));
         OnPropertyChanged(nameof(CanDecreaseScore));
         OnPropertyChanged(nameof(CanGoBack));
         OnPropertyChanged(nameof(CanGoForward));

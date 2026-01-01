@@ -96,6 +96,9 @@
 		<MauiXaml Update="Pages\ActiveRoundPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Pages\InProgressRoundsPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net10.0-ios'">

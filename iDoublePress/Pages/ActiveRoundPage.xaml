@@ -6,6 +6,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:iDoublePress.Converters"
              xmlns:ext="clr-namespace:iDoublePress.Extensions"
+             xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
              x:Class="iDoublePress.Pages.ActiveRoundPage"
              x:DataType="pageModels:ActiveRoundPageModel"
              x:Name="RoundPage"
@@ -17,6 +18,7 @@
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <converters:SubtractOneConverter x:Key="SubtractOneConverter" />
             <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <converters:FairwayPenaltyEnabledConverter x:Key="FairwayPenaltyEnabledConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -69,36 +71,74 @@
               Padding="{StaticResource LayoutPadding}">
 
             <Border Style="{StaticResource CardStyle}" Padding="12">
-                <Grid RowDefinitions="Auto,Auto,*,Auto,Auto"
+                <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto"
                       RowSpacing="8">
 
-                    <!-- Hole Header -->
-                    <HorizontalStackLayout Grid.Row="0" 
-                                           Spacing="10" 
-                                           HorizontalOptions="Center"
-                                           Margin="0,0,0,6"
-                                           AutomationId="ActiveRoundPage.HoleHeader">
-                        <Label Text="{Binding CurrentHoleDisplay, FallbackValue='Hole 1'}" 
-                               AutomationId="ActiveRoundPage.CurrentHoleDisplay"
-                               Style="{StaticResource Title1}"/>
-                        <Label Text="{Binding CurrentParDisplay, FallbackValue='Par 4'}" 
-                               AutomationId="ActiveRoundPage.CurrentParDisplay"
+                    <!-- Compact top row: hole number (left) / FH (center) / Par (right) -->
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" VerticalOptions="Center">
+                        <Label Grid.Column="0"
+                               Text="{Binding CurrentHoleNumberDisplay}"
+                               Style="{StaticResource Title1}"
+                               FontSize="34"
+                               VerticalOptions="Center"
+                               AutomationId="ActiveRoundPage.HoleNumber" />
+
+                        <HorizontalStackLayout Grid.Column="1" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Text="FH" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="15" />
+                            <sf:SfSegmentedControl SegmentHeight="30"
+                                                   SegmentWidth="64"
+                                                   CornerRadius="16"
+                                                   AllowNullSelection="True"
+                                                   HorizontalOptions="Center"
+                                                   SelectedIndex="{Binding CurrentHole.FairwayResult, Mode=TwoWay, Converter={StaticResource SubtractOneConverter}}">
+                                <sf:SfSegmentedControl.ItemsSource>
+                                    <x:Array Type="{x:Type sf:SfSegmentItem}">
+                                        <sf:SfSegmentItem Text="&lt;&lt;" FontSize="15" FontAttributes="Bold" />
+                                        <sf:SfSegmentItem Text="O" FontSize="15" FontAttributes="Bold" />
+                                        <sf:SfSegmentItem Text="&gt;&gt;" FontSize="15" FontAttributes="Bold" />
+                                    </x:Array>
+                                </sf:SfSegmentedControl.ItemsSource>
+                            </sf:SfSegmentedControl>
+                        </HorizontalStackLayout>
+
+                        <Label Grid.Column="2"
+                               Text="{Binding CurrentParNumberDisplay}"
                                Style="{StaticResource Title2}"
-                               VerticalOptions="Center"/>
-                    </HorizontalStackLayout>
+                               VerticalOptions="Center"
+                               AutomationId="ActiveRoundPage.Par" />
+                    </Grid>
+
+                    <!-- Compact stats sub-row: Penalty (left) / GIR (right) -->
+                    <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="12" VerticalOptions="Center" AutomationId="ActiveRoundPage.Stats">
+                        <HorizontalStackLayout Grid.Column="0" Spacing="6" VerticalOptions="Center">
+                            <Label Text="Penalty" Style="{StaticResource Caption1}" VerticalOptions="Center" FontSize="11" />
+                            <Switch IsToggled="{Binding CurrentHole.FairwayMissPenalty, Mode=TwoWay}"
+                                    IsEnabled="{Binding CurrentHole.FairwayResult, Converter={StaticResource FairwayPenaltyEnabledConverter}}"
+                                    OnColor="{StaticResource Primary}"
+                                    Scale="0.8" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center" HorizontalOptions="End">
+                            <Label Text="GIR" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="15" />
+                            <Switch IsToggled="{Binding CurrentHole.GreenInRegulation, Mode=TwoWay}"
+                                    AutomationId="ActiveRoundPage.GIR.Switch"
+                                    OnColor="{StaticResource Primary}"
+                                    Scale="0.8" />
+                        </HorizontalStackLayout>
+                    </Grid>
 
                     <!-- Decrease Button -->
-                    <Button Grid.Row="1"
+                    <Button Grid.Row="2"
                             Text="-"
                             AutomationId="ActiveRoundPage.DecreaseScore"
                             Command="{Binding DecreaseScoreCommand}"
                             IsEnabled="{Binding CanDecreaseScore}"
-                            HeightRequest="56"
-                            FontSize="32"
+                            HeightRequest="44"
+                            FontSize="28"
                             Margin="0"/>
 
                     <!-- Score Display -->
-                    <Border Grid.Row="2" 
+                    <Border Grid.Row="3" 
                             AutomationId="ActiveRoundPage.ScoreDisplayContainer"
                             BackgroundColor="{Binding CurrentHole.ScoreColor, FallbackValue={StaticResource Primary}}"
                             StrokeThickness="0"
@@ -114,16 +154,16 @@
                     </Border>
 
                     <!-- Increase Button -->
-                    <Button Grid.Row="3"
+                    <Button Grid.Row="4"
                             Text="+"
                             AutomationId="ActiveRoundPage.IncreaseScore"
                             Command="{Binding IncreaseScoreCommand}"
-                            HeightRequest="56"
-                            FontSize="32"
+                            HeightRequest="44"
+                            FontSize="28"
                             Margin="0"/>
 
                     <!-- Score Type Label -->
-                    <Label Grid.Row="4"
+                    <Label Grid.Row="5"
                            Text="{Binding CurrentHole.ScoreRelativeToPar, StringFormat='{0:+0;-#;E}', FallbackValue='E'}"
                            AutomationId="ActiveRoundPage.ScoreRelativeToPar"
                            Style="{StaticResource Title2}"

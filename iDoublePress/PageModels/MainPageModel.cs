@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using iDoublePress.Models;
+using iDoublePress.Pages;
 using iDoublePress.Resources.Strings;
 
 namespace iDoublePress.PageModels;
@@ -179,43 +180,31 @@ public partial class MainPageModel : ObservableObject
 				}
 				else
 				{
-					// Multiple in-progress rounds - show action sheet with details
-					var options = new List<string>();
-					foreach (var r in inProgressRounds)
+					// Multiple in-progress rounds - show custom picker UI that supports per-item delete
+					var picker = new InProgressRoundsPage(inProgressRounds, async roundToDelete =>
 					{
-						var timeAgo = GetTimeAgo(r.StartTime);
-						var holesCompleted = r.Holes.Count(h => h.IsScored);
-						var totalHoles = r.Holes.Count;
-						options.Add($"{r.Course?.Name} - {timeAgo} ({holesCompleted}/{totalHoles})");
-					}
-					options.Add(AppResources.StartNewRound);
+						await _roundRepository.DeleteItemAsync(roundToDelete);
+					});
 
-					var title = string.Format(AppResources.MultipleRoundsTitle, inProgressRounds.Count);
-					var selected = await Shell.Current.DisplayActionSheet(
-						title,
-						AppResources.Cancel,
-						null,
-						options.ToArray());
+					await Shell.Current.Navigation.PushModalAsync(picker);
+					var result = await picker.GetResultAsync();
 
-					if (selected == AppResources.Cancel || string.IsNullOrEmpty(selected))
+					if (result.Action == InProgressRoundsResultAction.Cancel)
 						return;
 
-					if (selected == AppResources.StartNewRound)
+					if (result.Action == InProgressRoundsResultAction.StartNew)
 					{
+						// Close the modal before presenting the course selection sheet.
+						await Shell.Current.Navigation.PopModalAsync();
+						await Task.Delay(50);
 						// Continue to course selection below
 					}
-					else
+					else if (result.Action == InProgressRoundsResultAction.Resume && result.Round != null)
 					{
-						// Find and resume the selected round
-						var selectedIndex = options.IndexOf(selected);
-						if (selectedIndex >= 0 && selectedIndex < inProgressRounds.Count)
-						{
-							var roundToResume = inProgressRounds[selectedIndex];
-							var nextHoleIndex = roundToResume.Holes.FindIndex(h => !h.IsScored);
-							if (nextHoleIndex < 0) nextHoleIndex = 0;
-							await Shell.Current.GoToAsync($"active-round?roundId={roundToResume.ID}&holeIndex={nextHoleIndex}");
-							return;
-						}
+						var nextHoleIndex = result.Round.Holes.FindIndex(h => !h.IsScored);
+						if (nextHoleIndex < 0) nextHoleIndex = 0;
+						await Shell.Current.GoToAsync($"active-round?roundId={result.Round.ID}&holeIndex={nextHoleIndex}");
+						return;
 					}
 				}
 			}
