@@ -192,26 +192,24 @@ public partial class MainPageModel : ObservableObject
 					if (result.Action == InProgressRoundsResultAction.Cancel)
 						return;
 
-					if (result.Action == InProgressRoundsResultAction.StartNew)
+					// Always dismiss the modal exactly once before continuing.
+					if (Shell.Current.Navigation.ModalStack.Count > 0)
 					{
-						// Close the modal before presenting the course selection sheet.
 						await Shell.Current.Navigation.PopModalAsync();
 						await Task.Delay(50);
-						// Continue to course selection below
 					}
-					else if (result.Action == InProgressRoundsResultAction.Resume && result.Round != null)
-					{
-						// Ensure the modal is dismissed before navigating (Windows can otherwise land back on MainPage).
-						if (Shell.Current.Navigation.ModalStack.Count > 0)
-						{
-							await Shell.Current.Navigation.PopModalAsync();
-							await Task.Delay(50);
-						}
 
+					if (result.Action == InProgressRoundsResultAction.Resume && result.Round != null)
+					{
 						var nextHoleIndex = result.Round.Holes.FindIndex(h => !h.IsScored);
 						if (nextHoleIndex < 0) nextHoleIndex = 0;
 						await Shell.Current.GoToAsync($"active-round?roundId={result.Round.ID}&holeIndex={nextHoleIndex}");
 						return;
+					}
+
+					if (result.Action == InProgressRoundsResultAction.StartNew)
+					{
+						// Continue to course selection below
 					}
 				}
 			}

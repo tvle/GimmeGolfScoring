@@ -46,8 +46,10 @@ public partial class InProgressRoundsPage : ContentPage
         if ((sender as BindableObject)?.BindingContext is not Round round)
             return;
 
+        // Let the caller dismiss the modal. Dismissing here can race with additional navigation
+        // on iOS (e.g., the caller also popping the modal before GoToAsync), leading to a crash.
         _tcs.TrySetResult(new InProgressRoundsResult(InProgressRoundsResultAction.Resume, round));
-        await Navigation.PopModalAsync();
+        await Task.CompletedTask;
     }
 
     private async void OnDeleteClicked(object? sender, EventArgs e)
