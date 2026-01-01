@@ -19,6 +19,7 @@
             <converters:SubtractOneConverter x:Key="SubtractOneConverter" />
             <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
             <converters:FairwayPenaltyEnabledConverter x:Key="FairwayPenaltyEnabledConverter" />
+            <converters:IntToBoolConverter x:Key="IntToBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -85,11 +86,12 @@
 
                         <HorizontalStackLayout Grid.Column="1" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
                             <Label Text="FH" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="15" />
-                            <sf:SfSegmentedControl SegmentHeight="30"
+                            <sf:SfSegmentedControl x:Name="FairwaySegmentedControl"
+                                                   SegmentHeight="30"
                                                    SegmentWidth="56"
                                                    CornerRadius="16"
                                                    HorizontalOptions="Center"
-                                                   SelectedIndex="{Binding CurrentHole.FairwayResult, Mode=TwoWay, Converter={StaticResource SubtractOneConverter}}">
+                                                   SelectedIndex="{Binding CurrentHole.FairwayResultIndex, Mode=TwoWay}">
                                 <sf:SfSegmentedControl.ItemsSource>
                                     <x:Array Type="{x:Type sf:SfSegmentItem}">
                                         <sf:SfSegmentItem Text="&lt;&lt;" />
@@ -111,7 +113,7 @@
                     <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="12" VerticalOptions="Center" AutomationId="ActiveRoundPage.Stats">
                         <HorizontalStackLayout Grid.Column="0" Spacing="6" VerticalOptions="Center">
                             <Label Text="Penalty" Style="{StaticResource Caption1}" VerticalOptions="Center" FontSize="11" />
-                            <Switch IsToggled="{Binding CurrentHole.FairwayMissPenalty, Mode=TwoWay}"
+                            <Switch IsToggled="{Binding CurrentHole.Penalties, Mode=TwoWay, Converter={StaticResource IntToBoolConverter}}"
                                     OnColor="{StaticResource Primary}"
                                     Scale="0.8" />
                         </HorizontalStackLayout>

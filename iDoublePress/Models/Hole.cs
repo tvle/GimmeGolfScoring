@@ -1,24 +1,34 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace iDoublePress.Models;
 
 /// <summary>
 /// Represents a hole score in a round.
 /// </summary>
-public class Hole
+public partial class Hole : ObservableObject
 {
     public int ID { get; set; }
     public int RoundID { get; set; }
     public int HoleNumber { get; set; }
     public int Par { get; set; }
-    public int Score { get; set; }
-    public bool IsScored { get; set; }
+
+    [ObservableProperty]
+    private int score;
+
+    [ObservableProperty]
+    private bool isScored;
+
     public int Putts { get; set; }
 
-    public FairwayResult FairwayResult { get; set; } = FairwayResult.None;
+    [ObservableProperty]
+    private FairwayResult fairwayResult = FairwayResult.None;
 
     // If the tee shot missed (Left/Right) and this is checked, treat as OB/Hazard miss.
     public bool FairwayMissPenalty { get; set; }
 
-    public bool? GreenInRegulation { get; set; }
+    [ObservableProperty]
+    private bool? greenInRegulation;
+
     public int Penalties { get; set; }
     public string? Notes { get; set; }
     public DateTime CreatedAt { get; set; }
@@ -50,7 +60,7 @@ public class Hole
         _ => Color.FromArgb("#F44336")
     };
 
-    public string AccessibilityDescription => 
+    public string AccessibilityDescription =>
         $"Hole {HoleNumber}, Par {Par}, Score {Score}, {ScoreRelativeToPar switch
         {
             0 => "Par",
@@ -59,6 +69,25 @@ public class Hole
             > 1 => $"{ScoreRelativeToPar} over par",
             < -1 => $"{Math.Abs(ScoreRelativeToPar)} under par"
         }}";
+
+    public int FairwayResultIndex
+    {
+        get => (int)FairwayResult - 1;
+        set
+        {
+            var enumValue = value < 0 ? FairwayResult.None : (FairwayResult)(value + 1);
+            if (FairwayResult != enumValue)
+            {
+                FairwayResult = enumValue;
+                OnPropertyChanged(nameof(FairwayResultIndex));
+            }
+        }
+    }
+
+    partial void OnFairwayResultChanged(FairwayResult value)
+    {
+        OnPropertyChanged(nameof(FairwayResultIndex));
+    }
 }
 
 public enum FairwayResult
