@@ -9,4 +9,9 @@ public partial class ActiveRoundPage : ContentPage
         InitializeComponent();
         BindingContext = viewModel;
     }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }

@@ -168,7 +168,9 @@ public partial class MainPageModel : ObservableObject
 
 					if (resume)
 					{
-						await Shell.Current.GoToAsync($"active-round?roundId={inProgressRound.ID}");
+						var nextHoleIndex = inProgressRound.Holes.FindIndex(h => !h.IsScored);
+						if (nextHoleIndex < 0) nextHoleIndex = 0;
+						await Shell.Current.GoToAsync($"active-round?roundId={inProgressRound.ID}&holeIndex={nextHoleIndex}");
 						return;
 					}
 				}
@@ -205,7 +207,10 @@ public partial class MainPageModel : ObservableObject
 						var selectedIndex = options.IndexOf(selected);
 						if (selectedIndex >= 0 && selectedIndex < inProgressRounds.Count)
 						{
-							await Shell.Current.GoToAsync($"active-round?roundId={inProgressRounds[selectedIndex].ID}");
+							var roundToResume = inProgressRounds[selectedIndex];
+							var nextHoleIndex = roundToResume.Holes.FindIndex(h => !h.IsScored);
+							if (nextHoleIndex < 0) nextHoleIndex = 0;
+							await Shell.Current.GoToAsync($"active-round?roundId={roundToResume.ID}&holeIndex={nextHoleIndex}");
 							return;
 						}
 					}

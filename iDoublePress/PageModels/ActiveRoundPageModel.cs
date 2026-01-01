@@ -6,6 +6,7 @@ using iDoublePress.Resources.Strings;
 namespace iDoublePress.PageModels;
 
 [QueryProperty(nameof(RoundId), "roundId")]
+[QueryProperty(nameof(InitialHoleIndex), "holeIndex")]
 public partial class ActiveRoundPageModel : ObservableObject
 {
     private readonly RoundRepository _roundRepository;
@@ -25,6 +26,11 @@ public partial class ActiveRoundPageModel : ObservableObject
 
     [ObservableProperty]
     private int roundId;
+
+    // Shell query properties are received as strings and converted; nullable numeric types can fail conversion.
+    // Use a non-nullable int and treat 0 as "not specified".
+    [ObservableProperty]
+    private int initialHoleIndex;
 
     public string TotalScoreDisplay =>
         CurrentRound?.ScoreDisplay ?? "E";
@@ -67,9 +73,19 @@ public partial class ActiveRoundPageModel : ObservableObject
         {
             IsBusy = true;
             CurrentRound = await _roundRepository.GetAsync(roundId);
-            
+
             if (CurrentRound != null && CurrentRound.Holes.Any())
             {
+                if (InitialHoleIndex > 0)
+                {
+                    CurrentHoleIndex = Math.Clamp(InitialHoleIndex, 0, CurrentRound.Holes.Count - 1);
+                }
+                else
+                {
+                    var firstUnscoredIndex = CurrentRound.Holes.FindIndex(h => !h.IsScored);
+                    CurrentHoleIndex = firstUnscoredIndex >= 0 ? firstUnscoredIndex : 0;
+                }
+
                 CurrentHole = CurrentRound.Holes[CurrentHoleIndex];
                 UpdateDisplay();
             }
