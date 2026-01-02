@@ -53,6 +53,51 @@ public partial class ActiveRoundPageModel : ObservableObject
     public bool CanGoForward => CurrentRound != null && CurrentHoleIndex < CurrentRound.Holes.Count - 1;
     public bool IsLastHole => CurrentRound != null && CurrentHoleIndex == CurrentRound.Holes.Count - 1;
 
+    public bool CanDecreasePutts => CurrentHole != null && CurrentHole.Putts.HasValue;
+
+    public bool CanIncreasePutts
+    {
+        get
+        {
+            if (CurrentHole == null) return false;
+            var current = CurrentHole.Putts ?? -1; // null => treat as -1 so first + sets to 0
+            return current + 1 <= CurrentHole.Score;
+        }
+    }
+
+    [RelayCommand]
+    private void IncreasePutts()
+    {
+        if (CurrentHole == null) return;
+
+        var next = (CurrentHole.Putts ?? -1) + 1; // null => first + makes it 0
+        if (next < 0) next = 0;
+        if (next > CurrentHole.Score) return;
+
+        CurrentHole.Putts = next;
+        CurrentHole.IsScored = true;
+        UpdatePuttsDisplay();
+    }
+
+    [RelayCommand]
+    private void DecreasePutts()
+    {
+        if (CurrentHole == null) return;
+        if (!CurrentHole.Putts.HasValue) return;
+
+        if (CurrentHole.Putts.Value == 0)
+        {
+            CurrentHole.Putts = null;
+        }
+        else
+        {
+            CurrentHole.Putts = CurrentHole.Putts.Value - 1;
+        }
+
+        CurrentHole.IsScored = true;
+        UpdatePuttsDisplay();
+    }
+
     public ActiveRoundPageModel(RoundRepository roundRepository, ModalErrorHandler errorHandler)
     {
         _roundRepository = roundRepository;
@@ -98,6 +143,8 @@ public partial class ActiveRoundPageModel : ObservableObject
 
         EnsureStatsDefaults(value);
         UpdateDisplay();
+        OnPropertyChanged(nameof(CanDecreasePutts));
+        OnPropertyChanged(nameof(CanIncreasePutts));
     }
 
     private async Task LoadRound(int roundId)
@@ -345,6 +392,8 @@ public partial class ActiveRoundPageModel : ObservableObject
         OnPropertyChanged(nameof(CanGoBack));
         OnPropertyChanged(nameof(CanGoForward));
         OnPropertyChanged(nameof(IsLastHole));
+        OnPropertyChanged(nameof(CanDecreasePutts));
+        OnPropertyChanged(nameof(CanIncreasePutts));
     }
 
     private void UpdateScoreDisplay()
@@ -353,6 +402,8 @@ public partial class ActiveRoundPageModel : ObservableObject
         OnPropertyChanged(nameof(CurrentHoleDisplay));
         OnPropertyChanged(nameof(CurrentParDisplay));
         OnPropertyChanged(nameof(CanDecreaseScore));
+        OnPropertyChanged(nameof(CanDecreasePutts));
+        OnPropertyChanged(nameof(CanIncreasePutts));
 
         if (CurrentRound != null)
         {
@@ -362,16 +413,40 @@ public partial class ActiveRoundPageModel : ObservableObject
         }
     }
 
+    private void UpdatePuttsDisplay()
+    {
+        OnPropertyChanged(nameof(CurrentHole));
+        OnPropertyChanged(nameof(CanDecreasePutts));
+        OnPropertyChanged(nameof(CanIncreasePutts));
+    }
+
     private CancellationTokenSource? _holeSaveCts;
 
     private async void CurrentHole_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (sender is not Hole hole) return;
 
-        if (e.PropertyName is nameof(Hole.FairwayResult) or nameof(Hole.Penalties) or nameof(Hole.GreenInRegulation))
+        if (e.PropertyName is nameof(Hole.Score))
+        {
+            // Score affects putts max.
+            OnPropertyChanged(nameof(CanDecreasePutts));
+            OnPropertyChanged(nameof(CanIncreasePutts));
+        }
+
+        if (e.PropertyName is nameof(Hole.FairwayResult) or nameof(Hole.Penalties) or nameof(Hole.GreenInRegulation) or nameof(Hole.Putts))
         {
             hole.IsScored = true;
             EnsureStatsDefaults(hole);
+
+            // Putts constraint: 0..Score; null allowed.
+            if (hole.Putts.HasValue)
+            {
+                var clamped = Math.Clamp(hole.Putts.Value, 0, hole.Score);
+                if (clamped != hole.Putts.Value)
+                {
+                    hole.Putts = clamped;
+                }
+            }
 
             _holeSaveCts?.Cancel();
             _holeSaveCts = new CancellationTokenSource();
@@ -388,6 +463,8 @@ public partial class ActiveRoundPageModel : ObservableObject
             }
 
             OnPropertyChanged(nameof(CurrentHole));
+            OnPropertyChanged(nameof(CanDecreasePutts));
+            OnPropertyChanged(nameof(CanIncreasePutts));
         }
     }
 }

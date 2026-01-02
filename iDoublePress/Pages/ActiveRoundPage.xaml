@@ -20,6 +20,7 @@
             <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
             <converters:FairwayPenaltyEnabledConverter x:Key="FairwayPenaltyEnabledConverter" />
             <converters:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <converters:NullableIntToDashConverter x:Key="NullableIntToDashConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -72,7 +73,7 @@
               Padding="{StaticResource LayoutPadding}">
 
             <Border Style="{StaticResource CardStyle}" Padding="12">
-                <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto"
+                <Grid RowDefinitions="Auto,Auto,*,Auto"
                       RowSpacing="8">
 
                     <!-- Compact top row: hole number (left) / FH (center) / Par (right) -->
@@ -132,48 +133,110 @@
                         </HorizontalStackLayout>
                     </Grid>
 
-                    <!-- Decrease Button -->
-                    <Button Grid.Row="2"
-                            Text="-"
-                            AutomationId="ActiveRoundPage.DecreaseScore"
-                            Command="{Binding DecreaseScoreCommand}"
-                            IsEnabled="{Binding CanDecreaseScore}"
-                            HeightRequest="44"
-                            FontSize="28"
-                            Margin="0"/>
+                    <!-- Score / Putts / Proximity row -->
+                    <Grid Grid.Row="2"
+                          ColumnDefinitions="*,2*,*"
+                          ColumnSpacing="18"
+                          VerticalOptions="Fill">
 
-                    <!-- Score Display -->
-                    <Border Grid.Row="3" 
-                            AutomationId="ActiveRoundPage.ScoreDisplayContainer"
-                            BackgroundColor="{Binding CurrentHole.ScoreColor, FallbackValue={StaticResource Primary}}"
-                            StrokeThickness="0"
-                            Padding="0"
-                            Margin="0"
-                            VerticalOptions="Fill">
-                        <Label Text="{Binding CurrentHole.Score, FallbackValue='4'}" 
-                               AutomationId="ActiveRoundPage.ScoreValue"
-                               Style="{StaticResource Display}"
-                               TextColor="White"
-                               VerticalOptions="Center"
-                               HorizontalTextAlignment="Center"/>
-                    </Border>
+                        <!-- Putts (left) -->
+                        <VerticalStackLayout Grid.Column="0" Spacing="10" VerticalOptions="Center">
+                            <Label Text="Putts"
+                                   Style="{StaticResource Caption1}"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
 
-                    <!-- Increase Button -->
-                    <Button Grid.Row="4"
-                            Text="+"
-                            AutomationId="ActiveRoundPage.IncreaseScore"
-                            Command="{Binding IncreaseScoreCommand}"
-                            HeightRequest="44"
-                            FontSize="28"
-                            Margin="0"/>
+                            <Grid ColumnDefinitions="Auto,Auto"
+                                  RowDefinitions="Auto,Auto"
+                                  ColumnSpacing="10"
+                                  RowSpacing="8"
+                                  VerticalOptions="Center">
 
-                    <!-- Score Type Label -->
-                    <Label Grid.Row="5"
-                           Text="{Binding CurrentHole.ScoreRelativeToPar, StringFormat='{0:+0;-#;E}', FallbackValue='E'}"
-                           AutomationId="ActiveRoundPage.ScoreRelativeToPar"
-                           Style="{StaticResource Title2}"
-                           HorizontalTextAlignment="Center"
-                           Margin="0"/>
+                                <!-- +/- stacked vertically -->
+                                <VerticalStackLayout Grid.RowSpan="2" Grid.Column="0" Spacing="8" VerticalOptions="Center">
+                                    <Button Text="-"
+                                            WidthRequest="44"
+                                            HeightRequest="44"
+                                            FontSize="22"
+                                            Command="{Binding DecreasePuttsCommand}"
+                                            IsEnabled="{Binding CanDecreasePutts}" />
+
+                                    <Button Text="+"
+                                            WidthRequest="44"
+                                            HeightRequest="44"
+                                            FontSize="22"
+                                            Command="{Binding IncreasePuttsCommand}"
+                                            IsEnabled="{Binding CanIncreasePutts}" />
+                                </VerticalStackLayout>
+
+                                <!-- value centered next to buttons -->
+                                <Label Grid.RowSpan="2" Grid.Column="1"
+                                       Text="{Binding CurrentHole.Putts, Converter={StaticResource NullableIntToDashConverter}}"
+                                       Style="{StaticResource Title2}"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Center"
+                                       MinimumWidthRequest="26" />
+
+                            </Grid>
+                        </VerticalStackLayout>
+
+                        <!-- Center score controls -->
+                        <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="12" VerticalOptions="Fill">
+                            <Button Grid.Row="0"
+                                    Text="-"
+                                    AutomationId="ActiveRoundPage.DecreaseScore"
+                                    Command="{Binding DecreaseScoreCommand}"
+                                    IsEnabled="{Binding CanDecreaseScore}"
+                                    HeightRequest="44"
+                                    FontSize="28"
+                                    Margin="0" />
+
+                            <Border Grid.Row="1"
+                                    AutomationId="ActiveRoundPage.ScoreDisplayContainer"
+                                    BackgroundColor="{Binding CurrentHole.ScoreColor, FallbackValue={StaticResource Primary}}"
+                                    StrokeThickness="0"
+                                    Padding="0"
+                                    Margin="0"
+                                    VerticalOptions="Fill">
+                                <Label Text="{Binding CurrentHole.Score, FallbackValue='4'}"
+                                       AutomationId="ActiveRoundPage.ScoreValue"
+                                       Style="{StaticResource Display}"
+                                       TextColor="White"
+                                       VerticalOptions="Center"
+                                       HorizontalTextAlignment="Center" />
+                            </Border>
+
+                            <Button Grid.Row="2"
+                                    Text="+"
+                                    AutomationId="ActiveRoundPage.IncreaseScore"
+                                    Command="{Binding IncreaseScoreCommand}"
+                                    HeightRequest="44"
+                                    FontSize="28"
+                                    Margin="0" />
+
+                            <Label Grid.Row="3"
+                                   Text="{Binding CurrentHole.ScoreRelativeToPar, StringFormat='{0:+0;-#;E}', FallbackValue='E'}"
+                                   AutomationId="ActiveRoundPage.ScoreRelativeToPar"
+                                   Style="{StaticResource Title2}"
+                                   HorizontalTextAlignment="Center"
+                                   Margin="0" />
+                        </Grid>
+
+                        <!-- Proximity (right) -->
+                        <VerticalStackLayout Grid.Column="2" Spacing="10" VerticalOptions="Center" HorizontalOptions="End">
+                            <Label Text="Prox"
+                                   Style="{StaticResource Caption1}"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"
+                                   HorizontalTextAlignment="End" />
+
+                            <VerticalStackLayout Spacing="10">
+                                <RadioButton Content="&lt; 6ft (Short)" GroupName="Proximity" HorizontalOptions="End" />
+                                <RadioButton Content="6–20ft (Medium)" GroupName="Proximity" HorizontalOptions="End" />
+                                <RadioButton Content="&gt; 20ft (Lag)" GroupName="Proximity" HorizontalOptions="End" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+                    </Grid>
+
                 </Grid>
             </Border>
         </Grid>

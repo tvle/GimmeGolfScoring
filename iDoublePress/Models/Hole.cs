@@ -18,7 +18,8 @@ public partial class Hole : ObservableObject
     [ObservableProperty]
     private bool isScored;
 
-    public int Putts { get; set; }
+    [ObservableProperty]
+    private int? putts;
 
     [ObservableProperty]
     private FairwayResult fairwayResult = FairwayResult.None;

@@ -59,7 +59,7 @@ public class RoundRepository
                     Par INTEGER NOT NULL,
                     Score INTEGER DEFAULT 0,
                     IsScored INTEGER DEFAULT 0,
-                    Putts INTEGER DEFAULT 0,
+                    Putts INTEGER,
                     FairwayHit INTEGER,
                     GreenInRegulation INTEGER,
                     Penalties INTEGER DEFAULT 0,
@@ -82,6 +82,15 @@ public class RoundRepository
                 {
                     existingColumns.Add(reader.GetString(1));
                 }
+            }
+
+            // Ensure Putts exists (older installs might not have it)
+            if (!existingColumns.Contains("Putts"))
+            {
+                _logger.LogInformation("Adding Putts column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Putts INTEGER;";
+                await addColumnCmd.ExecuteNonQueryAsync();
             }
 
             if (!existingColumns.Contains("IsScored"))
@@ -298,7 +307,7 @@ public class RoundRepository
                 Par = reader.GetInt32(3),
                 Score = reader.GetInt32(4),
                 IsScored = reader.GetInt32(5) == 1,
-                Putts = reader.GetInt32(6),
+                Putts = reader.IsDBNull(6) ? null : reader.GetInt32(6),
                 FairwayResult = fairwayResult,
                 FairwayMissPenalty = !reader.IsDBNull(9) && reader.GetInt32(9) == 1,
                 GreenInRegulation = reader.IsDBNull(10) ? null : reader.GetInt32(10) == 1,
@@ -453,7 +462,7 @@ public class RoundRepository
         saveCmd.Parameters.AddWithValue("@Par", hole.Par);
         saveCmd.Parameters.AddWithValue("@Score", hole.Score);
         saveCmd.Parameters.AddWithValue("@IsScored", hole.IsScored ? 1 : 0);
-        saveCmd.Parameters.AddWithValue("@Putts", hole.Putts);
+        saveCmd.Parameters.AddWithValue("@Putts", (object?)hole.Putts ?? DBNull.Value);
 
         // Keep legacy column populated for older app versions / compatibility.
         saveCmd.Parameters.AddWithValue("@FairwayHit", hole.FairwayResult == FairwayResult.Fairway ? 1 : 0);
