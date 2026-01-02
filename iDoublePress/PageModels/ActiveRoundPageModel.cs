@@ -50,7 +50,7 @@ public partial class ActiveRoundPageModel : ObservableObject
 
     public bool CanDecreaseScore => CurrentHole != null && CurrentHole.Score > 1;
     public bool CanGoBack => CurrentHoleIndex > 0;
-    public bool CanGoForward => CurrentRound != null && CurrentHoleIndex < CurrentRound.Holes.Count - 1;
+    public bool CanGoForward => CurrentRound != null && CurrentHoleIndex < CurrentRound.Holes.Count;
     public bool IsLastHole => CurrentRound != null && CurrentHoleIndex == CurrentRound.Holes.Count - 1;
 
     public bool CanDecreasePutts => CurrentHole != null && CurrentHole.Putts.HasValue;
@@ -215,33 +215,36 @@ public partial class ActiveRoundPageModel : ObservableObject
     [RelayCommand]
     private async Task NextHole()
     {
-        if (CurrentRound == null || CurrentHoleIndex >= CurrentRound.Holes.Count - 1) return;
+        if (CurrentRound == null) return;
 
-        if (CurrentHole != null)
+        if (CurrentHole != null && !CurrentHole.IsScored)
         {
-            CurrentHole.IsScored = true;
+            // If the user didn't adjust the score but is moving on, treat the default par as the entered score.
+            // This allows "tap next" to accept par without manually changing the score control.
+            if (CurrentHole.Score == CurrentHole.Par)
+            {
+                CurrentHole.IsScored = true;
+            }
         }
 
         await SaveCurrentHole();
+
+        // If we were on the last hole, use this as a "finish" action.
+        if (CurrentHoleIndex >= CurrentRound.Holes.Count - 1)
+        {
+            var confirm = await ShowRoundInfoAsync();
+            if (confirm)
+            {
+                await CompleteRoundCoreAsync();
+                return;
+            }
+
+            UpdateDisplay();
+            return;
+        }
+
         CurrentHoleIndex++;
         CurrentHole = CurrentRound.Holes[CurrentHoleIndex];
-        EnsureStatsDefaults(CurrentHole);
-        UpdateDisplay();
-    }
-
-    [RelayCommand]
-    private async Task PreviousHole()
-    {
-        if (CurrentHoleIndex <= 0) return;
-
-        if (CurrentHole != null)
-        {
-            CurrentHole.IsScored = true;
-        }
-
-        await SaveCurrentHole();
-        CurrentHoleIndex--;
-        CurrentHole = CurrentRound!.Holes[CurrentHoleIndex];
         EnsureStatsDefaults(CurrentHole);
         UpdateDisplay();
     }
@@ -251,27 +254,18 @@ public partial class ActiveRoundPageModel : ObservableObject
     {
         if (CurrentRound == null) return;
 
-        // Mark the current (last) hole as scored before completing
-        if (CurrentHole != null)
-        {
-            CurrentHole.IsScored = true;
-        }
-        
-        // Save the last hole
+        // Save the last hole as-is (it may still be unscored)
         await SaveCurrentHole();
 
-        var message = string.Format(
-            AppResources.CompleteRoundMessage,
-            CurrentRound.TotalScore,
-            CurrentRound.ScoreDisplay);
-
-        var confirm = await Shell.Current.DisplayAlert(
-            AppResources.CompleteRoundTitle,
-            message,
-            AppResources.Yes,
-            AppResources.No);
-
+        var confirm = await ShowRoundInfoAsync();
         if (!confirm) return;
+
+        await CompleteRoundCoreAsync();
+    }
+
+    private async Task CompleteRoundCoreAsync()
+    {
+        if (CurrentRound == null) return;
 
         try
         {
@@ -279,7 +273,7 @@ public partial class ActiveRoundPageModel : ObservableObject
             CurrentRound.Status = RoundStatus.Completed;
             CurrentRound.EndTime = DateTime.Now;
             await _roundRepository.SaveItemAsync(CurrentRound);
-            
+
             await Shell.Current.GoToAsync("..");
             var completedMessage = string.Format(AppResources.RoundCompleted, CurrentRound.TotalScore);
             await AppShell.DisplayToastAsync(completedMessage);
@@ -292,6 +286,83 @@ public partial class ActiveRoundPageModel : ObservableObject
         {
             IsBusy = false;
         }
+    }
+
+    private async Task<bool> ShowRoundInfoAsync()
+    {
+        if (CurrentRound == null) return false;
+
+        var holes = CurrentRound.Holes
+            .OrderBy(h => h.HoleNumber)
+            .ToList();
+
+        var scoredHoles = holes.Where(h => h.IsScored).ToList();
+
+        int? front9 = null;
+        int? back9 = null;
+
+        if (holes.Count == 18)
+        {
+            var frontScored = scoredHoles.Where(h => h.HoleNumber is >= 1 and <= 9).ToList();
+            var backScored = scoredHoles.Where(h => h.HoleNumber is >= 10 and <= 18).ToList();
+
+            front9 = frontScored.Any() ? frontScored.Sum(h => h.Score) : null;
+            back9 = backScored.Any() ? backScored.Sum(h => h.Score) : null;
+        }
+
+        var totalScore = scoredHoles.Any() ? scoredHoles.Sum(h => h.Score) : 0;
+
+        var putts = scoredHoles.Sum(h => h.Putts ?? 0);
+        var gir = scoredHoles.Count(h => h.GreenInRegulation == true);
+        var penalties = scoredHoles.Count(h => h.Penalties > 0);
+
+        var fairwayHit = scoredHoles.Count(h => h.FairwayResult == FairwayResult.Fairway);
+        var fairwayLeft = scoredHoles.Count(h => h.FairwayResult == FairwayResult.Left);
+        var fairwayRight = scoredHoles.Count(h => h.FairwayResult == FairwayResult.Right);
+
+        var proxS = scoredHoles.Count(h => h.Proximity == 'S');
+        var proxM = scoredHoles.Count(h => h.Proximity == 'M');
+        var proxL = scoredHoles.Count(h => h.Proximity == 'L');
+
+        var message = string.Format(
+            AppResources.CompleteRoundMessage,
+            CurrentRound.TotalScore,
+            CurrentRound.ScoreDisplay);
+
+        if (holes.Count == 18)
+        {
+            message += $"\n\nFront 9: {(front9.HasValue ? front9.Value.ToString() : "-")}" +
+                       $"\nBack 9: {(back9.HasValue ? back9.Value.ToString() : "-")}" +
+                       $"\nTotal: {totalScore}";
+        }
+
+        message += $"\n\nPutts: {putts}" +
+                   $"\nGIR: {gir}" +
+                   $"\nPenalty holes: {penalties}" +
+                   $"\nFairways hit: {fairwayHit}" +
+                   $"\nFairways left: {fairwayLeft}" +
+                   $"\nFairways right: {fairwayRight}" +
+                   $"\nProximity < 6ft: {proxS}" +
+                   $"\nProximity 6–20ft: {proxM}" +
+                   $"\nProximity > 20ft: {proxL}";
+
+        return await Shell.Current.DisplayAlert(
+            AppResources.CompleteRoundTitle,
+            message,
+            AppResources.Yes,
+            AppResources.No);
+    }
+
+    [RelayCommand]
+    private async Task PreviousHole()
+    {
+        if (CurrentHoleIndex <= 0) return;
+
+        await SaveCurrentHole();
+        CurrentHoleIndex--;
+        CurrentHole = CurrentRound!.Holes[CurrentHoleIndex];
+        EnsureStatsDefaults(CurrentHole);
+        UpdateDisplay();
     }
 
     [RelayCommand]
@@ -312,7 +383,7 @@ public partial class ActiveRoundPageModel : ObservableObject
             IsBusy = true;
             CurrentRound.Status = RoundStatus.Abandoned;
             await _roundRepository.SaveItemAsync(CurrentRound);
-            
+
             await Shell.Current.GoToAsync("..");
         }
         catch (Exception e)
@@ -431,6 +502,8 @@ public partial class ActiveRoundPageModel : ObservableObject
 
         if (e.PropertyName is nameof(Hole.Score))
         {
+            hole.IsScored = true;
+
             // Score affects putts max.
             OnPropertyChanged(nameof(CanDecreasePutts));
             OnPropertyChanged(nameof(CanIncreasePutts));
@@ -438,7 +511,6 @@ public partial class ActiveRoundPageModel : ObservableObject
 
         if (e.PropertyName is nameof(Hole.FairwayResult) or nameof(Hole.Penalties) or nameof(Hole.GreenInRegulation) or nameof(Hole.Putts) or nameof(Hole.Proximity))
         {
-            hole.IsScored = true;
             EnsureStatsDefaults(hole);
 
             // Putts constraint: 0..Score; null allowed.
@@ -485,7 +557,6 @@ public partial class ActiveRoundPageModel : ObservableObject
             if (CurrentHole.Proximity != 'S')
             {
                 CurrentHole.Proximity = 'S';
-                CurrentHole.IsScored = true;
             }
 
             OnPropertyChanged(nameof(IsProximityS));
@@ -505,7 +576,6 @@ public partial class ActiveRoundPageModel : ObservableObject
             if (CurrentHole.Proximity != 'M')
             {
                 CurrentHole.Proximity = 'M';
-                CurrentHole.IsScored = true;
             }
 
             OnPropertyChanged(nameof(IsProximityS));
@@ -525,7 +595,6 @@ public partial class ActiveRoundPageModel : ObservableObject
             if (CurrentHole.Proximity != 'L')
             {
                 CurrentHole.Proximity = 'L';
-                CurrentHole.IsScored = true;
             }
 
             OnPropertyChanged(nameof(IsProximityS));
