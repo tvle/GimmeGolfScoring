@@ -156,14 +156,22 @@
                                     <Button Text="-"
                                             WidthRequest="44"
                                             HeightRequest="44"
-                                            FontSize="22"
+                                            Padding="0"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            VerticalTextAlignment="Center"
+                                            HorizontalTextAlignment="Center"
                                             Command="{Binding DecreasePuttsCommand}"
                                             IsEnabled="{Binding CanDecreasePutts}" />
 
                                     <Button Text="+"
                                             WidthRequest="44"
                                             HeightRequest="44"
-                                            FontSize="22"
+                                            Padding="0"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            VerticalTextAlignment="Center"
+                                            HorizontalTextAlignment="Center"
                                             Command="{Binding IncreasePuttsCommand}"
                                             IsEnabled="{Binding CanIncreasePutts}" />
                                 </VerticalStackLayout>
@@ -187,6 +195,9 @@
                                     Command="{Binding DecreaseScoreCommand}"
                                     IsEnabled="{Binding CanDecreaseScore}"
                                     HeightRequest="44"
+                                    Padding="0"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Center"
                                     FontSize="28"
                                     Margin="0" />
 
@@ -210,6 +221,9 @@
                                     AutomationId="ActiveRoundPage.IncreaseScore"
                                     Command="{Binding IncreaseScoreCommand}"
                                     HeightRequest="44"
+                                    Padding="0"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Center"
                                     FontSize="28"
                                     Margin="0" />
 
