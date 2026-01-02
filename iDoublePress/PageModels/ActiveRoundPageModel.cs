@@ -145,6 +145,9 @@ public partial class ActiveRoundPageModel : ObservableObject
         UpdateDisplay();
         OnPropertyChanged(nameof(CanDecreasePutts));
         OnPropertyChanged(nameof(CanIncreasePutts));
+        OnPropertyChanged(nameof(IsProximityS));
+        OnPropertyChanged(nameof(IsProximityM));
+        OnPropertyChanged(nameof(IsProximityL));
     }
 
     private async Task LoadRound(int roundId)
@@ -433,7 +436,7 @@ public partial class ActiveRoundPageModel : ObservableObject
             OnPropertyChanged(nameof(CanIncreasePutts));
         }
 
-        if (e.PropertyName is nameof(Hole.FairwayResult) or nameof(Hole.Penalties) or nameof(Hole.GreenInRegulation) or nameof(Hole.Putts))
+        if (e.PropertyName is nameof(Hole.FairwayResult) or nameof(Hole.Penalties) or nameof(Hole.GreenInRegulation) or nameof(Hole.Putts) or nameof(Hole.Proximity))
         {
             hole.IsScored = true;
             EnsureStatsDefaults(hole);
@@ -465,6 +468,69 @@ public partial class ActiveRoundPageModel : ObservableObject
             OnPropertyChanged(nameof(CurrentHole));
             OnPropertyChanged(nameof(CanDecreasePutts));
             OnPropertyChanged(nameof(CanIncreasePutts));
+            OnPropertyChanged(nameof(IsProximityS));
+            OnPropertyChanged(nameof(IsProximityM));
+            OnPropertyChanged(nameof(IsProximityL));
+        }
+    }
+
+    public bool IsProximityS
+    {
+        get => CurrentHole?.Proximity == 'S';
+        set
+        {
+            if (CurrentHole == null) return;
+            if (!value) return;
+
+            if (CurrentHole.Proximity != 'S')
+            {
+                CurrentHole.Proximity = 'S';
+                CurrentHole.IsScored = true;
+            }
+
+            OnPropertyChanged(nameof(IsProximityS));
+            OnPropertyChanged(nameof(IsProximityM));
+            OnPropertyChanged(nameof(IsProximityL));
+        }
+    }
+
+    public bool IsProximityM
+    {
+        get => CurrentHole?.Proximity == 'M';
+        set
+        {
+            if (CurrentHole == null) return;
+            if (!value) return;
+
+            if (CurrentHole.Proximity != 'M')
+            {
+                CurrentHole.Proximity = 'M';
+                CurrentHole.IsScored = true;
+            }
+
+            OnPropertyChanged(nameof(IsProximityS));
+            OnPropertyChanged(nameof(IsProximityM));
+            OnPropertyChanged(nameof(IsProximityL));
+        }
+    }
+
+    public bool IsProximityL
+    {
+        get => CurrentHole?.Proximity == 'L';
+        set
+        {
+            if (CurrentHole == null) return;
+            if (!value) return;
+
+            if (CurrentHole.Proximity != 'L')
+            {
+                CurrentHole.Proximity = 'L';
+                CurrentHole.IsScored = true;
+            }
+
+            OnPropertyChanged(nameof(IsProximityS));
+            OnPropertyChanged(nameof(IsProximityM));
+            OnPropertyChanged(nameof(IsProximityL));
         }
     }
 }

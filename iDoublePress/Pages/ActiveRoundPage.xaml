@@ -222,17 +222,24 @@
                         </Grid>
 
                         <!-- Proximity (right) -->
-                        <VerticalStackLayout Grid.Column="2" Spacing="10" VerticalOptions="Center" HorizontalOptions="End">
-                            <Label Text="Prox"
-                                   Style="{StaticResource Caption1}"
-                                   TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"
-                                   HorizontalTextAlignment="End" />
+                        <VerticalStackLayout Grid.Column="2" Spacing="10">
+                            <RadioButton GroupName="Proximity"
+                                         HorizontalOptions="End"
+                                         FlowDirection="RightToLeft"
+                                         IsChecked="{Binding IsProximityS, Mode=TwoWay}" />
+                            <Label Text="&lt; 6ft" HorizontalTextAlignment="End" Margin="0,-20,10,0" />
 
-                            <VerticalStackLayout Spacing="10">
-                                <RadioButton Content="&lt; 6ft (Short)" GroupName="Proximity" HorizontalOptions="End" />
-                                <RadioButton Content="6–20ft (Medium)" GroupName="Proximity" HorizontalOptions="End" />
-                                <RadioButton Content="&gt; 20ft (Lag)" GroupName="Proximity" HorizontalOptions="End" />
-                            </VerticalStackLayout>
+                            <RadioButton GroupName="Proximity"
+                                         HorizontalOptions="End"
+                                         FlowDirection="RightToLeft"
+                                         IsChecked="{Binding IsProximityM, Mode=TwoWay}" />
+                            <Label Text="6–20ft" HorizontalTextAlignment="End" Margin="0,-20,10,0" />
+
+                            <RadioButton GroupName="Proximity"
+                                         HorizontalOptions="End"
+                                         FlowDirection="RightToLeft"
+                                         IsChecked="{Binding IsProximityL, Mode=TwoWay}" />
+                            <Label Text="&gt; 20ft" HorizontalTextAlignment="End" Margin="0,-20,10,0" />
                         </VerticalStackLayout>
 
                     </Grid>

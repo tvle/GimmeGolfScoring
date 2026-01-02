@@ -30,6 +30,9 @@ public partial class Hole : ObservableObject
     [ObservableProperty]
     private bool? greenInRegulation;
 
+    [ObservableProperty]
+    private char? proximity;
+
     public int Penalties { get; set; }
     public string? Notes { get; set; }
     public DateTime CreatedAt { get; set; }
@@ -85,9 +88,41 @@ public partial class Hole : ObservableObject
         }
     }
 
+    public int ProximityIndex
+    {
+        get => Proximity switch
+        {
+            'S' => 0,
+            'M' => 1,
+            'L' => 2,
+            _ => -1
+        };
+        set
+        {
+            var next = value switch
+            {
+                0 => (char?)'S',
+                1 => (char?)'M',
+                2 => (char?)'L',
+                _ => null
+            };
+
+            if (Proximity != next)
+            {
+                Proximity = next;
+                OnPropertyChanged(nameof(ProximityIndex));
+            }
+        }
+    }
+
     partial void OnFairwayResultChanged(FairwayResult value)
     {
         OnPropertyChanged(nameof(FairwayResultIndex));
+    }
+
+    partial void OnProximityChanged(char? value)
+    {
+        OnPropertyChanged(nameof(ProximityIndex));
     }
 }
 
