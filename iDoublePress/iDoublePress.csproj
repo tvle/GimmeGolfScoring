@@ -96,6 +96,12 @@
 		<MauiXaml Update="Pages\ActiveRoundPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Pages\CourseEditPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\CoursesPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Pages\InProgressRoundsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

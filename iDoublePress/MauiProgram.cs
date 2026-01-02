@@ -48,10 +48,14 @@ public static class MauiProgram
 		builder.Services.AddSingleton<MainPageModel>();
 
 		// Golf PageModels
+		builder.Services.AddSingleton<CoursesPageModel>();
+		builder.Services.AddTransient<CourseEditPageModel>();
 		builder.Services.AddTransient<ActiveRoundPageModel>();
 
 		// Golf Pages
 		builder.Services.AddTransientWithShellRoute<ActiveRoundPage, ActiveRoundPageModel>("active-round");
+		builder.Services.AddTransientWithShellRoute<CoursesPage, CoursesPageModel>("courses");
+		builder.Services.AddTransientWithShellRoute<CourseEditPage, CourseEditPageModel>("course-edit");
 		
 		return builder.Build();
 	}

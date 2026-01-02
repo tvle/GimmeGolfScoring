@@ -23,12 +23,20 @@ public class Course
 /// <summary>
 /// Represents a hole on a golf course.
 /// </summary>
-public class CourseHole
+public partial class CourseHole : CommunityToolkit.Mvvm.ComponentModel.ObservableObject
 {
     public int ID { get; set; }
     public int CourseID { get; set; }
+
     public int HoleNumber { get; set; }
-    public int Par { get; set; }
+
+    private int _par;
+    public int Par
+    {
+        get => _par;
+        set => SetProperty(ref _par, value);
+    }
+
     public int? Handicap { get; set; }
     public int? Yardage { get; set; }
 }

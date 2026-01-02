@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:iDoublePress.PageModels"
+             xmlns:models="clr-namespace:iDoublePress.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:ext="clr-namespace:iDoublePress.Extensions"
+             x:Class="iDoublePress.Pages.CourseEditPage"
+             x:DataType="pageModels:CourseEditPageModel"
+             x:Name="CourseEditPageView"
+             Title="{ext:Translate Courses}">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            BindingContext="{Binding Path=BindingContext, Source={x:Reference CourseEditPageView}, x:DataType=ContentPage}"
+            EventName="NavigatedTo"
+            Command="{Binding NavigatedToCommand}" />
+    </ContentPage.Behaviors>
+
+    <Grid Padding="{StaticResource LayoutPadding}" RowDefinitions="Auto,*">
+        <Border Style="{StaticResource CardStyle}" Grid.Row="0" Margin="0,0,0,10">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="{ext:Translate CourseName}" Style="{StaticResource Caption1Strong}" />
+                <Entry Text="{Binding Name}" />
+                <Button Text="{ext:Translate Save}" Command="{Binding SaveCommand}" />
+            </VerticalStackLayout>
+        </Border>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Holes}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:CourseHole">
+                    <Border Style="{StaticResource CardStyle}" Margin="0,5">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" VerticalOptions="Center">
+                            <Label Text="{Binding HoleNumber, StringFormat='#{0}'}" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="{ext:Translate Par}" VerticalOptions="Center" />
+
+                            <Button Grid.Column="2"
+                                    Text="-"
+                                    Clicked="OnDecrementParClicked"
+                                    CommandParameter="{Binding .}" />
+                            <Label Grid.Column="3" Text="{Binding Par}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Button Grid.Column="4"
+                                    Text="+"
+                                    Clicked="OnIncrementParClicked"
+                                    CommandParameter="{Binding .}" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>
