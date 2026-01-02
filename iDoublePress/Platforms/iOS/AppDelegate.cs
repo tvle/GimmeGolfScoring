@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using UIKit;
 
 namespace iDoublePress;
 
@@ -6,4 +7,10 @@ namespace iDoublePress;
 public class AppDelegate : MauiUIApplicationDelegate
 {
 	protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+
+	[Export("application:supportedInterfaceOrientationsForWindow:")]
+	public UIInterfaceOrientationMask GetSupportedInterfaceOrientations(UIApplication application, nuint forWindow)
+	{
+		return UIInterfaceOrientationMask.Portrait;
+	}
 }

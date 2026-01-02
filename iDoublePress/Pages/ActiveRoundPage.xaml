@@ -159,8 +159,6 @@
                                             Padding="0"
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
-                                            VerticalTextAlignment="Center"
-                                            HorizontalTextAlignment="Center"
                                             Command="{Binding DecreasePuttsCommand}"
                                             IsEnabled="{Binding CanDecreasePutts}" />
 
@@ -170,8 +168,6 @@
                                             Padding="0"
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
-                                            VerticalTextAlignment="Center"
-                                            HorizontalTextAlignment="Center"
                                             Command="{Binding IncreasePuttsCommand}"
                                             IsEnabled="{Binding CanIncreasePutts}" />
                                 </VerticalStackLayout>
@@ -196,8 +192,6 @@
                                     IsEnabled="{Binding CanDecreaseScore}"
                                     HeightRequest="44"
                                     Padding="0"
-                                    VerticalTextAlignment="Center"
-                                    HorizontalTextAlignment="Center"
                                     FontSize="28"
                                     Margin="0" />
 
@@ -222,8 +216,6 @@
                                     Command="{Binding IncreaseScoreCommand}"
                                     HeightRequest="44"
                                     Padding="0"
-                                    VerticalTextAlignment="Center"
-                                    HorizontalTextAlignment="Center"
                                     FontSize="28"
                                     Margin="0" />
 
