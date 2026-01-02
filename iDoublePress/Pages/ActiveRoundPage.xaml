@@ -94,9 +94,9 @@
                                                    SelectedIndex="{Binding CurrentHole.FairwayResultIndex, Mode=TwoWay}">
                                 <sf:SfSegmentedControl.ItemsSource>
                                     <x:Array Type="{x:Type sf:SfSegmentItem}">
-                                        <sf:SfSegmentItem Text="&lt;&lt;" />
-                                        <sf:SfSegmentItem Text="O" />
-                                        <sf:SfSegmentItem Text="&gt;&gt;" />
+                                        <sf:SfSegmentItem Text="&lt;&lt;&lt;" />
+                                        <sf:SfSegmentItem Text="OOO" />
+                                        <sf:SfSegmentItem Text="&gt;&gt;&gt;" />
                                     </x:Array>
                                 </sf:SfSegmentedControl.ItemsSource>
                             </sf:SfSegmentedControl>
@@ -112,14 +112,19 @@
                     <!-- Compact stats sub-row: Penalty (left) / GIR (right) -->
                     <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="12" VerticalOptions="Center" AutomationId="ActiveRoundPage.Stats">
                         <HorizontalStackLayout Grid.Column="0" Spacing="6" VerticalOptions="Center">
-                            <Label Text="Penalty" Style="{StaticResource Caption1}" VerticalOptions="Center" FontSize="11" />
+                            <Label Text="&#x26A0;"
+                                   FontFamily="FluentSystemIcons-Regular"
+                                   FontSize="16"
+                                   VerticalOptions="Center"
+                                   Margin="0,-6,-10,0"
+                                   AutomationProperties.Name="Penalty" />
                             <Switch IsToggled="{Binding CurrentHole.Penalties, Mode=TwoWay, Converter={StaticResource IntToBoolConverter}}"
                                     OnColor="{StaticResource Primary}"
                                     Scale="0.8" />
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center" HorizontalOptions="End">
-                            <Label Text="GIR" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="15" />
+                            <Label Text="GIR" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="15" Margin="0,0,-10,0" />
                             <Switch IsToggled="{Binding CurrentHole.GreenInRegulation, Mode=TwoWay}"
                                     AutomationId="ActiveRoundPage.GIR.Switch"
                                     OnColor="{StaticResource Primary}"
