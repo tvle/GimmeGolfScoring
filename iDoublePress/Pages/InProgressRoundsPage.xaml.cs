@@ -70,7 +70,6 @@ public partial class InProgressRoundsPage : ContentPage
             if (vm.Rounds.Count == 0)
             {
                 _tcs.TrySetResult(new InProgressRoundsResult(InProgressRoundsResultAction.StartNew, null));
-                await Navigation.PopModalAsync();
             }
         }
     }
