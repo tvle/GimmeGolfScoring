@@ -54,7 +54,7 @@ public partial class InProgressRoundsPage : ContentPage
 
     private async void OnDeleteClicked(object? sender, EventArgs e)
     {
-        if (sender is not Button button || button.BindingContext is not Round round)
+        if (sender is not ImageButton imageButton || imageButton.BindingContext is not Round round)
             return;
 
         var confirm = await DisplayAlert("Delete round?", "Delete this in-progress round?", "Delete", "Cancel");

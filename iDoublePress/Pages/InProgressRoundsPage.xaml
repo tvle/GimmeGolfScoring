@@ -31,16 +31,12 @@
                                    Text="{Binding .}"
                                    VerticalOptions="Center" />
 
-                            <Button Grid.Column="1"
-                                    Text="X"
-                                    TextColor="Red"
-                                    BackgroundColor="Transparent"
-                                    BorderColor="Red"
-                                    BorderWidth="1"
-                                    CornerRadius="10"
-                                    WidthRequest="38"
-                                    HeightRequest="38"
-                                    Clicked="OnDeleteClicked" />
+                            <ImageButton Grid.Column="1"
+                                         Source="{StaticResource IconDelete}"
+                                         BackgroundColor="Transparent"
+                                         WidthRequest="38"
+                                         HeightRequest="38"
+                                         Clicked="OnDeleteClicked" />
                         </Grid>
                     </Border>
                 </DataTemplate>
