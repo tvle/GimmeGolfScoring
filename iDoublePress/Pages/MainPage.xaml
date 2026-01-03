@@ -12,7 +12,7 @@
              x:DataType="pageModels:MainPageModel"
              x:Name="OverviewPage"
              AutomationId="MainPage"
-             Title="{Binding Today}">
+             Title="{ext:Translate Nav_Scoring}">
 
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
