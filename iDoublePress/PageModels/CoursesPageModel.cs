@@ -12,6 +12,8 @@ public partial class CoursesPageModel : ObservableObject
 
     public ObservableCollection<Course> Courses { get; } = new();
 
+    public int CourseCount => Courses.Count;
+
     [ObservableProperty]
     private Course? selectedCourse;
 
@@ -21,6 +23,7 @@ public partial class CoursesPageModel : ObservableObject
     public CoursesPageModel(CourseRepository courseRepository)
     {
         _courseRepository = courseRepository;
+        Courses.CollectionChanged += (_, __) => OnPropertyChanged(nameof(CourseCount));
     }
 
     [RelayCommand]
@@ -149,5 +152,29 @@ public partial class CoursesPageModel : ObservableObject
 
         await _courseRepository.DeleteItemAsync(course);
         await NavigatedToAsync();
+    }
+
+    [RelayCommand]
+    private void SortByNameAsc()
+    {
+        var sorted = Courses
+            .OrderBy(c => c.Name ?? string.Empty, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+
+        Courses.Clear();
+        foreach (var c in sorted)
+            Courses.Add(c);
+    }
+
+    [RelayCommand]
+    private void SortByNameDesc()
+    {
+        var sorted = Courses
+            .OrderByDescending(c => c.Name ?? string.Empty, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+
+        Courses.Clear();
+        foreach (var c in sorted)
+            Courses.Add(c);
     }
 }
