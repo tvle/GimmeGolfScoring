@@ -1,3 +1,4 @@
+using iDoublePress.Models;
 using iDoublePress.PageModels;
 
 namespace iDoublePress.Pages;
@@ -8,5 +9,34 @@ public partial class CoursesPage : ContentPage
     {
         InitializeComponent();
         BindingContext = model;
+    }
+
+    private CoursesPageModel? Model => BindingContext as CoursesPageModel;
+
+    private async void CopyButton_Clicked(object? sender, EventArgs e)
+    {
+        var course = (sender as Button)?.CommandParameter as Course;
+        if (Model is null)
+            return;
+
+        await Model.CopyCourseCommand.ExecuteAsync(course);
+    }
+
+    private async void EditButton_Clicked(object? sender, EventArgs e)
+    {
+        var course = (sender as Button)?.CommandParameter as Course;
+        if (Model is null)
+            return;
+
+        await Model.EditCourseCommand.ExecuteAsync(course);
+    }
+
+    private async void DeleteButton_Clicked(object? sender, EventArgs e)
+    {
+        var course = (sender as Button)?.CommandParameter as Course;
+        if (Model is null)
+            return;
+
+        await Model.DeleteCourseCommand.ExecuteAsync(course);
     }
 }
