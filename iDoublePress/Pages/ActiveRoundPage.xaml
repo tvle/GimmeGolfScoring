@@ -27,12 +27,12 @@
     </ContentPage.Resources>
 
     <Grid RowDefinitions="Auto,*,Auto,Auto"
-          RowSpacing="2">
+          RowSpacing="0">
 
         <!-- Header: Course Info with Hole Navigation -->
         <Border Grid.Row="0" 
                 Style="{StaticResource CardStyle}"
-                Margin="{StaticResource LayoutPadding}"
+                Margin="15,15,15,8"
                 Padding="12"
                 AutomationId="ActiveRoundPage.Header"
                 IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
@@ -66,13 +66,13 @@
                 </HorizontalStackLayout>
 
                 <!-- Hole Numbers and Scores with Active Indicator -->
-                <Grid Grid.Row="2" RowDefinitions="Auto,Auto" RowSpacing="0">
+                <Grid Grid.Row="2" RowDefinitions="Auto,Auto" RowSpacing="0" HorizontalOptions="CenterAndExpand">
                     <!-- Scores Row -->
                     <CollectionView Grid.Row="0"
                                    ItemsSource="{Binding CurrentRound.Holes}"
                                    HorizontalOptions="Fill"
                                    VerticalOptions="Start"
-                                   HeightRequest="20"
+                                   HeightRequest="24"
                                    ItemsUpdatingScrollMode="KeepScrollOffset"
                                    HorizontalScrollBarVisibility="Never">
                         <CollectionView.ItemsLayout>
@@ -90,7 +90,7 @@
                                             BackgroundColor="Transparent"
                                             BorderWidth="0"
                                             CornerRadius="0"
-                                            HeightRequest="20"
+                                            HeightRequest="24"
                                             WidthRequest="{Binding HoleNumber, Converter={StaticResource HoleNumberWidthConverter}}"
                                             HorizontalOptions="Fill"
                                             VerticalOptions="Center"
@@ -177,23 +177,27 @@
         <Grid Grid.Row="1"
               AutomationId="ActiveRoundPage.Scorecard"
               IsVisible="{Binding CurrentHole, Converter={StaticResource IsNotNullConverter}}"
-              Padding="{StaticResource LayoutPadding}">
+              Padding="15,0,15,0">
 
             <Border Style="{StaticResource CardStyle}" Padding="10">
                 <Grid RowDefinitions="Auto,Auto,*,Auto"
                       RowSpacing="6">
 
                     <!-- Compact top row: hole number (left) / FH (center) / Par (right) -->
-                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" VerticalOptions="Center">
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto,*" ColumnSpacing="10" VerticalOptions="Center">
                         <Label Grid.Column="0"
                                Text="{Binding CurrentHoleNumberDisplay}"
                                Style="{StaticResource Title1}"
                                FontSize="32"
+                               HorizontalOptions="Start"
                                VerticalOptions="Center"
                                AutomationId="ActiveRoundPage.HoleNumber" />
 
-                        <HorizontalStackLayout Grid.Column="1" Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Label Text="FH" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="14" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Text="FH" 
+                                   Style="{StaticResource Title3}" 
+                                   HorizontalTextAlignment="Center"
+                                   FontSize="14" />
                             <sf:SfSegmentedControl x:Name="FairwaySegmentedControl"
                                                    SegmentHeight="28"
                                                    SegmentWidth="52"
@@ -208,11 +212,12 @@
                                     </x:Array>
                                 </sf:SfSegmentedControl.ItemsSource>
                             </sf:SfSegmentedControl>
-                        </HorizontalStackLayout>
+                        </VerticalStackLayout>
 
                         <Label Grid.Column="2"
                                Text="{Binding CurrentParNumberDisplay}"
                                Style="{StaticResource Title2}"
+                               HorizontalOptions="End"
                                VerticalOptions="Center"
                                AutomationId="ActiveRoundPage.Par" />
                     </Grid>
@@ -291,13 +296,13 @@
                         </VerticalStackLayout>
 
                         <!-- Center score controls -->
-                        <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="12" VerticalOptions="Fill">
+                        <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="2" VerticalOptions="Fill">
                             <Button Grid.Row="0"
                                     Text="-"
                                     AutomationId="ActiveRoundPage.DecreaseScore"
                                     Command="{Binding DecreaseScoreCommand}"
                                     IsEnabled="{Binding CanDecreaseScore}"
-                                    HeightRequest="44"
+                                    HeightRequest="40"
                                     Padding="0"
                                     FontSize="28"
                                     Margin="0" />
@@ -321,7 +326,7 @@
                                     Text="+"
                                     AutomationId="ActiveRoundPage.IncreaseScore"
                                     Command="{Binding IncreaseScoreCommand}"
-                                    HeightRequest="44"
+                                    HeightRequest="40"
                                     Padding="0"
                                     FontSize="28"
                                     Margin="0" />
@@ -363,7 +368,7 @@
 
         <Border Grid.Row="2" 
                 Style="{StaticResource CardStyle}"
-                Margin="{StaticResource LayoutPadding}"
+                Margin="15,8,15,8"
                 Padding="12"
                 AutomationId="ActiveRoundPage.NavigationBar"
                 IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
@@ -399,7 +404,7 @@
         <!-- Bottom Action Buttons -->
         <Grid Grid.Row="3" 
               ColumnDefinitions="*,*"
-              Padding="{StaticResource LayoutPadding}"
+              Padding="15,0,15,15"
               ColumnSpacing="10"
               RowSpacing="0"
               AutomationId="ActiveRoundPage.Actions"
