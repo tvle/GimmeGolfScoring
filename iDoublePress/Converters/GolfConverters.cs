@@ -1,4 +1,5 @@
 using System.Globalization;
+using iDoublePress.Models;
 
 namespace iDoublePress.Converters;
 
@@ -55,6 +56,59 @@ public class IsNotZeroConverter : IValueConverter
             return intValue != 0;
         }
         return false;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class HoleNumberWidthConverter : IValueConverter
+{
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is int holeNumber)
+        {
+            // Tight widths for the header strip; must accommodate Button internal text layout.
+            // Single digits are narrower; double digits need a bit more room.
+            return holeNumber >= 10 ? 17.0 : 13.0;
+        }
+        return 13.0;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class IsActiveHoleConverter : IMultiValueConverter
+{
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (values.Length == 2 && values[0] is int holeNumber && values[1] is int currentHoleIndex)
+        {
+            return holeNumber == currentHoleIndex + 1;
+        }
+        return false;
+    }
+
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class HoleScoreDisplayConverter : IValueConverter
+{
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is Hole hole)
+        {
+            return hole.IsScored ? hole.Score.ToString() : "–";
+        }
+        return "–";
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

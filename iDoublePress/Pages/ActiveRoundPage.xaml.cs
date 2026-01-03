@@ -10,11 +10,16 @@ public partial class ActiveRoundPage : ContentPage
         InitializeComponent();
         BindingContext = viewModel;
 
-        Loaded += (_, __) => ApplyFairwaySegmentTheme();
+        Loaded += OnPageLoaded;
         if (Application.Current != null)
         {
             Application.Current.RequestedThemeChanged += (_, __) => ApplyFairwaySegmentTheme();
         }
+    }
+
+    private void OnPageLoaded(object? sender, EventArgs e)
+    {
+        ApplyFairwaySegmentTheme();
     }
 
     private void ApplyFairwaySegmentTheme()

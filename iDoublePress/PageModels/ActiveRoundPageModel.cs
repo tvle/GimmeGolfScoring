@@ -366,6 +366,20 @@ public partial class ActiveRoundPageModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task NavigateToHole(int holeIndex)
+    {
+        if (CurrentRound == null) return;
+        if (holeIndex < 0 || holeIndex >= CurrentRound.Holes.Count) return;
+        if (holeIndex == CurrentHoleIndex) return;
+
+        await SaveCurrentHole();
+        CurrentHoleIndex = holeIndex;
+        CurrentHole = CurrentRound.Holes[CurrentHoleIndex];
+        EnsureStatsDefaults(CurrentHole);
+        UpdateDisplay();
+    }
+
+    [RelayCommand]
     private async Task AbandonRound()
     {
         if (CurrentRound == null) return;
