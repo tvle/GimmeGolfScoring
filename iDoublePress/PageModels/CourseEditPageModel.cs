@@ -1,4 +1,6 @@
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using iDoublePress.Data;
@@ -23,6 +25,9 @@ public partial class CourseEditPageModel : ObservableObject
     [ObservableProperty]
     private bool isNewCourse;
 
+    [ObservableProperty]
+    private int totalPar;
+
     public ObservableCollection<CourseHole> Holes { get; } = new();
 
     [ObservableProperty]
@@ -31,6 +36,41 @@ public partial class CourseEditPageModel : ObservableObject
     public CourseEditPageModel(CourseRepository courseRepository)
     {
         _courseRepository = courseRepository;
+        Holes.CollectionChanged += OnHolesCollectionChanged;
+    }
+
+    private void OnHolesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.OldItems != null)
+        {
+            foreach (CourseHole hole in e.OldItems)
+            {
+                hole.PropertyChanged -= OnHolePropertyChanged;
+            }
+        }
+
+        if (e.NewItems != null)
+        {
+            foreach (CourseHole hole in e.NewItems)
+            {
+                hole.PropertyChanged += OnHolePropertyChanged;
+            }
+        }
+
+        UpdateTotalPar();
+    }
+
+    private void OnHolePropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(CourseHole.Par))
+        {
+            UpdateTotalPar();
+        }
+    }
+
+    private void UpdateTotalPar()
+    {
+        TotalPar = Holes.Sum(h => h.Par);
     }
 
     [RelayCommand]

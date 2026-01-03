@@ -19,65 +19,76 @@
 
     <Grid Padding="{StaticResource LayoutPadding}" RowDefinitions="Auto,*">
         <Border Style="{StaticResource CardStyle}" Grid.Row="0" Margin="0,0,0,10">
-            <VerticalStackLayout Spacing="10">
-                <Label Text="{ext:Translate CourseName}" Style="{StaticResource Caption1Strong}" />
-                <Entry Text="{Binding Name}" Placeholder="{ext:Translate CourseName}" />
-                
-                <!-- Hole Count Selection - Only visible for new courses -->
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" IsVisible="{Binding IsNewCourse}">
-                    <Border Grid.Column="0" 
-                            Style="{StaticResource CardStyle}"
-                            Padding="10"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource LightSecondaryBackground}, Dark={StaticResource DarkSecondaryBackground}}">
-                        <Border.Triggers>
-                            <DataTrigger TargetType="Border" Binding="{Binding NumberOfHoles}" Value="9">
-                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                            </DataTrigger>
-                        </Border.Triggers>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SetHoleCountCommand}" CommandParameter="9" />
-                        </Border.GestureRecognizers>
-                        <Label Text="9 Holes" 
-                               HorizontalTextAlignment="Center" 
-                               VerticalTextAlignment="Center"
-                               Style="{StaticResource Title3}">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label" Binding="{Binding NumberOfHoles}" Value="9">
-                                    <Setter Property="TextColor" Value="White" />
-                                    <Setter Property="FontAttributes" Value="Bold" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                    </Border>
+            <Grid>
+                <VerticalStackLayout Spacing="10">
+                    <Entry Text="{Binding Name}" Placeholder="{ext:Translate CourseName}" />
                     
-                    <Border Grid.Column="1" 
-                            Style="{StaticResource CardStyle}"
-                            Padding="10"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource LightSecondaryBackground}, Dark={StaticResource DarkSecondaryBackground}}">
-                        <Border.Triggers>
-                            <DataTrigger TargetType="Border" Binding="{Binding NumberOfHoles}" Value="18">
-                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                            </DataTrigger>
-                        </Border.Triggers>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SetHoleCountCommand}" CommandParameter="18" />
-                        </Border.GestureRecognizers>
-                        <Label Text="18 Holes" 
-                               HorizontalTextAlignment="Center" 
-                               VerticalTextAlignment="Center"
-                               Style="{StaticResource Title3}">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label" Binding="{Binding NumberOfHoles}" Value="18">
-                                    <Setter Property="TextColor" Value="White" />
-                                    <Setter Property="FontAttributes" Value="Bold" />
+                    <!-- Hole Count Selection - Only visible for new courses -->
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10" IsVisible="{Binding IsNewCourse}">
+                        <Border Grid.Column="0" 
+                                Style="{StaticResource CardStyle}"
+                                Padding="10"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource LightSecondaryBackground}, Dark={StaticResource DarkSecondaryBackground}}">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding NumberOfHoles}" Value="9">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
                                 </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                    </Border>
-                </Grid>
-                
-                <Button Text="{ext:Translate Save}" Command="{Binding SaveCommand}" />
-            </VerticalStackLayout>
+                            </Border.Triggers>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SetHoleCountCommand}" CommandParameter="9" />
+                            </Border.GestureRecognizers>
+                            <Label Text="9 Holes" 
+                                   HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center"
+                                   Style="{StaticResource Title3}">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding NumberOfHoles}" Value="9">
+                                        <Setter Property="TextColor" Value="White" />
+                                        <Setter Property="FontAttributes" Value="Bold" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                        
+                        <!-- Total Par in center -->
+                        <Label Grid.Column="1"
+                               Text="{Binding TotalPar, StringFormat='{0}'}"
+                               Style="{StaticResource Title2}"
+                               FontSize="28"
+                               TextColor="{StaticResource Primary}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Margin="10,0" />
+                        
+                        <Border Grid.Column="2" 
+                                Style="{StaticResource CardStyle}"
+                                Padding="10"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource LightSecondaryBackground}, Dark={StaticResource DarkSecondaryBackground}}">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding NumberOfHoles}" Value="18">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SetHoleCountCommand}" CommandParameter="18" />
+                            </Border.GestureRecognizers>
+                            <Label Text="18 Holes" 
+                                   HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center"
+                                   Style="{StaticResource Title3}">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding NumberOfHoles}" Value="18">
+                                        <Setter Property="TextColor" Value="White" />
+                                        <Setter Property="FontAttributes" Value="Bold" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </Grid>
+                    
+                    <Button Text="{ext:Translate Save}" Command="{Binding SaveCommand}" />
+				</VerticalStackLayout>
+            </Grid>
         </Border>
 
         <CollectionView Grid.Row="1" ItemsSource="{Binding Holes}">

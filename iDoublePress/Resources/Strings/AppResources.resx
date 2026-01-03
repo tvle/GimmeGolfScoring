@@ -419,4 +419,8 @@ Resume it?</value>
     <value>Save</value>
     <comment>Save button text</comment>
   </data>
+  <data name="TotalPar" xml:space="preserve">
+    <value>Total Par</value>
+    <comment>Total par for the course</comment>
+  </data>
 </root>

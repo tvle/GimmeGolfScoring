@@ -677,6 +677,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Par.
+        /// </summary>
+        public static string TotalPar {
+            get {
+                return ResourceManager.GetString("TotalPar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Triple Bogey.
         /// </summary>
         public static string TripleBogey {
