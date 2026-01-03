@@ -35,6 +35,11 @@ public partial class ActiveRoundPageModel : ObservableObject
     public string TotalScoreDisplay =>
         CurrentRound?.ScoreDisplay ?? "E";
 
+    public string CourseParDisplay =>
+        CurrentRound?.Course?.TotalPar != null 
+            ? string.Format(AppResources.CourseParFormat, CurrentRound.Course.TotalPar)
+            : string.Empty;
+
     public string HolesCompleted =>
         CurrentRound != null ? $"{CurrentHoleIndex + 1}/{CurrentRound.Holes.Count}" : "0/18";
 
@@ -471,6 +476,7 @@ public partial class ActiveRoundPageModel : ObservableObject
     private void UpdateDisplay()
     {
         OnPropertyChanged(nameof(TotalScoreDisplay));
+        OnPropertyChanged(nameof(CourseParDisplay));
         OnPropertyChanged(nameof(HolesCompleted));
         OnPropertyChanged(nameof(CurrentHoleDisplay));
         OnPropertyChanged(nameof(CurrentParDisplay));

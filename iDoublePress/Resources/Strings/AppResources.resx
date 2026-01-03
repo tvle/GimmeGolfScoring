@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -236,6 +236,10 @@ Resume it?</value>
   <data name="ParFormat" xml:space="preserve">
     <value>Par {0}</value>
     <comment>Par value display. {0}=par value</comment>
+  </data>
+  <data name="CourseParFormat" xml:space="preserve">
+    <value>(Par {0})</value>
+    <comment>Course total par display in parentheses. {0}=total par for course</comment>
   </data>
   
   <!-- Error Messages -->

@@ -36,7 +36,7 @@
                 Padding="12"
                 AutomationId="ActiveRoundPage.Header"
                 IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
-            <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="4">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="4">
                 <!-- Course Name - Centered and Truncated -->
                 <Label Grid.Row="0"
                        Text="{Binding CurrentRound.Course.Name, FallbackValue='Standard Course'}" 
@@ -47,11 +47,21 @@
                        LineBreakMode="TailTruncation"
                        MaxLines="1"/>
 
+                <!-- Course Par - Centered below course name -->
+                <Label Grid.Row="1"
+                       Text="{Binding CourseParDisplay}" 
+                       AutomationId="ActiveRoundPage.CoursePar"
+                       Style="{StaticResource Caption1}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"
+                       Margin="0,-4,0,0"/>
+
                 <!-- Score and Score Display -->
-                <HorizontalStackLayout Grid.Row="1" 
+                <HorizontalStackLayout Grid.Row="2" 
                                       HorizontalOptions="Center" 
                                       Spacing="6"
-                                      Margin="0,2,0,0">
+                                      Margin="0,-20,0,0">
                     <Label Text="{Binding CurrentRound.TotalScore, FallbackValue='4'}" 
                            AutomationId="ActiveRoundPage.TotalScore"
                            Style="{StaticResource Display}"
@@ -66,7 +76,7 @@
                 </HorizontalStackLayout>
 
                 <!-- Hole Numbers and Scores with Active Indicator -->
-                <Grid Grid.Row="2" RowDefinitions="Auto,Auto" RowSpacing="0" HorizontalOptions="CenterAndExpand">
+                <Grid Grid.Row="3" RowDefinitions="Auto,Auto" RowSpacing="0" HorizontalOptions="CenterAndExpand">
                     <!-- Scores Row -->
                     <CollectionView Grid.Row="0"
                                    ItemsSource="{Binding CurrentRound.Holes}"
@@ -76,7 +86,7 @@
                                    ItemsUpdatingScrollMode="KeepScrollOffset"
                                    HorizontalScrollBarVisibility="Never">
                         <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="0"/>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="1"/>
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:Hole">
@@ -84,7 +94,7 @@
                                       HorizontalOptions="Start"
                                       VerticalOptions="Center">
                                     <Button FontFamily="OpenSansRegular"
-                                            FontSize="15"
+                                            FontSize="20"
                                             Padding="0"
                                             Margin="0"
                                             BackgroundColor="Transparent"
@@ -111,7 +121,7 @@
                                                 </DataTrigger.Binding>
                                                 <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                                                 <Setter Property="FontAttributes" Value="Bold"/>
-                                                <Setter Property="FontSize" Value="17"/>
+                                                <Setter Property="FontSize" Value="24"/>
                                             </DataTrigger>
                                         </Button.Triggers>
                                     </Button>
@@ -129,7 +139,7 @@
                                    ItemsUpdatingScrollMode="KeepScrollOffset"
                                    HorizontalScrollBarVisibility="Never">
                         <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="0"/>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="1"/>
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:Hole">
@@ -159,7 +169,7 @@
                                                         <Binding Path="CurrentHoleIndex" Source="{RelativeSource AncestorType={x:Type pageModels:ActiveRoundPageModel}}"/>
                                                     </MultiBinding>
                                                 </DataTrigger.Binding>
-                                                <Setter Property="FontSize" Value="17"/>
+                                                <Setter Property="FontSize" Value="13"/>
                                                 <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                                                 <Setter Property="FontAttributes" Value="Bold"/>
                                             </DataTrigger>
@@ -319,7 +329,9 @@
                                        Style="{StaticResource Display}"
                                        TextColor="White"
                                        VerticalOptions="Center"
-                                       HorizontalTextAlignment="Center" />
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"
+                                       Margin="0,-12,0,0"/>
                             </Border>
 
                             <Button Grid.Row="2"

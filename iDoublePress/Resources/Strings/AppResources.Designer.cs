@@ -160,6 +160,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Par {0}).
+        /// </summary>
+        public static string CourseParFormat {
+            get {
+                return ResourceManager.GetString("CourseParFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} day ago.
         /// </summary>
         public static string DayAgo {
