@@ -28,6 +28,12 @@ public partial class CourseEditPageModel : ObservableObject
     [ObservableProperty]
     private int totalPar;
 
+    [ObservableProperty]
+    private string? courseRating;
+
+    [ObservableProperty]
+    private string? slope;
+
     public ObservableCollection<CourseHole> Holes { get; } = new();
 
     [ObservableProperty]
@@ -94,6 +100,8 @@ public partial class CourseEditPageModel : ObservableObject
 
                 Name = course.Name;
                 NumberOfHoles = course.Holes;
+                CourseRating = course.Rating.HasValue ? course.Rating.Value.ToString("F1") : string.Empty;
+                Slope = course.Slope.HasValue ? course.Slope.Value.ToString() : string.Empty;
 
                 Holes.Clear();
                 foreach (var h in course.CourseHoles.OrderBy(h => h.HoleNumber))
@@ -105,6 +113,8 @@ public partial class CourseEditPageModel : ObservableObject
                 IsNewCourse = true;
                 Name = string.Empty;
                 NumberOfHoles = 18;
+                CourseRating = string.Empty;
+                Slope = string.Empty;
                 InitializeHoles();
             }
         }
@@ -223,6 +233,38 @@ public partial class CourseEditPageModel : ObservableObject
             course.Holes = NumberOfHoles;
             course.CourseHoles = Holes.OrderBy(h => h.HoleNumber).ToList();
             course.TotalPar = course.CourseHoles.Sum(h => h.Par);
+
+            // Parse and validate Course Rating (CR)
+            if (!string.IsNullOrWhiteSpace(CourseRating))
+            {
+                if (decimal.TryParse(CourseRating, out decimal cr))
+                {
+                    if (cr >= 60.0m && cr <= 80.0m)
+                    {
+                        course.Rating = cr;
+                    }
+                }
+            }
+            else
+            {
+                course.Rating = null;
+            }
+
+            // Parse and validate Slope
+            if (!string.IsNullOrWhiteSpace(Slope))
+            {
+                if (int.TryParse(Slope, out int slopeValue))
+                {
+                    if (slopeValue >= 55 && slopeValue <= 155)
+                    {
+                        course.Slope = slopeValue;
+                    }
+                }
+            }
+            else
+            {
+                course.Slope = null;
+            }
 
             await _courseRepository.SaveItemAsync(course);
             await Shell.Current.GoToAsync("..");

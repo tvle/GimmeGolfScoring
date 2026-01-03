@@ -423,4 +423,20 @@ Resume it?</value>
     <value>Total Par</value>
     <comment>Total par for the course</comment>
   </data>
+  <data name="CourseRating" xml:space="preserve">
+    <value>CR</value>
+    <comment>Course rating input field label</comment>
+  </data>
+  <data name="SlopeRating" xml:space="preserve">
+    <value>Slope</value>
+    <comment>Slope rating input field label</comment>
+  </data>
+  <data name="CourseRatingPlaceholder" xml:space="preserve">
+    <value>71.2</value>
+    <comment>Placeholder text for course rating input</comment>
+  </data>
+  <data name="SlopeRatingPlaceholder" xml:space="preserve">
+    <value>113</value>
+    <comment>Placeholder text for slope rating input</comment>
+  </data>
 </root>

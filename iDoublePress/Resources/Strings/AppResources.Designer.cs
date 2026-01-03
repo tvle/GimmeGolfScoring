@@ -178,6 +178,24 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CR.
+        /// </summary>
+        public static string CourseRating {
+            get {
+                return ResourceManager.GetString("CourseRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 71.2.
+        /// </summary>
+        public static string CourseRatingPlaceholder {
+            get {
+                return ResourceManager.GetString("CourseRatingPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Courses.
         /// </summary>
         public static string Courses {
@@ -601,6 +619,24 @@ namespace iDoublePress.Resources.Strings {
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slope.
+        /// </summary>
+        public static string SlopeRating {
+            get {
+                return ResourceManager.GetString("SlopeRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 113.
+        /// </summary>
+        public static string SlopeRatingPlaceholder {
+            get {
+                return ResourceManager.GetString("SlopeRatingPlaceholder", resourceCulture);
             }
         }
         
