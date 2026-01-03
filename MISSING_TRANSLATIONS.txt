@@ -1,0 +1,30 @@
+Add these entries to iDoublePress\Resources\Strings\AppResources.resx
+(and to all other language .resx files):
+
+Add before the "<!-- Theme -->" section:
+
+  <!-- Courses -->
+  <data name="Courses" xml:space="preserve">
+    <value>Courses</value>
+    <comment>Courses page title</comment>
+  </data>
+  <data name="CourseName" xml:space="preserve">
+    <value>Course Name</value>
+    <comment>Label for course name input field</comment>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+    <comment>Save button text</comment>
+  </data>
+
+For other language files, translate the <value> content appropriately:
+- Spanish (es): Cursos, Nombre del Campo, Guardar
+- French (fr): Cours, Nom du Parcours, Enregistrer
+- German (de): Plätze, Platzname, Speichern
+- Italian (it): Campi, Nome del Campo, Salva
+- Swedish (sv): Banor, Bannamn, Spara
+- Japanese (ja): ???, ????, ??
+- Chinese (zh-Hans): ??, ????, ??
+- Korean (ko): ??, ?? ??, ??
+- Thai (th): ????, ????????, ??????
+- Vietnamese (vi): Sân, Tên Sân, L?u

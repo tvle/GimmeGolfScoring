@@ -52,4 +52,10 @@ public partial class CoursesPageModel : ObservableObject
         SelectedCourse = null;
         await Shell.Current.GoToAsync($"course-edit?courseId={course.ID}");
     }
+
+    [RelayCommand]
+    private async Task AddCourseAsync()
+    {
+        await Shell.Current.GoToAsync("course-edit");
+    }
 }

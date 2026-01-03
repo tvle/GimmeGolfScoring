@@ -35,6 +35,22 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <!-- Floating Add Button -->
+        <Button Text="+"
+                Command="{Binding AddCourseCommand}"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                WidthRequest="56"
+                HeightRequest="56"
+                CornerRadius="28"
+                FontSize="32"
+                Padding="0"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,16,16"
+                AutomationId="CoursesPage.AddCourse"
+                Shadow="{Shadow Brush={StaticResource Gray900}, Offset='0,2', Radius='8', Opacity='0.3'}" />
     </Grid>
 
 </ContentPage>

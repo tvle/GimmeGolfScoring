@@ -160,11 +160,29 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Course Name.
+        /// </summary>
+        public static string CourseName {
+            get {
+                return ResourceManager.GetString("CourseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (Par {0}).
         /// </summary>
         public static string CourseParFormat {
             get {
                 return ResourceManager.GetString("CourseParFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Courses.
+        /// </summary>
+        public static string Courses {
+            get {
+                return ResourceManager.GetString("Courses", resourceCulture);
             }
         }
         
@@ -520,6 +538,15 @@ namespace iDoublePress.Resources.Strings {
         public static string Rounds {
             get {
                 return ResourceManager.GetString("Rounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
