@@ -93,10 +93,10 @@
                         <Grid Grid.Column="0" ColumnDefinitions="Auto,*" ColumnSpacing="10">
                             <Label Grid.Column="0" 
                                    Text="{ext:Translate CourseRating}" 
-                                   Style="{StaticResource Caption}"
+                                   Style="{StaticResource Caption1}"
                                    VerticalOptions="Center" />
                             <Entry Grid.Column="1"
-                                   Text="{Binding CourseRating}" 
+                                   Text="{Binding CourseRating, Mode=TwoWay, TargetNullValue=''}" 
                                    Placeholder="{ext:Translate CourseRatingPlaceholder}"
                                    Keyboard="Numeric" />
                         </Grid>
@@ -104,10 +104,10 @@
                         <Grid Grid.Column="1" ColumnDefinitions="Auto,*" ColumnSpacing="10">
                             <Label Grid.Column="0" 
                                    Text="{ext:Translate SlopeRating}" 
-                                   Style="{StaticResource Caption}"
+                                   Style="{StaticResource Caption1}"
                                    VerticalOptions="Center" />
                             <Entry Grid.Column="1"
-                                   Text="{Binding Slope}" 
+                                   Text="{Binding Slope, Mode=TwoWay, TargetNullValue=''}" 
                                    Placeholder="{ext:Translate SlopeRatingPlaceholder}"
                                    Keyboard="Numeric" />
                         </Grid>
