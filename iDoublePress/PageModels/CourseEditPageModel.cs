@@ -87,6 +87,7 @@ public partial class CourseEditPageModel : ObservableObject
             {
                 // Editing existing course
                 IsNewCourse = false;
+                
                 var course = await _courseRepository.GetAsync(CourseId);
                 if (course is null)
                     return;
@@ -116,7 +117,7 @@ public partial class CourseEditPageModel : ObservableObject
     [RelayCommand]
     private void SetHoleCount(object? parameter)
     {
-        if (parameter is null || !IsNewCourse)
+        if (parameter is null)
             return;
 
         if (!int.TryParse(parameter.ToString(), out int holeCount))
@@ -126,7 +127,36 @@ public partial class CourseEditPageModel : ObservableObject
             return;
 
         NumberOfHoles = holeCount;
-        InitializeHoles();
+        
+        // For existing courses, add or remove holes as needed
+        if (!IsNewCourse)
+        {
+            if (holeCount > Holes.Count)
+            {
+                // Add holes
+                for (int i = Holes.Count + 1; i <= holeCount; i++)
+                {
+                    Holes.Add(new CourseHole
+                    {
+                        HoleNumber = i,
+                        Par = 4
+                    });
+                }
+            }
+            else if (holeCount < Holes.Count)
+            {
+                // Remove holes from the end
+                while (Holes.Count > holeCount)
+                {
+                    Holes.RemoveAt(Holes.Count - 1);
+                }
+            }
+        }
+        else
+        {
+            // For new courses, reinitialize all holes
+            InitializeHoles();
+        }
     }
 
     private void InitializeHoles()

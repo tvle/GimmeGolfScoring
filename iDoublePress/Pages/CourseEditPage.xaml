@@ -23,8 +23,8 @@
                 <VerticalStackLayout Spacing="10">
                     <Entry Text="{Binding Name}" Placeholder="{ext:Translate CourseName}" />
                     
-                    <!-- Hole Count Selection - Only visible for new courses -->
-                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10" IsVisible="{Binding IsNewCourse}">
+                    <!-- Hole Count Selection -->
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
                         <Border Grid.Column="0" 
                                 Style="{StaticResource CardStyle}"
                                 Padding="10"
