@@ -22,6 +22,9 @@ public partial class CoursesPageModel : ObservableObject
     [ObservableProperty]
     private bool isBusy;
 
+    // Tracks the current sort direction: true = ascending, false = descending, null = no explicit sort
+    private bool? _isSortAscending;
+
     public CoursesPageModel(CourseRepository courseRepository, RoundRepository roundRepository)
     {
         _courseRepository = courseRepository;
@@ -54,6 +57,10 @@ public partial class CoursesPageModel : ObservableObject
                 var lastPlayed = lastPlayedByCourse.TryGetValue(c.ID, out var date) ? date : (DateTime?)null;
                 Courses.Add(new CourseWithLastPlayed(c, lastPlayed));
             }
+
+            // Re-apply any previously selected sort so ordering is preserved when returning
+            if (_isSortAscending.HasValue)
+                ApplySort();
         }
         finally
         {
@@ -173,12 +180,25 @@ public partial class CoursesPageModel : ObservableObject
         await NavigatedToAsync();
     }
 
-    [RelayCommand]
-    private void SortByNameAsc()
+    // Apply the current sort to the Courses collection
+    private void ApplySort()
     {
-        var sorted = Courses
-            .OrderBy(c => c.Name ?? string.Empty, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
+        if (!_isSortAscending.HasValue)
+            return;
+
+        List<CourseWithLastPlayed> sorted;
+        if (_isSortAscending.Value)
+        {
+            sorted = Courses
+                .OrderBy(c => c.Name ?? string.Empty, StringComparer.CurrentCultureIgnoreCase)
+                .ToList();
+        }
+        else
+        {
+            sorted = Courses
+                .OrderByDescending(c => c.Name ?? string.Empty, StringComparer.CurrentCultureIgnoreCase)
+                .ToList();
+        }
 
         Courses.Clear();
         foreach (var c in sorted)
@@ -186,14 +206,16 @@ public partial class CoursesPageModel : ObservableObject
     }
 
     [RelayCommand]
+    private void SortByNameAsc()
+    {
+        _isSortAscending = true;
+        ApplySort();
+    }
+
+    [RelayCommand]
     private void SortByNameDesc()
     {
-        var sorted = Courses
-            .OrderByDescending(c => c.Name ?? string.Empty, StringComparer.CurrentCultureIgnoreCase)
-            .ToList();
-
-        Courses.Clear();
-        foreach (var c in sorted)
-            Courses.Add(c);
+        _isSortAscending = false;
+        ApplySort();
     }
 }
