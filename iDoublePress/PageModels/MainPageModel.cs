@@ -145,72 +145,40 @@ public partial class MainPageModel : ObservableObject
 				return;
 			}
 
-			// Check for in-progress rounds (plural)
+			// Check for in-progress rounds
 			var inProgressRounds = await _roundRepository.GetInProgressRoundsAsync(player.ID);
 			if (inProgressRounds.Any())
 			{
-				if (inProgressRounds.Count == 1)
+				// Show in-progress rounds picker UI that supports per-item delete
+				var picker = new InProgressRoundsPage(inProgressRounds, async roundToDelete =>
 				{
-					// Single in-progress round - show simple dialog
-					var inProgressRound = inProgressRounds[0];
-					var timeAgo = GetTimeAgo(inProgressRound.StartTime);
-					var holesCompleted = inProgressRound.Holes.Count(h => h.IsScored);
-					var totalHoles = inProgressRound.Holes.Count;
-					
-					var message = string.Format(
-						AppResources.ResumeRoundMessage,
-						inProgressRound.Course?.Name,
-						timeAgo,
-						holesCompleted,
-						totalHoles);
-					
-					var resume = await Shell.Current.DisplayAlert(
-						AppResources.ResumeRoundTitle,
-						message,
-						AppResources.Resume,
-						AppResources.StartNew);
+					await _roundRepository.DeleteItemAsync(roundToDelete);
+				});
 
-					if (resume)
-					{
-						var nextHoleIndex = inProgressRound.Holes.FindIndex(h => !h.IsScored);
-						if (nextHoleIndex < 0) nextHoleIndex = 0;
-						await Shell.Current.GoToAsync($"active-round?roundId={inProgressRound.ID}&holeIndex={nextHoleIndex}");
-						return;
-					}
+				await Shell.Current.Navigation.PushModalAsync(picker);
+				var result = await picker.GetResultAsync();
+
+				if (result.Action == InProgressRoundsResultAction.Cancel)
+					return;
+
+				// Always dismiss the modal exactly once before continuing.
+				if (Shell.Current.Navigation.ModalStack.Count > 0)
+				{
+					await Shell.Current.Navigation.PopModalAsync();
+					await Task.Delay(50);
 				}
-				else
+
+				if (result.Action == InProgressRoundsResultAction.Resume && result.Round != null)
 				{
-					// Multiple in-progress rounds - show custom picker UI that supports per-item delete
-					var picker = new InProgressRoundsPage(inProgressRounds, async roundToDelete =>
-					{
-						await _roundRepository.DeleteItemAsync(roundToDelete);
-					});
+					var nextHoleIndex = result.Round.Holes.FindIndex(h => !h.IsScored);
+					if (nextHoleIndex < 0) nextHoleIndex = 0;
+					await Shell.Current.GoToAsync($"active-round?roundId={result.Round.ID}&holeIndex={nextHoleIndex}");
+					return;
+				}
 
-					await Shell.Current.Navigation.PushModalAsync(picker);
-					var result = await picker.GetResultAsync();
-
-					if (result.Action == InProgressRoundsResultAction.Cancel)
-						return;
-
-					// Always dismiss the modal exactly once before continuing.
-					if (Shell.Current.Navigation.ModalStack.Count > 0)
-					{
-						await Shell.Current.Navigation.PopModalAsync();
-						await Task.Delay(50);
-					}
-
-					if (result.Action == InProgressRoundsResultAction.Resume && result.Round != null)
-					{
-						var nextHoleIndex = result.Round.Holes.FindIndex(h => !h.IsScored);
-						if (nextHoleIndex < 0) nextHoleIndex = 0;
-						await Shell.Current.GoToAsync($"active-round?roundId={result.Round.ID}&holeIndex={nextHoleIndex}");
-						return;
-					}
-
-					if (result.Action == InProgressRoundsResultAction.StartNew)
-					{
-						// Continue to course selection below
-					}
+				if (result.Action == InProgressRoundsResultAction.StartNew)
+				{
+					// Continue to course selection below
 				}
 			}
 
