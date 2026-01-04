@@ -12,6 +12,8 @@ public partial class Hole : ObservableObject
     public int HoleNumber { get; set; }
     public int Par { get; set; }
 
+    public int? Yardage { get; set; }
+
     [ObservableProperty]
     private int score;
 

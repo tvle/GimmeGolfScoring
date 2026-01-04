@@ -57,6 +57,7 @@ public class RoundRepository
                     RoundID INTEGER NOT NULL,
                     HoleNumber INTEGER NOT NULL,
                     Par INTEGER NOT NULL,
+                    Yardage INTEGER,
                     Score INTEGER DEFAULT 0,
                     IsScored INTEGER DEFAULT 0,
                     Putts INTEGER,
@@ -137,6 +138,14 @@ public class RoundRepository
                 _logger.LogInformation("Adding Proximity column to Hole table");
                 var addColumnCmd = connection.CreateCommand();
                 addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Proximity TEXT;";
+                await addColumnCmd.ExecuteNonQueryAsync();
+            }
+
+            if (!existingColumns.Contains("Yardage"))
+            {
+                _logger.LogInformation("Adding Yardage column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Yardage INTEGER;";
                 await addColumnCmd.ExecuteNonQueryAsync();
             }
 
@@ -265,7 +274,7 @@ public class RoundRepository
     {
         var selectHolesCmd = connection.CreateCommand();
         selectHolesCmd.CommandText = @"
-            SELECT ID, RoundID, HoleNumber, Par, Score, IsScored, Putts,
+            SELECT ID, RoundID, HoleNumber, Par, Yardage, Score, IsScored, Putts,
                    FairwayHit, FairwayResult, FairwayMissPenalty,
                    GreenInRegulation, Penalties, Proximity, Notes, CreatedAt, UpdatedAt
             FROM Hole
@@ -278,19 +287,19 @@ public class RoundRepository
         while (await reader.ReadAsync())
         {
             var fairwayResult = FairwayResult.None;
-            if (!reader.IsDBNull(8))
+            if (!reader.IsDBNull(9))
             {
-                fairwayResult = (FairwayResult)reader.GetInt32(8);
+                fairwayResult = (FairwayResult)reader.GetInt32(9);
             }
-            else if (!reader.IsDBNull(7))
+            else if (!reader.IsDBNull(8))
             {
-                fairwayResult = reader.GetInt32(7) == 1 ? FairwayResult.Fairway : FairwayResult.None;
+                fairwayResult = reader.GetInt32(8) == 1 ? FairwayResult.Fairway : FairwayResult.None;
             }
 
             char? proximity = null;
-            if (!reader.IsDBNull(12))
+            if (!reader.IsDBNull(13))
             {
-                var s = reader.GetString(12);
+                var s = reader.GetString(13);
                 if (!string.IsNullOrWhiteSpace(s))
                 {
                     var c = char.ToUpperInvariant(s.Trim()[0]);
@@ -305,17 +314,18 @@ public class RoundRepository
                 RoundID = reader.GetInt32(1),
                 HoleNumber = reader.GetInt32(2),
                 Par = reader.GetInt32(3),
-                Score = reader.GetInt32(4),
-                IsScored = reader.GetInt32(5) == 1,
-                Putts = reader.IsDBNull(6) ? null : reader.GetInt32(6),
+                Yardage = reader.IsDBNull(4) ? null : reader.GetInt32(4),
+                Score = reader.GetInt32(5),
+                IsScored = reader.GetInt32(6) == 1,
+                Putts = reader.IsDBNull(7) ? null : reader.GetInt32(7),
                 FairwayResult = fairwayResult,
-                FairwayMissPenalty = !reader.IsDBNull(9) && reader.GetInt32(9) == 1,
-                GreenInRegulation = reader.IsDBNull(10) ? null : reader.GetInt32(10) == 1,
-                Penalties = reader.GetInt32(11),
+                FairwayMissPenalty = !reader.IsDBNull(10) && reader.GetInt32(10) == 1,
+                GreenInRegulation = reader.IsDBNull(11) ? null : reader.GetInt32(11) == 1,
+                Penalties = reader.GetInt32(12),
                 Proximity = proximity,
-                Notes = reader.IsDBNull(13) ? null : reader.GetString(13),
-                CreatedAt = DateTime.Parse(reader.GetString(14)),
-                UpdatedAt = DateTime.Parse(reader.GetString(15))
+                Notes = reader.IsDBNull(14) ? null : reader.GetString(14),
+                CreatedAt = DateTime.Parse(reader.GetString(15)),
+                UpdatedAt = DateTime.Parse(reader.GetString(16))
             });
         }
 
@@ -366,6 +376,7 @@ public class RoundRepository
                 RoundID = round.ID,
                 HoleNumber = courseHole.HoleNumber,
                 Par = courseHole.Par,
+                Yardage = courseHole.Yardage,
                 Score = courseHole.Par,
                 IsScored = false,
                 CreatedAt = DateTime.Now,
@@ -435,15 +446,15 @@ public class RoundRepository
             hole.CreatedAt = DateTime.Now;
 
             saveCmd.CommandText = @"
-                INSERT INTO Hole (RoundID, HoleNumber, Par, Score, IsScored, Putts, FairwayHit, FairwayResult, FairwayMissPenalty, GreenInRegulation, Penalties, Proximity, Notes, CreatedAt, UpdatedAt)
-                VALUES (@RoundID, @HoleNumber, @Par, @Score, @IsScored, @Putts, @FairwayHit, @FairwayResult, @FairwayMissPenalty, @GreenInRegulation, @Penalties, @Proximity, @Notes, @CreatedAt, @UpdatedAt);
+                INSERT INTO Hole (RoundID, HoleNumber, Par, Yardage, Score, IsScored, Putts, FairwayHit, FairwayResult, FairwayMissPenalty, GreenInRegulation, Penalties, Proximity, Notes, CreatedAt, UpdatedAt)
+                VALUES (@RoundID, @HoleNumber, @Par, @Yardage, @Score, @IsScored, @Putts, @FairwayHit, @FairwayResult, @FairwayMissPenalty, @GreenInRegulation, @Penalties, @Proximity, @Notes, @CreatedAt, @UpdatedAt);
                 SELECT last_insert_rowid();";
         }
         else
         {
             saveCmd.CommandText = @"
                 UPDATE Hole
-                SET RoundID = @RoundID, HoleNumber = @HoleNumber, Par = @Par, Score = @Score, IsScored = @IsScored, Putts = @Putts,
+                SET RoundID = @RoundID, HoleNumber = @HoleNumber, Par = @Par, Yardage = @Yardage, Score = @Score, IsScored = @IsScored, Putts = @Putts,
                     FairwayHit = @FairwayHit,
                     FairwayResult = @FairwayResult,
                     FairwayMissPenalty = @FairwayMissPenalty,
@@ -458,6 +469,7 @@ public class RoundRepository
         saveCmd.Parameters.AddWithValue("@RoundID", hole.RoundID);
         saveCmd.Parameters.AddWithValue("@HoleNumber", hole.HoleNumber);
         saveCmd.Parameters.AddWithValue("@Par", hole.Par);
+        saveCmd.Parameters.AddWithValue("@Yardage", (object?)hole.Yardage ?? DBNull.Value);
         saveCmd.Parameters.AddWithValue("@Score", hole.Score);
         saveCmd.Parameters.AddWithValue("@IsScored", hole.IsScored ? 1 : 0);
         saveCmd.Parameters.AddWithValue("@Putts", (object?)hole.Putts ?? DBNull.Value);

@@ -395,12 +395,22 @@
                         IsEnabled="{Binding CanGoBack}"
                         HorizontalOptions="Start"/>
 
-                <Label Grid.Column="1"
-                       Text="{Binding CurrentHoleDisplay, FallbackValue='Hole 1'}"
-                       AutomationId="ActiveRoundPage.Navigation.CurrentHoleDisplay"
-                       Style="{StaticResource Title3}"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Center"/>
+                <VerticalStackLayout Grid.Column="1"
+                                    Spacing="0"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                    <Label Text="{Binding CurrentParNumberDisplay, FallbackValue='Par X'}"
+                           AutomationId="ActiveRoundPage.Navigation.CurrentParDisplay"
+                           Style="{StaticResource Title3}"
+                           HorizontalOptions="Center"/>
+
+                    <Label Text="{Binding CurrentHole.Yardage, Converter={StaticResource NullableIntToDashConverter}}"
+                           AutomationId="ActiveRoundPage.Navigation.CurrentHoleYardage"
+                           Style="{StaticResource Caption1}"
+                           FontSize="12"
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
+                </VerticalStackLayout>
 
                 <Button Grid.Column="2"
                         Text="&gt;"
