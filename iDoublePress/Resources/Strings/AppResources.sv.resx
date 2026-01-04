@@ -250,7 +250,14 @@ Den kommer inte att sparas.</value>
     <value>Avstånd &gt; 20ft</value>
     <comment>Proximity to hole - long range</comment>
   </data>
-
+<data name="Fairways" xml:space="preserve">
+  <value>Fairways</value>
+  <comment>Fairways section label</comment>
+</data>
+<data name="Proximity" xml:space="preserve">
+  <value>Avstånd</value>
+  <comment>Proximity section label</comment>
+</data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>Rundan hittades inte eller saknar hål</value>
     <comment>Error when round cannot be loaded</comment>

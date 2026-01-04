@@ -306,6 +306,14 @@ Resume it?</value>
     <value>Proximity &gt; 20ft</value>
     <comment>Proximity to hole - long range</comment>
   </data>
+  <data name="Fairways" xml:space="preserve">
+  <value>Fairways</value>
+  <comment>Fairways section label</comment>
+</data>
+<data name="Proximity" xml:space="preserve">
+  <value>Proximity</value>
+  <comment>Proximity section label</comment>
+</data>
   <!-- Error Messages -->
   <data name="RoundNotFound" xml:space="preserve">
     <value>Round not found or has no holes</value>

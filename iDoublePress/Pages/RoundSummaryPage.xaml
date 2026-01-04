@@ -142,7 +142,7 @@
                           ColumnSpacing="20">
                         
                         <Label Grid.Row="0" Grid.ColumnSpan="2"
-                               Text="Fairways"
+                               Text="{ext:Translate Fairways}"
                                Style="{StaticResource Title3}"
                                Margin="0,0,0,4" />
 
@@ -182,7 +182,7 @@
                           ColumnSpacing="20">
                         
                         <Label Grid.Row="0" Grid.ColumnSpan="2"
-                               Text="Proximity"
+                               Text="{ext:Translate Proximity}"
                                Style="{StaticResource Title3}"
                                Margin="0,0,0,4" />
 

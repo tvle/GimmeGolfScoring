@@ -250,7 +250,14 @@
     <value>攻果岭 &gt; 20英尺</value>
     <comment>Proximity to hole - long range</comment>
   </data>
-
+<data name="Fairways" xml:space="preserve">
+  <value>球道</value>
+  <comment>Fairways section label</comment>
+</data>
+<data name="Proximity" xml:space="preserve">
+  <value>攻果岭</value>
+  <comment>Proximity section label</comment>
+</data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>未找到球局或没有球洞信息</value>
     <comment>Error when round cannot be loaded</comment>

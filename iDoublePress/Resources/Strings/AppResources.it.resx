@@ -250,7 +250,14 @@ Non verrà salvato.</value>
     <value>Distanza &gt; 20ft</value>
     <comment>Proximity to hole - long range</comment>
   </data>
-
+<data name="Fairways" xml:space="preserve">
+  <value>Fairway</value>
+  <comment>Fairways section label</comment>
+</data>
+<data name="Proximity" xml:space="preserve">
+  <value>Distanza</value>
+  <comment>Proximity section label</comment>
+</data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>Giro non trovato o senza buche</value>
     <comment>Error when round cannot be loaded</comment>

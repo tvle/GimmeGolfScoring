@@ -250,7 +250,14 @@
     <value>거리 &gt; 20ft</value>
     <comment>Proximity to hole - long range</comment>
   </data>
-
+<data name="Fairways" xml:space="preserve">
+  <value>페어웨이</value>
+  <comment>Fairways section label</comment>
+</data>
+<data name="Proximity" xml:space="preserve">
+  <value>거리</value>
+  <comment>Proximity section label</comment>
+</data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>라운드를 찾을 수 없거나 홀 정보가 없습니다</value>
     <comment>Error when round cannot be loaded</comment>

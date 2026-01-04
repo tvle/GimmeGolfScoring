@@ -250,7 +250,14 @@ Dữ liệu sẽ không được lưu.</value>
     <value>Khoảng cách &gt; 20ft</value>
     <comment>Proximity to hole - long range</comment>
   </data>
-
+<data name="Fairways" xml:space="preserve">
+  <value>Fairway</value>
+  <comment>Fairways section label</comment>
+</data>
+<data name="Proximity" xml:space="preserve">
+  <value>Khoảng cách</value>
+  <comment>Proximity section label</comment>
+</data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>Không tìm thấy vòng chơi hoặc không có hố nào</value>
     <comment>Error when round cannot be loaded</comment>
