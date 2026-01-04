@@ -12,7 +12,21 @@ public partial class SelectCoursePage : ContentPage
 
     public SelectCoursePage(List<Course> courses, List<Round> rounds)
     {
-        InitializeComponent();
+        try
+        {
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"SelectCoursePage InitializeComponent failed: {ex}");
+            Content = new Label
+            {
+                Text = $"Page load error: {ex.Message}",
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            };
+        }
+
         _viewModel = new SelectCoursePageModel(courses, rounds);
         BindingContext = _viewModel;
     }

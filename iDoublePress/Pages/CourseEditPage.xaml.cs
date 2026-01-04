@@ -7,7 +7,21 @@ public partial class CourseEditPage : ContentPage
 {
     public CourseEditPage(CourseEditPageModel model)
     {
-        InitializeComponent();
+        try
+        {
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"CourseEditPage InitializeComponent failed: {ex}");
+            Content = new Label
+            {
+                Text = $"Page load error: {ex.Message}",
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            };
+        }
+
         BindingContext = model;
     }
 

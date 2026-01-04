@@ -64,7 +64,7 @@
                                        HorizontalTextAlignment="Center">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding Front9Score}" Value="{x:Null}">
-                                            <Setter Property="Text" Value="–" />
+                                            <Setter Property="Text" Value="ï¿½" />
                                         </DataTrigger>
                                     </Label.Triggers>
                                     <Label.Text>
@@ -83,7 +83,7 @@
                                        HorizontalTextAlignment="Center">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding Back9Score}" Value="{x:Null}">
-                                            <Setter Property="Text" Value="–" />
+                                            <Setter Property="Text" Value="ï¿½" />
                                         </DataTrigger>
                                     </Label.Triggers>
                                     <Label.Text>

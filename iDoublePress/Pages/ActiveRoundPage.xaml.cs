@@ -7,7 +7,21 @@ public partial class ActiveRoundPage : ContentPage
 {
     public ActiveRoundPage(ActiveRoundPageModel viewModel)
     {
-        InitializeComponent();
+        try
+        {
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"ActiveRoundPage InitializeComponent failed: {ex}");
+            Content = new Label
+            {
+                Text = $"Page load error: {ex.Message}",
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            };
+        }
+
         BindingContext = viewModel;
 
         Loaded += OnPageLoaded;

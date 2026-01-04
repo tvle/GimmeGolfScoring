@@ -97,21 +97,21 @@
 
                             <Button Grid.Row="1"
                                     Grid.Column="1"
-                                    ImageSource="{StaticResource IconCopy}"
+                                    ImageSource="{StaticResource IconCopyWhite}"
                                     Clicked="CopyButton_Clicked"
                                     CommandParameter="{Binding .}"
                                     Padding="10,4" />
 
                             <Button Grid.Row="1"
                                     Grid.Column="2"
-                                    ImageSource="{StaticResource IconEdit}"
+                                    ImageSource="{StaticResource IconEditWhite}"
                                     Clicked="EditButton_Clicked"
                                     CommandParameter="{Binding .}"
                                     Padding="10,4" />
 
                             <Button Grid.Row="1"
                                     Grid.Column="3"
-                                    ImageSource="{StaticResource IconDelete}"
+                                    ImageSource="{StaticResource IconDeleteWhite}"
                                     Clicked="DeleteButton_Clicked"
                                     CommandParameter="{Binding .}"
                                     Padding="10,4" />

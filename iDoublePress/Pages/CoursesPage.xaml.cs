@@ -7,7 +7,21 @@ public partial class CoursesPage : ContentPage
 {
     public CoursesPage(CoursesPageModel model)
     {
-        InitializeComponent();
+        try
+        {
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"CoursesPage InitializeComponent failed: {ex}");
+            Content = new Label
+            {
+                Text = $"Page load error: {ex.Message}",
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            };
+        }
+
         BindingContext = model;
     }
 

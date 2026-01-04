@@ -75,7 +75,7 @@
                                     </DataTrigger>
                                 </Label.Triggers>
                                 <Label.Text>
-                                    <Binding Path="TotalYardage" StringFormat="{0}" />
+                                    <Binding Path="TotalYardage" StringFormat="{}{0}" />
                                 </Label.Text>
                             </Label>
                         </VerticalStackLayout>
@@ -142,7 +142,7 @@
                     <Border Style="{StaticResource CardStyle}" Margin="0,5">
                         <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto" ColumnSpacing="10" VerticalOptions="Center" Padding="10">
                             <Label Grid.Column="0"
-                                   Text="{Binding HoleNumber, StringFormat='#{0}'}" 
+                                   Text="{Binding HoleNumber, StringFormat='#{}{0}'}" 
                                    VerticalOptions="Center" 
                                    Style="{StaticResource Title3}"
                                    MinimumWidthRequest="40" />

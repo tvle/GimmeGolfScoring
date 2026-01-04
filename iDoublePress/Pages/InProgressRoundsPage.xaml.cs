@@ -22,7 +22,20 @@ public partial class InProgressRoundsPage : ContentPage
 
     public InProgressRoundsPage(List<Round> rounds, Func<Round, Task> deleteRound)
     {
-        InitializeComponent();
+        try
+        {
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"InProgressRoundsPage InitializeComponent failed: {ex}");
+            Content = new Label
+            {
+                Text = $"Page load error: {ex.Message}",
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            };
+        }
         _deleteRound = deleteRound;
         BindingContext = new InProgressRoundsPageModel(rounds);
     }

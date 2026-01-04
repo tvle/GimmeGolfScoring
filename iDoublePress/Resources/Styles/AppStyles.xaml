@@ -92,16 +92,34 @@
                 Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
                 Size="{StaticResource IconSize}" />
 
+    <FontImageSource x:Key="IconCopyWhite"
+                Glyph="{x:Static f:FluentUI.copy_24_regular}"
+                FontFamily="{x:Static f:FluentUI.FontFamily}"
+                Color="White"
+                Size="{StaticResource IconSize}" />
+
     <FontImageSource x:Key="IconEdit"
                 Glyph="{x:Static f:FluentUI.edit_24_regular}"
                 FontFamily="{x:Static f:FluentUI.FontFamily}"
                 Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
                 Size="{StaticResource IconSize}" />
 
+    <FontImageSource x:Key="IconEditWhite"
+                Glyph="{x:Static f:FluentUI.edit_24_regular}"
+                FontFamily="{x:Static f:FluentUI.FontFamily}"
+                Color="White"
+                Size="{StaticResource IconSize}" />
+
     <FontImageSource x:Key="IconDelete"
                 Glyph="{x:Static f:FluentUI.delete_32_regular}"
                 FontFamily="{x:Static f:FluentUI.FontFamily}"
                 Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                Size="{StaticResource IconSize}" />
+
+    <FontImageSource x:Key="IconDeleteWhite"
+                Glyph="{x:Static f:FluentUI.delete_32_regular}"
+                FontFamily="{x:Static f:FluentUI.FontFamily}"
+                Color="White"
                 Size="{StaticResource IconSize}" />
 
     <FontImageSource x:Key="IconSortAsc"
