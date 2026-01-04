@@ -342,20 +342,20 @@ public partial class ActiveRoundPageModel : ObservableObject
 
         if (holes.Count == 18)
         {
-            message += $"\n\nFront 9: {(front9.HasValue ? front9.Value.ToString() : "-")}" +
-                       $"\nBack 9: {(back9.HasValue ? back9.Value.ToString() : "-")}" +
-                       $"\nTotal: {totalScore}";
+            message += $"\n\n{AppResources.Front9}: {(front9.HasValue ? front9.Value.ToString() : "-")}" +
+                       $"\n{AppResources.Back9}: {(back9.HasValue ? back9.Value.ToString() : "-")}" +
+                       $"\n{AppResources.Total}: {totalScore}";
         }
 
-        message += $"\n\nPutts: {putts}" +
-                   $"\nGIR: {gir}" +
-                   $"\nPenalty holes: {penalties}" +
-                   $"\nFairways hit: {fairwayHit}" +
-                   $"\nFairways left: {fairwayLeft}" +
-                   $"\nFairways right: {fairwayRight}" +
-                   $"\nProximity < 6ft: {proxS}" +
-                   $"\nProximity 6–20ft: {proxM}" +
-                   $"\nProximity > 20ft: {proxL}";
+        message += $"\n\n{AppResources.Putts}: {putts}" +
+                   $"\n{AppResources.GIR}: {gir}" +
+                   $"\n{AppResources.PenaltyHoles}: {penalties}" +
+                   $"\n{AppResources.FairwaysHit}: {fairwayHit}" +
+                   $"\n{AppResources.FairwaysLeft}: {fairwayLeft}" +
+                   $"\n{AppResources.FairwaysRight}: {fairwayRight}" +
+                   $"\n{AppResources.ProximityShort}: {proxS}" +
+                   $"\n{AppResources.ProximityMedium}: {proxM}" +
+                   $"\n{AppResources.ProximityLong}: {proxL}";
 
         return await Shell.Current.DisplayAlert(
             AppResources.CompleteRoundTitle,
@@ -477,7 +477,7 @@ public partial class ActiveRoundPageModel : ObservableObject
         CurrentHole != null ? CurrentHole.HoleNumber.ToString() : "1";
 
     public string CurrentParNumberDisplay =>
-        CurrentHole != null ? $"Par {CurrentHole.Par}" : "Par 4";
+        CurrentHole != null ? string.Format(AppResources.ParFormat, CurrentHole.Par) : string.Format(AppResources.ParFormat, 4);
 
     private void UpdateDisplay()
     {

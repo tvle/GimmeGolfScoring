@@ -72,7 +72,7 @@
                                FontSize="24"
                                HorizontalTextAlignment="Center"
                                TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
-                        <Label Text="putts"
+                        <Label Text="{ext:Translate PuttsLower}"
                                Style="{StaticResource Caption1}"
                                FontSize="10"
                                HorizontalTextAlignment="Center"
@@ -107,7 +107,7 @@
                                FontSize="24"
                                HorizontalTextAlignment="Center"
                                TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
-                        <Label Text="GIR"
+                        <Label Text="{ext:Translate GIR}"
                                Style="{StaticResource Caption1}"
                                FontSize="10"
                                HorizontalTextAlignment="Center"
@@ -244,7 +244,7 @@
                                AutomationId="ActiveRoundPage.HoleNumber" />
 
                         <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Label Text="FH" 
+                            <Label Text="{ext:Translate FairwayHit}" 
                                    Style="{StaticResource Title3}" 
                                    HorizontalTextAlignment="Center"
                                    FontSize="14" />
@@ -280,14 +280,14 @@
                                    FontSize="14"
                                    VerticalOptions="Center"
                                    Margin="0,-6,-10,0"
-                                   AutomationProperties.Name="Penalty" />
+                                   AutomationProperties.Name="{ext:Translate Penalty}" />
                             <Switch IsToggled="{Binding CurrentHole.Penalties, Mode=TwoWay, Converter={StaticResource IntToBoolConverter}}"
                                     OnColor="{StaticResource Primary}"
                                     Scale="0.75" />
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center" HorizontalOptions="End">
-                            <Label Text="GIR" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="14" Margin="0,0,-10,0" />
+                            <Label Text="{ext:Translate GIR}" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="14" Margin="0,0,-10,0" />
                             <Switch IsToggled="{Binding CurrentHole.GreenInRegulation, Mode=TwoWay}"
                                     AutomationId="ActiveRoundPage.GIR.Switch"
                                     OnColor="{StaticResource Primary}"
@@ -303,7 +303,7 @@
 
                         <!-- Putts (left) -->
                         <VerticalStackLayout Grid.Column="0" Spacing="10" VerticalOptions="Center">
-                            <Label Text="Putts"
+                            <Label Text="{ext:Translate Putts}"
                                    Style="{StaticResource Caption1}"
                                    TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
 

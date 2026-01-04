@@ -146,6 +146,10 @@
     <value>Loading...</value>
     <comment>Loading indicator text</comment>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Delete button text</comment>
+  </data>
   <!-- Golf Round Management -->
   <data name="Resume" xml:space="preserve">
     <value>Resume</value>
@@ -178,6 +182,10 @@ Resume it?</value>
   <data name="SelectCourse" xml:space="preserve">
     <value>Select Course</value>
     <comment>Select course dialog title</comment>
+  </data>
+  <data name="SelectACourse" xml:space="preserve">
+    <value>Select a course</value>
+    <comment>Select course instruction label</comment>
   </data>
   <!-- Complete/Abandon Round -->
   <data name="CompleteRoundTitle" xml:space="preserve">
@@ -237,6 +245,67 @@ Resume it?</value>
     <value>(Par {0})</value>
     <comment>Course total par display in parentheses. {0}=total par for course</comment>
   </data>
+  <data name="Putts" xml:space="preserve">
+    <value>Putts</value>
+    <comment>Putts label on scorecard</comment>
+  </data>
+  <data name="PuttsLower" xml:space="preserve">
+    <value>putts</value>
+    <comment>Putts label lowercase for stat display</comment>
+  </data>
+  <data name="FairwayHit" xml:space="preserve">
+    <value>FH</value>
+    <comment>Fairway Hit abbreviation</comment>
+  </data>
+  <data name="GIR" xml:space="preserve">
+    <value>GIR</value>
+    <comment>Green In Regulation abbreviation</comment>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Penalty</value>
+    <comment>Penalty label</comment>
+  </data>
+  <!-- Round Summary Stats -->
+  <data name="Front9" xml:space="preserve">
+    <value>Front 9</value>
+    <comment>Front nine holes label</comment>
+  </data>
+  <data name="Back9" xml:space="preserve">
+    <value>Back 9</value>
+    <comment>Back nine holes label</comment>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+    <comment>Total score label</comment>
+  </data>
+  <data name="PenaltyHoles" xml:space="preserve">
+    <value>Penalty holes</value>
+    <comment>Number of holes with penalties</comment>
+  </data>
+  <data name="FairwaysHit" xml:space="preserve">
+    <value>Fairways hit</value>
+    <comment>Number of fairways hit</comment>
+  </data>
+  <data name="FairwaysLeft" xml:space="preserve">
+    <value>Fairways left</value>
+    <comment>Number of fairways missed left</comment>
+  </data>
+  <data name="FairwaysRight" xml:space="preserve">
+    <value>Fairways right</value>
+    <comment>Number of fairways missed right</comment>
+  </data>
+  <data name="ProximityShort" xml:space="preserve">
+    <value>Proximity &lt; 6ft</value>
+    <comment>Proximity to hole - short range</comment>
+  </data>
+  <data name="ProximityMedium" xml:space="preserve">
+    <value>Proximity 6–20ft</value>
+    <comment>Proximity to hole - medium range</comment>
+  </data>
+  <data name="ProximityLong" xml:space="preserve">
+    <value>Proximity &gt; 20ft</value>
+    <comment>Proximity to hole - long range</comment>
+  </data>
   <!-- Error Messages -->
   <data name="RoundNotFound" xml:space="preserve">
     <value>Round not found or has no holes</value>
@@ -270,6 +339,10 @@ Resume it?</value>
   <data name="DaysAgo" xml:space="preserve">
     <value>{0} days ago</value>
     <comment>Time ago: multiple days. {0}=number of days</comment>
+  </data>
+  <data name="LastPlayedFormat" xml:space="preserve">
+    <value>Last played: {0}</value>
+    <comment>Last played date display. {0}=formatted date</comment>
   </data>
   <!-- Default Course/Player Names -->
   <data name="StandardCourse" xml:space="preserve">
@@ -407,9 +480,14 @@ Resume it?</value>
     <value>Dark mode</value>
     <comment>Accessibility description for dark theme toggle</comment>
   </data>
+  <!-- Courses -->
   <data name="Courses" xml:space="preserve">
     <value>Courses</value>
     <comment>Courses page title</comment>
+  </data>
+  <data name="CoursesCountFormat" xml:space="preserve">
+    <value>Courses ({0})</value>
+    <comment>Courses page title with count. {0}=number of courses</comment>
   </data>
   <data name="CourseName" xml:space="preserve">
     <value>Course Name</value>
@@ -438,5 +516,43 @@ Resume it?</value>
   <data name="SlopeRatingPlaceholder" xml:space="preserve">
     <value>113</value>
     <comment>Placeholder text for slope rating input</comment>
+  </data>
+  <data name="NineHoles" xml:space="preserve">
+    <value>9 Holes</value>
+    <comment>9 hole course option</comment>
+  </data>
+  <data name="EighteenHoles" xml:space="preserve">
+    <value>18 Holes</value>
+    <comment>18 hole course option</comment>
+  </data>
+  <data name="Yards" xml:space="preserve">
+    <value>Yds</value>
+    <comment>Yards abbreviation for yardage input</comment>
+  </data>
+  <data name="DeleteCourseTitle" xml:space="preserve">
+    <value>Delete Course</value>
+    <comment>Delete course confirmation dialog title</comment>
+  </data>
+  <data name="DeleteCourseMessage" xml:space="preserve">
+    <value>Delete '{0}'?</value>
+    <comment>Delete course confirmation message. {0}=course name</comment>
+  </data>
+  <!-- In-Progress Rounds -->
+  <data name="DeleteRoundTitle" xml:space="preserve">
+    <value>Delete round?</value>
+    <comment>Delete in-progress round dialog title</comment>
+  </data>
+  <data name="DeleteRoundMessage" xml:space="preserve">
+    <value>Delete this in-progress round?</value>
+    <comment>Delete in-progress round confirmation message</comment>
+  </data>
+  <!-- Course Selection Tabs -->
+  <data name="Recent" xml:space="preserve">
+    <value>Recent</value>
+    <comment>Recent courses tab</comment>
+  </data>
+  <data name="AllCourses" xml:space="preserve">
+    <value>All Courses</value>
+    <comment>All courses tab</comment>
   </data>
 </root>

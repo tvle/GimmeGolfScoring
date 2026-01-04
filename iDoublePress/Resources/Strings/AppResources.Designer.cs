@@ -95,6 +95,15 @@ namespace iDoublePress.Resources.Strings {
                 return ResourceManager.GetString("ActiveRound", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to All Courses.
+        /// </summary>
+        public static string AllCourses {
+            get {
+                return ResourceManager.GetString("AllCourses", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Gimme.
@@ -102,6 +111,15 @@ namespace iDoublePress.Resources.Strings {
         public static string AppName {
             get {
                 return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Back 9.
+        /// </summary>
+        public static string Back9 {
+            get {
+                return ResourceManager.GetString("Back9", resourceCulture);
             }
         }
         
@@ -203,6 +221,15 @@ namespace iDoublePress.Resources.Strings {
                 return ResourceManager.GetString("Courses", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Courses ({0}).
+        /// </summary>
+        public static string CoursesCountFormat {
+            get {
+                return ResourceManager.GetString("CoursesCountFormat", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to {0} day ago.
@@ -239,6 +266,51 @@ namespace iDoublePress.Resources.Strings {
                 return ResourceManager.GetString("DefaultPlayerCreated", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Delete '{0}'?
+        /// </summary>
+        public static string DeleteCourseMessage {
+            get {
+                return ResourceManager.GetString("DeleteCourseMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Course.
+        /// </summary>
+        public static string DeleteCourseTitle {
+            get {
+                return ResourceManager.GetString("DeleteCourseTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Delete this in-progress round?
+        /// </summary>
+        public static string DeleteRoundMessage {
+            get {
+                return ResourceManager.GetString("DeleteRoundMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Delete round?
+        /// </summary>
+        public static string DeleteRoundTitle {
+            get {
+                return ResourceManager.GetString("DeleteRoundTitle", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Double Bogey.
@@ -257,6 +329,15 @@ namespace iDoublePress.Resources.Strings {
                 return ResourceManager.GetString("Eagle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to 18 Holes.
+        /// </summary>
+        public static string EighteenHoles {
+            get {
+                return ResourceManager.GetString("EighteenHoles", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Error.
@@ -264,6 +345,60 @@ namespace iDoublePress.Resources.Strings {
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to FH.
+        /// </summary>
+        public static string FairwayHit {
+            get {
+                return ResourceManager.GetString("FairwayHit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fairways hit.
+        /// </summary>
+        public static string FairwaysHit {
+            get {
+                return ResourceManager.GetString("FairwaysHit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fairways left.
+        /// </summary>
+        public static string FairwaysLeft {
+            get {
+                return ResourceManager.GetString("FairwaysLeft", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fairways right.
+        /// </summary>
+        public static string FairwaysRight {
+            get {
+                return ResourceManager.GetString("FairwaysRight", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Front 9.
+        /// </summary>
+        public static string Front9 {
+            get {
+                return ResourceManager.GetString("Front9", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to GIR.
+        /// </summary>
+        public static string GIR {
+            get {
+                return ResourceManager.GetString("GIR", resourceCulture);
             }
         }
         
@@ -329,6 +464,15 @@ namespace iDoublePress.Resources.Strings {
                 return ResourceManager.GetString("LanguageChanged", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Last played: {0}.
+        /// </summary>
+        public static string LastPlayedFormat {
+            get {
+                return ResourceManager.GetString("LastPlayedFormat", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Loading....
@@ -390,6 +534,15 @@ namespace iDoublePress.Resources.Strings {
         public static string NineHoleCourse {
             get {
                 return ResourceManager.GetString("NineHoleCourse", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to 9 Holes.
+        /// </summary>
+        public static string NineHoles {
+            get {
+                return ResourceManager.GetString("NineHoles", resourceCulture);
             }
         }
         
@@ -455,6 +608,24 @@ namespace iDoublePress.Resources.Strings {
                 return ResourceManager.GetString("ParFormat", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Penalty.
+        /// </summary>
+        public static string Penalty {
+            get {
+                return ResourceManager.GetString("Penalty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Penalty holes.
+        /// </summary>
+        public static string PenaltyHoles {
+            get {
+                return ResourceManager.GetString("PenaltyHoles", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Practice Course.
@@ -480,6 +651,60 @@ namespace iDoublePress.Resources.Strings {
         public static string Previous {
             get {
                 return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Proximity &gt; 20ft.
+        /// </summary>
+        public static string ProximityLong {
+            get {
+                return ResourceManager.GetString("ProximityLong", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Proximity 6–20ft.
+        /// </summary>
+        public static string ProximityMedium {
+            get {
+                return ResourceManager.GetString("ProximityMedium", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Proximity &lt; 6ft.
+        /// </summary>
+        public static string ProximityShort {
+            get {
+                return ResourceManager.GetString("ProximityShort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Putts.
+        /// </summary>
+        public static string Putts {
+            get {
+                return ResourceManager.GetString("Putts", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to putts.
+        /// </summary>
+        public static string PuttsLower {
+            get {
+                return ResourceManager.GetString("PuttsLower", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Recent.
+        /// </summary>
+        public static string Recent {
+            get {
+                return ResourceManager.GetString("Recent", resourceCulture);
             }
         }
         
@@ -592,6 +817,15 @@ namespace iDoublePress.Resources.Strings {
         public static string ScoreUnder {
             get {
                 return ResourceManager.GetString("ScoreUnder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Select a course.
+        /// </summary>
+        public static string SelectACourse {
+            get {
+                return ResourceManager.GetString("SelectACourse", resourceCulture);
             }
         }
         
@@ -711,6 +945,15 @@ namespace iDoublePress.Resources.Strings {
                 return ResourceManager.GetString("Theme_Light", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Total Par.
@@ -727,6 +970,15 @@ namespace iDoublePress.Resources.Strings {
         public static string TripleBogey {
             get {
                 return ResourceManager.GetString("TripleBogey", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Yds.
+        /// </summary>
+        public static string Yards {
+            get {
+                return ResourceManager.GetString("Yards", resourceCulture);
             }
         }
         

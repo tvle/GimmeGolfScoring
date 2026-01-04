@@ -1,3 +1,5 @@
+using iDoublePress.Resources.Strings;
+
 namespace iDoublePress.Models;
 
 /// <summary>
@@ -12,7 +14,7 @@ public sealed class CourseWithLastPlayed
     public int TotalPar => Course.TotalPar;
     public bool HasLastPlayed => LastPlayed.HasValue;
     public string LastPlayedDisplay => LastPlayed.HasValue
-        ? $"Last played: {LastPlayed.Value:MMM d, yyyy}"
+        ? string.Format(AppResources.LastPlayedFormat, LastPlayed.Value.ToString("MMM d, yyyy"))
         : string.Empty;
 
     public CourseWithLastPlayed(Course course, DateTime? lastPlayed)

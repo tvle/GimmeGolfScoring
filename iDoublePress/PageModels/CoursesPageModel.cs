@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using iDoublePress.Data;
 using iDoublePress.Models;
+using iDoublePress.Resources.Strings;
 
 namespace iDoublePress.PageModels;
 
@@ -160,10 +161,10 @@ public partial class CoursesPageModel : ObservableObject
         var course = courseWithLastPlayed.Course;
 
         var confirm = await Shell.Current.DisplayAlert(
-            "Delete Course",
-            $"Delete '{course.Name}'?",
-            "Delete",
-            "Cancel");
+            AppResources.DeleteCourseTitle,
+            string.Format(AppResources.DeleteCourseMessage, course.Name),
+            AppResources.Delete,
+            AppResources.Cancel);
 
         if (!confirm)
             return;

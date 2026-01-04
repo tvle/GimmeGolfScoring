@@ -37,7 +37,7 @@
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding SetHoleCountCommand}" CommandParameter="9" />
                             </Border.GestureRecognizers>
-                            <Label Text="9 Holes" 
+                            <Label Text="{ext:Translate NineHoles}" 
                                    HorizontalTextAlignment="Center" 
                                    VerticalTextAlignment="Center"
                                    Style="{StaticResource Title3}">
@@ -92,7 +92,7 @@
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding SetHoleCountCommand}" CommandParameter="18" />
                             </Border.GestureRecognizers>
-                            <Label Text="18 Holes" 
+                            <Label Text="{ext:Translate EighteenHoles}" 
                                    HorizontalTextAlignment="Center" 
                                    VerticalTextAlignment="Center"
                                    Style="{StaticResource Title3}">
@@ -149,7 +149,7 @@
 
                             <Entry Grid.Column="1"
                                    Text="{Binding Yardage, Mode=TwoWay, TargetNullValue=''}"
-                                   Placeholder="Yds"
+                                   Placeholder="{ext:Translate Yards}"
                                    Keyboard="Numeric"
                                    MaxLength="3"
                                    WidthRequest="70"

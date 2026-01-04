@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using iDoublePress.Models;
+using iDoublePress.Resources.Strings;
 
 namespace iDoublePress.Pages;
 
@@ -57,7 +58,11 @@ public partial class InProgressRoundsPage : ContentPage
         if (sender is not Button button || button.BindingContext is not Round round)
             return;
 
-        var confirm = await DisplayAlert("Delete round?", "Delete this in-progress round?", "Delete", "Cancel");
+        var confirm = await DisplayAlert(
+            AppResources.DeleteRoundTitle, 
+            AppResources.DeleteRoundMessage, 
+            AppResources.Delete, 
+            AppResources.Cancel);
         if (!confirm)
             return;
 
@@ -87,7 +92,7 @@ internal sealed class InProgressRoundsPageModel : INotifyPropertyChanged
 
     public ObservableCollection<Round> Rounds { get; }
 
-    public string TitleText => $"You have {Rounds.Count} rounds in progress";
+    public string TitleText => string.Format(AppResources.MultipleRoundsTitle, Rounds.Count);
 
     public void Remove(Round round)
     {

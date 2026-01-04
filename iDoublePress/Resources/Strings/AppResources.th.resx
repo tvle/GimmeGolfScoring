@@ -61,213 +61,444 @@
   
   <data name="AppName" xml:space="preserve">
     <value>Gimme</value>
+    <comment>Application name</comment>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>ยกเลิก</value>
+    <comment>Cancel button text</comment>
   </data>
   <data name="OK" xml:space="preserve">
     <value>ตกลง</value>
+    <comment>OK button text</comment>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>ใช่</value>
+    <comment>Yes button text</comment>
   </data>
   <data name="No" xml:space="preserve">
-    <value>ไม่</value>
+    <value>ไม่ใช่</value>
+    <comment>No button text</comment>
   </data>
   <data name="Error" xml:space="preserve">
     <value>ข้อผิดพลาด</value>
+    <comment>Error dialog title</comment>
   </data>
   <data name="Loading" xml:space="preserve">
     <value>กำลังโหลด...</value>
+    <comment>Loading indicator text</comment>
   </data>
-  
+  <data name="Delete" xml:space="preserve">
+    <value>ลบ</value>
+    <comment>Delete button text</comment>
+  </data>
+
   <data name="Resume" xml:space="preserve">
-    <value>เล่นต่อ</value>
+    <value>ทำต่อ</value>
+    <comment>Resume button text</comment>
   </data>
   <data name="StartNew" xml:space="preserve">
     <value>เริ่มใหม่</value>
+    <comment>Start new button text</comment>
   </data>
   <data name="ResumeRoundTitle" xml:space="preserve">
-    <value>เล่นต่อจากเดิม?</value>
+    <value>เล่นต่อหรือไม่?</value>
+    <comment>Title for resume round dialog</comment>
   </data>
   <data name="ResumeRoundMessage" xml:space="preserve">
-    <value>คุณมีรอบที่กำลังเล่นอยู่ที่ {0}
+    <value>คุณมีการออกรอบที่ยังไม่จบที่ {0}
 เริ่มเมื่อ: {1}
 ความคืบหน้า: {2}/{3} หลุม
 
 ต้องการเล่นต่อหรือไม่?</value>
+    <comment>Message for resume round dialog. {0}=course name, {1}=time ago, {2}=holes completed, {3}=total holes</comment>
   </data>
   <data name="MultipleRoundsTitle" xml:space="preserve">
-    <value>คุณมีรอบที่กำลังเล่นอยู่ {0} รอบ</value>
+    <value>คุณมีการออกรอบค้างอยู่ {0} รายการ</value>
+    <comment>Title when multiple rounds are in progress. {0}=number of rounds</comment>
   </data>
   <data name="StartNewRound" xml:space="preserve">
-    <value>เริ่มรอบใหม่</value>
+    <value>เริ่มการออกรอบใหม่</value>
+    <comment>Start new round button/option</comment>
   </data>
   <data name="SelectCourse" xml:space="preserve">
     <value>เลือกสนาม</value>
+    <comment>Select course dialog title</comment>
   </data>
-  
+  <data name="SelectACourse" xml:space="preserve">
+    <value>เลือกสนามกอล์ฟ</value>
+    <comment>Select course instruction label</comment>
+  </data>
+
   <data name="CompleteRoundTitle" xml:space="preserve">
-    <value>จบการเล่น?</value>
+    <value>จบการออกรอบ?</value>
+    <comment>Title for complete round confirmation</comment>
   </data>
   <data name="CompleteRoundMessage" xml:space="preserve">
     <value>คะแนนรวมของคุณคือ {0} ({1})
-ต้องการบันทึกว่าจบการเล่นรอบนี้หรือไม่?</value>
+ทำเครื่องหมายว่าจบการออกรอบนี้หรือไม่?</value>
+    <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>
   </data>
   <data name="CompleteRound" xml:space="preserve">
-    <value>จบการเล่น</value>
+    <value>จบการออกรอบ</value>
+    <comment>Complete round button text</comment>
   </data>
   <data name="RoundCompleted" xml:space="preserve">
-    <value>จบการเล่นแล้ว!
+    <value>การออกรอบเสร็จสิ้น!
 คะแนน: {0}</value>
+    <comment>Toast message when round is completed. {0}=final score</comment>
   </data>
   <data name="AbandonRoundTitle" xml:space="preserve">
-    <value>ยกเลิกการเล่น?</value>
+    <value>ยกเลิกการออกรอบ?</value>
+    <comment>Title for abandon round confirmation</comment>
   </data>
   <data name="AbandonRoundMessage" xml:space="preserve">
-    <value>คุณแน่ใจหรือไม่ที่จะยกเลิกรอบนี้?
+    <value>คุณแน่ใจหรือไม่ว่าต้องการยกเลิกการออกรอบนี้?
 ข้อมูลจะไม่ถูกบันทึก</value>
+    <comment>Warning message for abandoning a round</comment>
   </data>
   <data name="YesAbandon" xml:space="preserve">
     <value>ใช่, ยกเลิก</value>
+    <comment>Confirm abandon button</comment>
   </data>
   <data name="Abandon" xml:space="preserve">
     <value>ยกเลิก</value>
+    <comment>Abandon button text</comment>
   </data>
-  
+
   <data name="ActiveRound" xml:space="preserve">
-    <value>รอบปัจจุบัน</value>
+    <value>การออกรอบปัจจุบัน</value>
+    <comment>Active round page title</comment>
   </data>
   <data name="Previous" xml:space="preserve">
     <value>ก่อนหน้า</value>
+    <comment>Previous hole button</comment>
   </data>
   <data name="Next" xml:space="preserve">
     <value>ถัดไป</value>
+    <comment>Next hole button</comment>
   </data>
   <data name="HoleFormat" xml:space="preserve">
     <value>หลุม {0}</value>
+    <comment>Hole number display. {0}=hole number</comment>
   </data>
   <data name="ParFormat" xml:space="preserve">
     <value>พาร์ {0}</value>
+    <comment>Par value display. {0}=par value</comment>
   </data>
-  
+  <data name="CourseParFormat" xml:space="preserve">
+    <value>(พาร์ {0})</value>
+    <comment>Course total par display in parentheses. {0}=total par for course</comment>
+  </data>
+  <data name="Putts" xml:space="preserve">
+    <value>พัตต์</value>
+    <comment>Putts label on scorecard</comment>
+  </data>
+  <data name="PuttsLower" xml:space="preserve">
+    <value>พัตต์</value>
+    <comment>Putts label lowercase for stat display</comment>
+  </data>
+  <data name="FairwayHit" xml:space="preserve">
+    <value>FH</value>
+    <comment>Fairway Hit abbreviation</comment>
+  </data>
+  <data name="GIR" xml:space="preserve">
+    <value>GIR</value>
+    <comment>Green In Regulation abbreviation</comment>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>เพนัลตี้</value>
+    <comment>Penalty label</comment>
+  </data>
+
+  <data name="Front9" xml:space="preserve">
+    <value>9 หลุมแรก</value>
+    <comment>Front nine holes label</comment>
+  </data>
+  <data name="Back9" xml:space="preserve">
+    <value>9 หลุมหลัง</value>
+    <comment>Back nine holes label</comment>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>รวม</value>
+    <comment>Total score label</comment>
+  </data>
+  <data name="PenaltyHoles" xml:space="preserve">
+    <value>หลุมที่มีเพนัลตี้</value>
+    <comment>Number of holes with penalties</comment>
+  </data>
+  <data name="FairwaysHit" xml:space="preserve">
+    <value>ตีเข้าแฟร์เวย์</value>
+    <comment>Number of fairways hit</comment>
+  </data>
+  <data name="FairwaysLeft" xml:space="preserve">
+    <value>ออกซ้าย</value>
+    <comment>Number of fairways missed left</comment>
+  </data>
+  <data name="FairwaysRight" xml:space="preserve">
+    <value>ออกขวา</value>
+    <comment>Number of fairways missed right</comment>
+  </data>
+  <data name="ProximityShort" xml:space="preserve">
+    <value>ระยะ &lt; 6 ฟุต</value>
+    <comment>Proximity to hole - short range</comment>
+  </data>
+  <data name="ProximityMedium" xml:space="preserve">
+    <value>ระยะ 6–20 ฟุต</value>
+    <comment>Proximity to hole - medium range</comment>
+  </data>
+  <data name="ProximityLong" xml:space="preserve">
+    <value>ระยะ &gt; 20 ฟุต</value>
+    <comment>Proximity to hole - long range</comment>
+  </data>
+
   <data name="RoundNotFound" xml:space="preserve">
-    <value>ไม่พบข้อมูลรอบ หรือไม่มีหลุม</value>
+    <value>ไม่พบข้อมูลการออกรอบ หรือไม่มีข้อมูลหลุม</value>
+    <comment>Error when round cannot be loaded</comment>
   </data>
   <data name="NoPlayerFound" xml:space="preserve">
     <value>ไม่พบผู้เล่น
 กรุณารีสตาร์ทแอป</value>
+    <comment>Error when no player exists</comment>
   </data>
-  
+
   <data name="JustNow" xml:space="preserve">
     <value>เมื่อสักครู่</value>
+    <comment>Time ago: less than 1 minute</comment>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
     <value>{0} นาทีที่แล้ว</value>
+    <comment>Time ago in minutes. {0}=number of minutes</comment>
   </data>
   <data name="HourAgo" xml:space="preserve">
     <value>{0} ชั่วโมงที่แล้ว</value>
+    <comment>Time ago: 1 hour. {0}=number of hours</comment>
   </data>
   <data name="HoursAgo" xml:space="preserve">
     <value>{0} ชั่วโมงที่แล้ว</value>
+    <comment>Time ago: multiple hours. {0}=number of hours</comment>
   </data>
   <data name="DayAgo" xml:space="preserve">
     <value>{0} วันที่แล้ว</value>
+    <comment>Time ago: 1 day. {0}=number of days</comment>
   </data>
   <data name="DaysAgo" xml:space="preserve">
     <value>{0} วันที่แล้ว</value>
+    <comment>Time ago: multiple days. {0}=number of days</comment>
   </data>
-  
+  <data name="LastPlayedFormat" xml:space="preserve">
+    <value>เล่นล่าสุด: {0}</value>
+    <comment>Last played date display. {0}=formatted date</comment>
+  </data>
+
   <data name="StandardCourse" xml:space="preserve">
     <value>สนามมาตรฐาน</value>
+    <comment>Default 18-hole par 72 course name</comment>
   </data>
   <data name="NineHoleCourse" xml:space="preserve">
     <value>สนาม 9 หลุม</value>
+    <comment>Default 9-hole par 36 course name</comment>
   </data>
   <data name="PracticeCourse" xml:space="preserve">
-    <value>สนามซ้อม</value>
+    <value>สนามฝึกซ้อม</value>
+    <comment>Default practice course name (all par 3s)</comment>
   </data>
   <data name="DefaultLocation" xml:space="preserve">
     <value>ค่าเริ่มต้น</value>
+    <comment>Default course location</comment>
   </data>
   <data name="Me" xml:space="preserve">
     <value>ฉัน</value>
+    <comment>Default player name</comment>
   </data>
-  
+
   <data name="DefaultPlayerCreated" xml:space="preserve">
     <value>สร้างผู้เล่นเริ่มต้นแล้ว</value>
+    <comment>Log message when default player is created</comment>
   </data>
   <data name="Par72CourseCreated" xml:space="preserve">
     <value>สร้างสนามพาร์ 72 แล้ว</value>
+    <comment>Log message when par 72 course is created</comment>
   </data>
   <data name="Par36CourseCreated" xml:space="preserve">
     <value>สร้างสนามพาร์ 36 แล้ว</value>
+    <comment>Log message when par 36 course is created</comment>
   </data>
   <data name="PracticeCourseCreated" xml:space="preserve">
-    <value>สร้างสนามซ้อมแล้ว</value>
+    <value>สร้างสนามฝึกซ้อมแล้ว</value>
+    <comment>Log message when practice course is created</comment>
   </data>
-  
+
   <data name="Eagle" xml:space="preserve">
     <value>อีเกิ้ล</value>
+    <comment>2 under par</comment>
   </data>
   <data name="Birdie" xml:space="preserve">
     <value>เบอร์ดี้</value>
+    <comment>1 under par</comment>
   </data>
   <data name="Par" xml:space="preserve">
     <value>พาร์</value>
+    <comment>Even with par</comment>
   </data>
   <data name="Bogey" xml:space="preserve">
     <value>โบกี้</value>
+    <comment>1 over par</comment>
   </data>
   <data name="DoubleBogey" xml:space="preserve">
     <value>ดับเบิ้ลโบกี้</value>
+    <comment>2 over par</comment>
   </data>
   <data name="TripleBogey" xml:space="preserve">
     <value>ทริปเปิ้ลโบกี้</value>
+    <comment>3 over par</comment>
   </data>
-  
+
   <data name="ScoreEven" xml:space="preserve">
     <value>E</value>
+    <comment>Even par score display</comment>
   </data>
   <data name="ScoreUnder" xml:space="preserve">
     <value>-{0}</value>
+    <comment>Under par score display. {0}=strokes under</comment>
   </data>
   <data name="ScoreOver" xml:space="preserve">
     <value>+{0}</value>
+    <comment>Over par score display. {0}=strokes over</comment>
   </data>
-  
+
   <data name="Home" xml:space="preserve">
-    <value>หน้าหลัก</value>
+    <value>หน้าแรก</value>
+    <comment>Home page navigation</comment>
   </data>
   <data name="Rounds" xml:space="preserve">
-    <value>รอบที่เล่น</value>
+    <value>การออกรอบ</value>
+    <comment>Rounds page navigation</comment>
   </data>
   <data name="Statistics" xml:space="preserve">
     <value>สถิติ</value>
+    <comment>Statistics page navigation</comment>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>การตั้งค่า</value>
+    <comment>Settings page navigation</comment>
   </data>
-  
+
   <data name="SelectLanguage" xml:space="preserve">
     <value>เลือกภาษา</value>
+    <comment>Language selection dialog title</comment>
   </data>
   <data name="LanguageChanged" xml:space="preserve">
     <value>เปลี่ยนภาษาแล้ว</value>
+    <comment>Language changed confirmation title</comment>
   </data>
   <data name="RestartAppMessage" xml:space="preserve">
     <value>กรุณารีสตาร์ทแอปเพื่อให้การเปลี่ยนภาษามีผลสมบูรณ์</value>
+    <comment>Message shown after language change</comment>
   </data>
+
   <data name="Golf" xml:space="preserve">
     <value>กอล์ฟ</value>
+    <comment>Golf</comment>
   </data>
   <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ เริ่มรอบใหม่</value>
+    <value>⛳ เริ่มการออกรอบใหม่</value>
+    <comment>Start new round button</comment>
   </data>
   <data name="StartNewRoundDescription" xml:space="preserve">
-    <value>เริ่มเล่นกอล์ฟรอบใหม่</value>
+    <value>เริ่มการออกรอบใหม่</value>
+    <comment>Start new round description</comment>
   </data>
   <data name="RecentRounds" xml:space="preserve">
-    <value>รอบล่าสุด</value>
+    <value>การออกรอบล่าสุด</value>
+    <comment>Recent Rounds</comment>
+  </data>
+
+  <data name="Nav_Scoring" xml:space="preserve">
+    <value>การทำคะแนน</value>
+    <comment>Flyout/menu item for scoring</comment>
+  </data>
+
+  <data name="Theme_Light" xml:space="preserve">
+    <value>โหมดสว่าง</value>
+    <comment>Accessibility description for light theme toggle</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>โหมดมืด</value>
+    <comment>Accessibility description for dark theme toggle</comment>
+  </data>
+
+  <data name="Courses" xml:space="preserve">
+    <value>สนามกอล์ฟ</value>
+    <comment>Courses page title</comment>
+  </data>
+  <data name="CoursesCountFormat" xml:space="preserve">
+    <value>สนามกอล์ฟ ({0})</value>
+    <comment>Courses page title with count. {0}=number of courses</comment>
+  </data>
+  <data name="CourseName" xml:space="preserve">
+    <value>ชื่อสนาม</value>
+    <comment>Label for course name input field</comment>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>บันทึก</value>
+    <comment>Save button text</comment>
+  </data>
+  <data name="TotalPar" xml:space="preserve">
+    <value>พาร์รวม</value>
+    <comment>Total par for the course</comment>
+  </data>
+  <data name="CourseRating" xml:space="preserve">
+    <value>CR</value>
+    <comment>Course rating input field label</comment>
+  </data>
+  <data name="SlopeRating" xml:space="preserve">
+    <value>Slope</value>
+    <comment>Slope rating input field label</comment>
+  </data>
+  <data name="CourseRatingPlaceholder" xml:space="preserve">
+    <value>71.2</value>
+    <comment>Placeholder text for course rating input</comment>
+  </data>
+  <data name="SlopeRatingPlaceholder" xml:space="preserve">
+    <value>113</value>
+    <comment>Placeholder text for slope rating input</comment>
+  </data>
+  <data name="NineHoles" xml:space="preserve">
+    <value>9 หลุม</value>
+    <comment>9 hole course option</comment>
+  </data>
+  <data name="EighteenHoles" xml:space="preserve">
+    <value>18 หลุม</value>
+    <comment>18 hole course option</comment>
+  </data>
+  <data name="Yards" xml:space="preserve">
+    <value>หลา</value>
+    <comment>Yards abbreviation for yardage input</comment>
+  </data>
+  <data name="DeleteCourseTitle" xml:space="preserve">
+    <value>ลบสนาม</value>
+    <comment>Delete course confirmation dialog title</comment>
+  </data>
+  <data name="DeleteCourseMessage" xml:space="preserve">
+    <value>ลบ '{0}' หรือไม่?</value>
+    <comment>Delete course confirmation message. {0}=course name</comment>
+  </data>
+
+  <data name="DeleteRoundTitle" xml:space="preserve">
+    <value>ลบการออกรอบ?</value>
+    <comment>Delete in-progress round dialog title</comment>
+  </data>
+  <data name="DeleteRoundMessage" xml:space="preserve">
+    <value>ลบการออกรอบที่กำลังดำเนินการอยู่นี้หรือไม่?</value>
+    <comment>Delete in-progress round confirmation message</comment>
+  </data>
+
+  <data name="Recent" xml:space="preserve">
+    <value>ล่าสุด</value>
+    <comment>Recent courses tab</comment>
+  </data>
+  <data name="AllCourses" xml:space="preserve">
+    <value>สนามทั้งหมด</value>
+    <comment>All courses tab</comment>
   </data>
 </root>

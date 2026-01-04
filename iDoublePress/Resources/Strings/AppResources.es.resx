@@ -59,7 +59,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
-  <!-- Common UI Strings -->
   <data name="AppName" xml:space="preserve">
     <value>Gimme</value>
     <comment>Application name</comment>
@@ -69,7 +68,7 @@
     <comment>Cancel button text</comment>
   </data>
   <data name="OK" xml:space="preserve">
-    <value>OK</value>
+    <value>Aceptar</value>
     <comment>OK button text</comment>
   </data>
   <data name="Yes" xml:space="preserve">
@@ -88,96 +87,86 @@
     <value>Cargando...</value>
     <comment>Loading indicator text</comment>
   </data>
-  
-  <!-- Golf Round Management -->
+  <data name="Delete" xml:space="preserve">
+    <value>Eliminar</value>
+    <comment>Delete button text</comment>
+  </data>
+
   <data name="Resume" xml:space="preserve">
     <value>Reanudar</value>
     <comment>Resume button text</comment>
   </data>
   <data name="StartNew" xml:space="preserve">
-    <value>Comenzar Nueva</value>
+    <value>Empezar nueva</value>
     <comment>Start new button text</comment>
   </data>
   <data name="ResumeRoundTitle" xml:space="preserve">
-    <value>¿Reanudar Ronda?</value>
+    <value>¿Reanudar ronda?</value>
     <comment>Title for resume round dialog</comment>
   </data>
   <data name="ResumeRoundMessage" xml:space="preserve">
-    <value>Tienes una ronda en progreso en {0}.
+    <value>Tienes una ronda en curso en {0}.
 Iniciada: {1}
 Progreso: {2}/{3} hoyos
 
-¿Reanudarla?</value>
+¿Quieres reanudarla?</value>
     <comment>Message for resume round dialog. {0}=course name, {1}=time ago, {2}=holes completed, {3}=total holes</comment>
   </data>
   <data name="MultipleRoundsTitle" xml:space="preserve">
-    <value>Tienes {0} rondas en progreso</value>
+    <value>Tienes {0} rondas en curso</value>
     <comment>Title when multiple rounds are in progress. {0}=number of rounds</comment>
   </data>
   <data name="StartNewRound" xml:space="preserve">
-    <value>Comenzar Nueva Ronda</value>
+    <value>Empezar nueva ronda</value>
     <comment>Start new round button/option</comment>
   </data>
   <data name="SelectCourse" xml:space="preserve">
-    <value>Seleccionar Campo</value>
+    <value>Seleccionar campo</value>
     <comment>Select course dialog title</comment>
   </data>
-
-  <!-- Main Page -->
-  <data name="Golf" xml:space="preserve">
-    <value>Golf</value>
-    <comment>Golf section header on main page</comment>
-  </data>
-  <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ Comenzar Nueva Ronda</value>
-    <comment>Start new round button text with golf flag emoji</comment>
-  </data>
-  <data name="StartNewRoundDescription" xml:space="preserve">
-    <value>Comenzar una nueva ronda de golf</value>
-    <comment>Accessibility description for start new round button</comment>
-  </data>
-  <data name="RecentRounds" xml:space="preserve">
-    <value>Rondas Recientes</value>
-    <comment>Recent rounds section header</comment>
+  <data name="SelectACourse" xml:space="preserve">
+    <value>Selecciona un campo</value>
+    <comment>Select course instruction label</comment>
   </data>
 
-  <!-- Complete/Abandon Round -->
   <data name="CompleteRoundTitle" xml:space="preserve">
-    <value>¿Completar Ronda?</value>
+    <value>¿Terminar ronda?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
   <data name="CompleteRoundMessage" xml:space="preserve">
-    <value>Tu puntuación final es {0} ({1}). ¿Marcar esta ronda como completa?</value>
+    <value>Tu puntuación final es {0} ({1}).
+¿Marcar esta ronda como terminada?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>
   </data>
   <data name="CompleteRound" xml:space="preserve">
-    <value>Completar Ronda</value>
+    <value>Terminar ronda</value>
     <comment>Complete round button text</comment>
   </data>
   <data name="RoundCompleted" xml:space="preserve">
-    <value>¡Ronda completada! Puntuación: {0}</value>
+    <value>¡Ronda terminada!
+Puntuación: {0}</value>
     <comment>Toast message when round is completed. {0}=final score</comment>
   </data>
   <data name="AbandonRoundTitle" xml:space="preserve">
-    <value>¿Abandonar Ronda?</value>
+    <value>¿Abandonar ronda?</value>
     <comment>Title for abandon round confirmation</comment>
   </data>
   <data name="AbandonRoundMessage" xml:space="preserve">
-    <value>¿Estás seguro de que quieres abandonar esta ronda? No se guardará.</value>
+    <value>¿Seguro que quieres abandonar esta ronda?
+No se guardará.</value>
     <comment>Warning message for abandoning a round</comment>
   </data>
   <data name="YesAbandon" xml:space="preserve">
-    <value>Sí, Abandonar</value>
+    <value>Sí, abandonar</value>
     <comment>Confirm abandon button</comment>
   </data>
   <data name="Abandon" xml:space="preserve">
     <value>Abandonar</value>
     <comment>Abandon button text</comment>
   </data>
-  
-  <!-- Active Round Page -->
+
   <data name="ActiveRound" xml:space="preserve">
-    <value>Ronda Activa</value>
+    <value>Ronda activa</value>
     <comment>Active round page title</comment>
   </data>
   <data name="Previous" xml:space="preserve">
@@ -196,20 +185,84 @@ Progreso: {2}/{3} hoyos
     <value>Par {0}</value>
     <comment>Par value display. {0}=par value</comment>
   </data>
-  
-  <!-- Error Messages -->
+  <data name="CourseParFormat" xml:space="preserve">
+    <value>(Par {0})</value>
+    <comment>Course total par display in parentheses. {0}=total par for course</comment>
+  </data>
+  <data name="Putts" xml:space="preserve">
+    <value>Putts</value>
+    <comment>Putts label on scorecard</comment>
+  </data>
+  <data name="PuttsLower" xml:space="preserve">
+    <value>putts</value>
+    <comment>Putts label lowercase for stat display</comment>
+  </data>
+  <data name="FairwayHit" xml:space="preserve">
+    <value>FH</value>
+    <comment>Fairway Hit abbreviation</comment>
+  </data>
+  <data name="GIR" xml:space="preserve">
+    <value>GIR</value>
+    <comment>Green In Regulation abbreviation</comment>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Penalización</value>
+    <comment>Penalty label</comment>
+  </data>
+
+  <data name="Front9" xml:space="preserve">
+    <value>Primeros 9</value>
+    <comment>Front nine holes label</comment>
+  </data>
+  <data name="Back9" xml:space="preserve">
+    <value>Segundos 9</value>
+    <comment>Back nine holes label</comment>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+    <comment>Total score label</comment>
+  </data>
+  <data name="PenaltyHoles" xml:space="preserve">
+    <value>Hoyos con penalización</value>
+    <comment>Number of holes with penalties</comment>
+  </data>
+  <data name="FairwaysHit" xml:space="preserve">
+    <value>Fairways acertados</value>
+    <comment>Number of fairways hit</comment>
+  </data>
+  <data name="FairwaysLeft" xml:space="preserve">
+    <value>Fairways a la izq.</value>
+    <comment>Number of fairways missed left</comment>
+  </data>
+  <data name="FairwaysRight" xml:space="preserve">
+    <value>Fairways a la der.</value>
+    <comment>Number of fairways missed right</comment>
+  </data>
+  <data name="ProximityShort" xml:space="preserve">
+    <value>Proximidad &lt; 6ft</value>
+    <comment>Proximity to hole - short range</comment>
+  </data>
+  <data name="ProximityMedium" xml:space="preserve">
+    <value>Proximidad 6–20ft</value>
+    <comment>Proximity to hole - medium range</comment>
+  </data>
+  <data name="ProximityLong" xml:space="preserve">
+    <value>Proximidad &gt; 20ft</value>
+    <comment>Proximity to hole - long range</comment>
+  </data>
+
   <data name="RoundNotFound" xml:space="preserve">
     <value>Ronda no encontrada o sin hoyos</value>
     <comment>Error when round cannot be loaded</comment>
   </data>
   <data name="NoPlayerFound" xml:space="preserve">
-    <value>No se encontró jugador. Por favor reinicia la aplicación.</value>
+    <value>No se encontró jugador.
+Reinicia la aplicación.</value>
     <comment>Error when no player exists</comment>
   </data>
-  
-  <!-- Time Formatting -->
+
   <data name="JustNow" xml:space="preserve">
-    <value>Justo ahora</value>
+    <value>Ahora mismo</value>
     <comment>Time ago: less than 1 minute</comment>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
@@ -232,18 +285,21 @@ Progreso: {2}/{3} hoyos
     <value>hace {0} días</value>
     <comment>Time ago: multiple days. {0}=number of days</comment>
   </data>
-  
-  <!-- Default Course/Player Names -->
+  <data name="LastPlayedFormat" xml:space="preserve">
+    <value>Jugado el: {0}</value>
+    <comment>Last played date display. {0}=formatted date</comment>
+  </data>
+
   <data name="StandardCourse" xml:space="preserve">
-    <value>Campo Estándar</value>
+    <value>Campo estándar</value>
     <comment>Default 18-hole par 72 course name</comment>
   </data>
   <data name="NineHoleCourse" xml:space="preserve">
-    <value>Campo de 9 Hoyos</value>
+    <value>Campo de 9 hoyos</value>
     <comment>Default 9-hole par 36 course name</comment>
   </data>
   <data name="PracticeCourse" xml:space="preserve">
-    <value>Campo de Práctica</value>
+    <value>Campo de práctica</value>
     <comment>Default practice course name (all par 3s)</comment>
   </data>
   <data name="DefaultLocation" xml:space="preserve">
@@ -254,8 +310,7 @@ Progreso: {2}/{3} hoyos
     <value>Yo</value>
     <comment>Default player name</comment>
   </data>
-  
-  <!-- Seed Data Messages -->
+
   <data name="DefaultPlayerCreated" xml:space="preserve">
     <value>Jugador predeterminado creado</value>
     <comment>Log message when default player is created</comment>
@@ -272,8 +327,7 @@ Progreso: {2}/{3} hoyos
     <value>Campo de práctica creado</value>
     <comment>Log message when practice course is created</comment>
   </data>
-  
-  <!-- Golf Scoring Terms -->
+
   <data name="Eagle" xml:space="preserve">
     <value>Eagle</value>
     <comment>2 under par</comment>
@@ -298,8 +352,7 @@ Progreso: {2}/{3} hoyos
     <value>Triple Bogey</value>
     <comment>3 over par</comment>
   </data>
-  
-  <!-- Score Display -->
+
   <data name="ScoreEven" xml:space="preserve">
     <value>E</value>
     <comment>Even par score display</comment>
@@ -312,8 +365,7 @@ Progreso: {2}/{3} hoyos
     <value>+{0}</value>
     <comment>Over par score display. {0}=strokes over</comment>
   </data>
-  
-  <!-- Navigation -->
+
   <data name="Home" xml:space="preserve">
     <value>Inicio</value>
     <comment>Home page navigation</comment>
@@ -330,28 +382,42 @@ Progreso: {2}/{3} hoyos
     <value>Configuración</value>
     <comment>Settings page navigation</comment>
   </data>
-  
-  <!-- Language Selection -->
+
   <data name="SelectLanguage" xml:space="preserve">
-    <value>Seleccionar Idioma</value>
+    <value>Seleccionar idioma</value>
     <comment>Language selection dialog title</comment>
   </data>
   <data name="LanguageChanged" xml:space="preserve">
-    <value>Idioma Cambiado</value>
+    <value>Idioma cambiado</value>
     <comment>Language changed confirmation title</comment>
   </data>
   <data name="RestartAppMessage" xml:space="preserve">
-    <value>Por favor reinicia la aplicación para que el cambio de idioma tenga efecto completo.</value>
+    <value>Reinicia la aplicación para que el cambio de idioma surta efecto.</value>
     <comment>Message shown after language change</comment>
   </data>
 
-  <!-- Navigation -->
+  <data name="Golf" xml:space="preserve">
+    <value>Golf</value>
+    <comment>Golf</comment>
+  </data>
+  <data name="StartNewRoundButton" xml:space="preserve">
+    <value>⛳ Empezar nueva ronda</value>
+    <comment>Start new round button</comment>
+  </data>
+  <data name="StartNewRoundDescription" xml:space="preserve">
+    <value>Empieza una nueva ronda</value>
+    <comment>Start new round description</comment>
+  </data>
+  <data name="RecentRounds" xml:space="preserve">
+    <value>Rondas recientes</value>
+    <comment>Recent Rounds</comment>
+  </data>
+
   <data name="Nav_Scoring" xml:space="preserve">
     <value>Puntuación</value>
     <comment>Flyout/menu item for scoring</comment>
   </data>
 
-  <!-- Theme -->
   <data name="Theme_Light" xml:space="preserve">
     <value>Modo claro</value>
     <comment>Accessibility description for light theme toggle</comment>
@@ -360,5 +426,79 @@ Progreso: {2}/{3} hoyos
     <value>Modo oscuro</value>
     <comment>Accessibility description for dark theme toggle</comment>
   </data>
-</root>
 
+  <data name="Courses" xml:space="preserve">
+    <value>Campos</value>
+    <comment>Courses page title</comment>
+  </data>
+  <data name="CoursesCountFormat" xml:space="preserve">
+    <value>Campos ({0})</value>
+    <comment>Courses page title with count. {0}=number of courses</comment>
+  </data>
+  <data name="CourseName" xml:space="preserve">
+    <value>Nombre del campo</value>
+    <comment>Label for course name input field</comment>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
+    <comment>Save button text</comment>
+  </data>
+  <data name="TotalPar" xml:space="preserve">
+    <value>Par total</value>
+    <comment>Total par for the course</comment>
+  </data>
+  <data name="CourseRating" xml:space="preserve">
+    <value>CR</value>
+    <comment>Course rating input field label</comment>
+  </data>
+  <data name="SlopeRating" xml:space="preserve">
+    <value>Slope</value>
+    <comment>Slope rating input field label</comment>
+  </data>
+  <data name="CourseRatingPlaceholder" xml:space="preserve">
+    <value>71,2</value>
+    <comment>Placeholder text for course rating input</comment>
+  </data>
+  <data name="SlopeRatingPlaceholder" xml:space="preserve">
+    <value>113</value>
+    <comment>Placeholder text for slope rating input</comment>
+  </data>
+  <data name="NineHoles" xml:space="preserve">
+    <value>9 Hoyos</value>
+    <comment>9 hole course option</comment>
+  </data>
+  <data name="EighteenHoles" xml:space="preserve">
+    <value>18 Hoyos</value>
+    <comment>18 hole course option</comment>
+  </data>
+  <data name="Yards" xml:space="preserve">
+    <value>Yds</value>
+    <comment>Yards abbreviation for yardage input</comment>
+  </data>
+  <data name="DeleteCourseTitle" xml:space="preserve">
+    <value>Eliminar campo</value>
+    <comment>Delete course confirmation dialog title</comment>
+  </data>
+  <data name="DeleteCourseMessage" xml:space="preserve">
+    <value>¿Eliminar '{0}'?</value>
+    <comment>Delete course confirmation message. {0}=course name</comment>
+  </data>
+
+  <data name="DeleteRoundTitle" xml:space="preserve">
+    <value>¿Eliminar ronda?</value>
+    <comment>Delete in-progress round dialog title</comment>
+  </data>
+  <data name="DeleteRoundMessage" xml:space="preserve">
+    <value>¿Eliminar esta ronda en curso?</value>
+    <comment>Delete in-progress round confirmation message</comment>
+  </data>
+
+  <data name="Recent" xml:space="preserve">
+    <value>Recientes</value>
+    <comment>Recent courses tab</comment>
+  </data>
+  <data name="AllCourses" xml:space="preserve">
+    <value>Todos</value>
+    <comment>All courses tab</comment>
+  </data>
+</root>

@@ -14,7 +14,7 @@
 
         <!-- Title -->
         <Label Grid.Row="0"
-               Text="Select a course"
+               Text="{ext:Translate SelectACourse}"
                FontSize="22"
                HorizontalTextAlignment="Center" />
 
@@ -26,8 +26,8 @@
                                SelectedIndex="0">
             <sf:SfSegmentedControl.ItemsSource>
                 <x:Array Type="{x:Type sf:SfSegmentItem}">
-                    <sf:SfSegmentItem Text="Recent" />
-                    <sf:SfSegmentItem Text="All Courses" />
+                    <sf:SfSegmentItem Text="{ext:Translate Recent}" />
+                    <sf:SfSegmentItem Text="{ext:Translate AllCourses}" />
                 </x:Array>
             </sf:SfSegmentedControl.ItemsSource>
         </sf:SfSegmentedControl>
