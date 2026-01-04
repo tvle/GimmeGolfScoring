@@ -315,5 +315,9 @@
         <Setter Property="PullingThreshold" Value="100"/>
         <Setter Property="ProgressColor" Value="{StaticResource Primary}"/>
     </Style>
+    <Style x:Key="Body" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+    </Style>
 
 </ResourceDictionary>

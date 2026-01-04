@@ -7,6 +7,18 @@ public partial class App : Application
 {
 	public App()
 	{
+		// Add global exception handlers
+		AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+		{
+			System.Diagnostics.Debug.WriteLine($"AppDomain UnhandledException: {e.ExceptionObject}");
+		};
+		
+		TaskScheduler.UnobservedTaskException += (s, e) =>
+		{
+			System.Diagnostics.Debug.WriteLine($"UnobservedTaskException: {e.Exception}");
+			e.SetObserved();
+		};
+
 		InitializeComponent();
 		
 		// Initialize localization with saved language preference

@@ -243,14 +243,7 @@ public partial class ActiveRoundPageModel : ObservableObject
         // If we were on the last hole, use this as a "finish" action.
         if (CurrentHoleIndex >= CurrentRound.Holes.Count - 1)
         {
-            var confirm = await ShowRoundInfoAsync();
-            if (confirm)
-            {
-                await CompleteRoundCoreAsync();
-                return;
-            }
-
-            UpdateDisplay();
+            await NavigateToRoundSummary();
             return;
         }
 
@@ -268,10 +261,14 @@ public partial class ActiveRoundPageModel : ObservableObject
         // Save the last hole as-is (it may still be unscored)
         await SaveCurrentHole();
 
-        var confirm = await ShowRoundInfoAsync();
-        if (!confirm) return;
+        await NavigateToRoundSummary();
+    }
 
-        await CompleteRoundCoreAsync();
+    private async Task NavigateToRoundSummary()
+    {
+        if (CurrentRound == null) return;
+
+        await Shell.Current.GoToAsync($"round-summary?roundId={CurrentRound.ID}");
     }
 
     private async Task CompleteRoundCoreAsync()
@@ -297,71 +294,6 @@ public partial class ActiveRoundPageModel : ObservableObject
         {
             IsBusy = false;
         }
-    }
-
-    private async Task<bool> ShowRoundInfoAsync()
-    {
-        if (CurrentRound == null) return false;
-
-        var holes = CurrentRound.Holes
-            .OrderBy(h => h.HoleNumber)
-            .ToList();
-
-        var scoredHoles = holes.Where(h => h.IsScored).ToList();
-
-        int? front9 = null;
-        int? back9 = null;
-
-        if (holes.Count == 18)
-        {
-            var frontScored = scoredHoles.Where(h => h.HoleNumber is >= 1 and <= 9).ToList();
-            var backScored = scoredHoles.Where(h => h.HoleNumber is >= 10 and <= 18).ToList();
-
-            front9 = frontScored.Any() ? frontScored.Sum(h => h.Score) : null;
-            back9 = backScored.Any() ? backScored.Sum(h => h.Score) : null;
-        }
-
-        var totalScore = scoredHoles.Any() ? scoredHoles.Sum(h => h.Score) : 0;
-
-        var putts = scoredHoles.Sum(h => h.Putts ?? 0);
-        var gir = scoredHoles.Count(h => h.GreenInRegulation == true);
-        var penalties = scoredHoles.Count(h => h.Penalties > 0);
-
-        var fairwayHit = scoredHoles.Count(h => h.FairwayResult == FairwayResult.Fairway);
-        var fairwayLeft = scoredHoles.Count(h => h.FairwayResult == FairwayResult.Left);
-        var fairwayRight = scoredHoles.Count(h => h.FairwayResult == FairwayResult.Right);
-
-        var proxS = scoredHoles.Count(h => h.Proximity == 'S');
-        var proxM = scoredHoles.Count(h => h.Proximity == 'M');
-        var proxL = scoredHoles.Count(h => h.Proximity == 'L');
-
-        var message = string.Format(
-            AppResources.CompleteRoundMessage,
-            CurrentRound.TotalScore,
-            CurrentRound.ScoreDisplay);
-
-        if (holes.Count == 18)
-        {
-            message += $"\n\n{AppResources.Front9}: {(front9.HasValue ? front9.Value.ToString() : "-")}" +
-                       $"\n{AppResources.Back9}: {(back9.HasValue ? back9.Value.ToString() : "-")}" +
-                       $"\n{AppResources.Total}: {totalScore}";
-        }
-
-        message += $"\n\n{AppResources.Putts}: {putts}" +
-                   $"\n{AppResources.GIR}: {gir}" +
-                   $"\n{AppResources.PenaltyHoles}: {penalties}" +
-                   $"\n{AppResources.FairwaysHit}: {fairwayHit}" +
-                   $"\n{AppResources.FairwaysLeft}: {fairwayLeft}" +
-                   $"\n{AppResources.FairwaysRight}: {fairwayRight}" +
-                   $"\n{AppResources.ProximityShort}: {proxS}" +
-                   $"\n{AppResources.ProximityMedium}: {proxM}" +
-                   $"\n{AppResources.ProximityLong}: {proxL}";
-
-        return await Shell.Current.DisplayAlert(
-            AppResources.CompleteRoundTitle,
-            message,
-            AppResources.Yes,
-            AppResources.No);
     }
 
     [RelayCommand]

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:iDoublePress.PageModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:ext="clr-namespace:iDoublePress.Extensions"
+             x:Class="iDoublePress.Pages.RoundSummaryPage"
+             x:DataType="pageModels:RoundSummaryPageModel"
+             Title="{ext:Translate CompleteRoundTitle}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*,Auto" Padding="15">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="15">
+                <Border Style="{StaticResource CardStyle}" Padding="15">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding CurrentRound.Course.Name, FallbackValue='Course'}"
+                               Style="{StaticResource Title1}"
+                               FontSize="24"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding CurrentRound.Course.TotalPar, StringFormat='Par {0}'}"
+                               Style="{StaticResource Caption1}"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Padding="20">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="{ext:Translate Total}"
+                               Style="{StaticResource Caption1}"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
+                        
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                            <Label Text="{Binding TotalScore}"
+                                   Style="{StaticResource Display}"
+                                   FontSize="72"
+                                   TextColor="{StaticResource Primary}"
+                                   VerticalTextAlignment="Center" />
+                            <Label Text="{Binding ScoreDisplay, StringFormat='({0})'}"
+                                   Style="{StaticResource Title1}"
+                                   FontSize="28"
+                                   VerticalTextAlignment="Center"
+                                   Margin="0,0,0,10" />
+                        </HorizontalStackLayout>
+
+                        <Grid ColumnDefinitions="*,*" 
+                              ColumnSpacing="20"
+                              IsVisible="{Binding Is18Holes}"
+                              Margin="0,10,0,0">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                <Label Text="{ext:Translate Front9}"
+                                       Style="{StaticResource Caption1}"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
+                                <Label Style="{StaticResource Title2}"
+                                       FontSize="24"
+                                       HorizontalTextAlignment="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Front9Score}" Value="{x:Null}">
+                                            <Setter Property="Text" Value="–" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                    <Label.Text>
+                                        <Binding Path="Front9Score" />
+                                    </Label.Text>
+                                </Label>
+                            </VerticalStackLayout>
+                            
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <Label Text="{ext:Translate Back9}"
+                                       Style="{StaticResource Caption1}"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
+                                <Label Style="{StaticResource Title2}"
+                                       FontSize="24"
+                                       HorizontalTextAlignment="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Back9Score}" Value="{x:Null}">
+                                            <Setter Property="Text" Value="–" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                    <Label.Text>
+                                        <Binding Path="Back9Score" />
+                                    </Label.Text>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Padding="15">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                          ColumnDefinitions="*,Auto"
+                          RowSpacing="12"
+                          ColumnSpacing="20">
+                        
+                        <Label Grid.Row="0" Grid.Column="0"
+                               Text="{ext:Translate Putts}"
+                               Style="{StaticResource Body}"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="0" Grid.Column="1"
+                               Text="{Binding Putts}"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="End" />
+
+                        <Label Grid.Row="1" Grid.Column="0"
+                               Text="{ext:Translate GIR}"
+                               Style="{StaticResource Body}"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="1" Grid.Column="1"
+                               Text="{Binding Gir}"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="End" />
+
+                        <Label Grid.Row="2" Grid.Column="0"
+                               Text="{ext:Translate PenaltyHoles}"
+                               Style="{StaticResource Body}"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="2" Grid.Column="1"
+                               Text="{Binding PenaltyHoles}"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="End" />
+
+                        <BoxView Grid.Row="3" Grid.ColumnSpan="2"
+                                 HeightRequest="1"
+                                 Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"
+                                 Margin="0,4" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Padding="15">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                          ColumnDefinitions="*,Auto"
+                          RowSpacing="12"
+                          ColumnSpacing="20">
+                        
+                        <Label Grid.Row="0" Grid.ColumnSpan="2"
+                               Text="Fairways"
+                               Style="{StaticResource Title3}"
+                               Margin="0,0,0,4" />
+
+                        <Label Grid.Row="1" Grid.Column="0"
+                               Text="{ext:Translate FairwaysHit}"
+                               Style="{StaticResource Body}"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="1" Grid.Column="1"
+                               Text="{Binding FairwaysHit}"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="End" />
+
+                        <Label Grid.Row="2" Grid.Column="0"
+                               Text="{ext:Translate FairwaysLeft}"
+                               Style="{StaticResource Body}"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="2" Grid.Column="1"
+                               Text="{Binding FairwaysLeft}"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="End" />
+
+                        <Label Grid.Row="3" Grid.Column="0"
+                               Text="{ext:Translate FairwaysRight}"
+                               Style="{StaticResource Body}"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="3" Grid.Column="1"
+                               Text="{Binding FairwaysRight}"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="End" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Padding="15">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                          ColumnDefinitions="*,Auto"
+                          RowSpacing="12"
+                          ColumnSpacing="20">
+                        
+                        <Label Grid.Row="0" Grid.ColumnSpan="2"
+                               Text="Proximity"
+                               Style="{StaticResource Title3}"
+                               Margin="0,0,0,4" />
+
+                        <Label Grid.Row="1" Grid.Column="0"
+                               Text="{ext:Translate ProximityShort}"
+                               Style="{StaticResource Body}"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="1" Grid.Column="1"
+                               Text="{Binding ProximityShort}"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="End" />
+
+                        <Label Grid.Row="2" Grid.Column="0"
+                               Text="{ext:Translate ProximityMedium}"
+                               Style="{StaticResource Body}"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="2" Grid.Column="1"
+                               Text="{Binding ProximityMedium}"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="End" />
+
+                        <Label Grid.Row="3" Grid.Column="0"
+                               Text="{ext:Translate ProximityLong}"
+                               Style="{StaticResource Body}"
+                               VerticalTextAlignment="Center" />
+                        <Label Grid.Row="3" Grid.Column="1"
+                               Text="{Binding ProximityLong}"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="End" />
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,*"
+              ColumnSpacing="10"
+              Margin="0,15,0,0">
+            
+            <Button Grid.Column="0"
+                    Text="{ext:Translate No}"
+                    Command="{Binding GoBackCommand}"
+                    HeightRequest="50"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+
+            <Button Grid.Column="1"
+                    Text="{ext:Translate Yes}"
+                    Command="{Binding CompleteRoundCommand}"
+                    HeightRequest="50"
+                    BackgroundColor="{StaticResource Primary}" />
+        </Grid>
+
+        <Grid Grid.RowSpan="2"
+              IsVisible="{Binding IsBusy}"
+              BackgroundColor="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}">
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Color="{StaticResource Primary}" />
+        </Grid>
+    </Grid>
+</ContentPage>
