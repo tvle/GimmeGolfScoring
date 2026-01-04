@@ -58,22 +58,62 @@
                        Margin="0,-4,0,0"/>
 
                 <!-- Score and Score Display -->
-                <HorizontalStackLayout Grid.Row="2" 
-                                      HorizontalOptions="Center" 
-                                      Spacing="6"
-                                      Margin="0,-20,0,0">
-                    <Label Text="{Binding CurrentRound.TotalScore, FallbackValue='4'}" 
-                           AutomationId="ActiveRoundPage.TotalScore"
-                           Style="{StaticResource Display}"
-                           FontSize="56"
-                           VerticalTextAlignment="Center"/>
-                    <Label Text="{Binding TotalScoreDisplay, FallbackValue='(E)'}" 
-                           AutomationId="ActiveRoundPage.TotalScoreDisplay"
-                           Style="{StaticResource Title1}"
-                           FontSize="24"
-                           VerticalTextAlignment="Center"
-                           Margin="0,0,0,6"/>
-                </HorizontalStackLayout>
+                <Grid Grid.Row="2" 
+                      ColumnDefinitions="Auto,*,Auto"
+                      Margin="0,-20,0,0">
+                    <!-- Total Putts (left) -->
+                    <VerticalStackLayout Grid.Column="0" 
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Start"
+                                        Spacing="-2">
+                        <Label Text="{Binding TotalPutts}"
+                               AutomationId="ActiveRoundPage.TotalPutts"
+                               Style="{StaticResource Caption1}"
+                               FontSize="24"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
+                        <Label Text="putts"
+                               Style="{StaticResource Caption1}"
+                               FontSize="10"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                    
+                    <!-- Score (center) -->
+                    <HorizontalStackLayout Grid.Column="1" 
+                                          HorizontalOptions="Center" 
+                                          Spacing="6">
+                        <Label Text="{Binding CurrentRound.TotalScore, FallbackValue='4'}" 
+                               AutomationId="ActiveRoundPage.TotalScore"
+                               Style="{StaticResource Display}"
+                               FontSize="56"
+                               VerticalTextAlignment="Center"/>
+                        <Label Text="{Binding TotalScoreDisplay, FallbackValue='(E)'}" 
+                               AutomationId="ActiveRoundPage.TotalScoreDisplay"
+                               Style="{StaticResource Title1}"
+                               FontSize="24"
+                               VerticalTextAlignment="Center"
+                               Margin="0,0,0,6"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Total GIR (right) -->
+                    <VerticalStackLayout Grid.Column="2" 
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="End"
+                                        Spacing="-2">
+                        <Label Text="{Binding TotalGIR}"
+                               AutomationId="ActiveRoundPage.TotalGIR"
+                               Style="{StaticResource Caption1}"
+                               FontSize="24"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
+                        <Label Text="GIR"
+                               Style="{StaticResource Caption1}"
+                               FontSize="10"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
+                    </VerticalStackLayout>
+                </Grid>
 
                 <!-- Hole Numbers and Scores with Active Indicator -->
                 <Grid Grid.Row="3" RowDefinitions="Auto,Auto" RowSpacing="0" HorizontalOptions="CenterAndExpand">

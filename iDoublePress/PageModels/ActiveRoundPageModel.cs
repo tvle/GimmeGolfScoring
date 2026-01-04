@@ -40,6 +40,12 @@ public partial class ActiveRoundPageModel : ObservableObject
             ? string.Format(AppResources.CourseParFormat, CurrentRound.Course.TotalPar)
             : string.Empty;
 
+    public int TotalPutts =>
+        CurrentRound?.Holes.Where(h => h.IsScored).Sum(h => h.Putts ?? 0) ?? 0;
+
+    public int TotalGIR =>
+        CurrentRound?.Holes.Where(h => h.IsScored).Count(h => h.GreenInRegulation == true) ?? 0;
+
     public string HolesCompleted =>
         CurrentRound != null ? $"{CurrentHoleIndex + 1}/{CurrentRound.Holes.Count}" : "0/18";
 
@@ -477,6 +483,8 @@ public partial class ActiveRoundPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(TotalScoreDisplay));
         OnPropertyChanged(nameof(CourseParDisplay));
+        OnPropertyChanged(nameof(TotalPutts));
+        OnPropertyChanged(nameof(TotalGIR));
         OnPropertyChanged(nameof(HolesCompleted));
         OnPropertyChanged(nameof(CurrentHoleDisplay));
         OnPropertyChanged(nameof(CurrentParDisplay));
@@ -504,6 +512,8 @@ public partial class ActiveRoundPageModel : ObservableObject
             CurrentRound.TotalScore = CurrentRound.Holes.Where(h => h.IsScored).Sum(h => h.Score);
             OnPropertyChanged(nameof(CurrentRound));
             OnPropertyChanged(nameof(TotalScoreDisplay));
+            OnPropertyChanged(nameof(TotalPutts));
+            OnPropertyChanged(nameof(TotalGIR));
         }
     }
 
@@ -512,6 +522,8 @@ public partial class ActiveRoundPageModel : ObservableObject
         OnPropertyChanged(nameof(CurrentHole));
         OnPropertyChanged(nameof(CanDecreasePutts));
         OnPropertyChanged(nameof(CanIncreasePutts));
+        OnPropertyChanged(nameof(TotalPutts));
+        OnPropertyChanged(nameof(TotalGIR));
     }
 
     private CancellationTokenSource? _holeSaveCts;
