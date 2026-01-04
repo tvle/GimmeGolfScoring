@@ -72,9 +72,9 @@
                         SelectionMode="None"
                         VerticalOptions="Fill">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Course">
+                <DataTemplate x:DataType="models:CourseWithLastPlayed">
                     <Border Style="{StaticResource CardStyle}" Margin="0,5">
-                        <Grid RowDefinitions="Auto,Auto"
+                        <Grid RowDefinitions="Auto,Auto,Auto"
                               ColumnDefinitions="*,Auto,Auto,Auto"
                               Padding="8"
                               ColumnSpacing="10"
@@ -115,6 +115,16 @@
                                     Clicked="DeleteButton_Clicked"
                                     CommandParameter="{Binding .}"
                                     Padding="10,4" />
+
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="4"
+                                   Text="{Binding LastPlayedDisplay}"
+                                   IsVisible="{Binding HasLastPlayed}"
+                                   Style="{StaticResource Caption1}"
+                                   Opacity="0.6"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Center" />
                         </Grid>
                     </Border>
                 </DataTemplate>

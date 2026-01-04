@@ -9,20 +9,22 @@ namespace iDoublePress.PageModels;
 public partial class CoursesPageModel : ObservableObject
 {
     private readonly CourseRepository _courseRepository;
+    private readonly RoundRepository _roundRepository;
 
-    public ObservableCollection<Course> Courses { get; } = new();
+    public ObservableCollection<CourseWithLastPlayed> Courses { get; } = new();
 
     public int CourseCount => Courses.Count;
 
     [ObservableProperty]
-    private Course? selectedCourse;
+    private CourseWithLastPlayed? selectedCourse;
 
     [ObservableProperty]
     private bool isBusy;
 
-    public CoursesPageModel(CourseRepository courseRepository)
+    public CoursesPageModel(CourseRepository courseRepository, RoundRepository roundRepository)
     {
         _courseRepository = courseRepository;
+        _roundRepository = roundRepository;
         Courses.CollectionChanged += (_, __) => OnPropertyChanged(nameof(CourseCount));
     }
 
@@ -36,9 +38,21 @@ public partial class CoursesPageModel : ObservableObject
         {
             IsBusy = true;
             Courses.Clear();
+            
             var courses = await _courseRepository.ListAsync();
+            var rounds = await _roundRepository.ListAsync();
+            
+            // Build a dictionary of course ID to last played date
+            var lastPlayedByCourse = rounds
+                .Where(r => r.Course != null)
+                .GroupBy(r => r.CourseID)
+                .ToDictionary(g => g.Key, g => g.Max(r => r.StartTime));
+            
             foreach (var c in courses)
-                Courses.Add(c);
+            {
+                var lastPlayed = lastPlayedByCourse.TryGetValue(c.ID, out var date) ? date : (DateTime?)null;
+                Courses.Add(new CourseWithLastPlayed(c, lastPlayed));
+            }
         }
         finally
         {
@@ -47,19 +61,19 @@ public partial class CoursesPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task OpenCourseAsync(Course? course)
+    private async Task OpenCourseAsync(CourseWithLastPlayed? courseWithLastPlayed)
     {
-        if (course is null)
+        if (courseWithLastPlayed is null)
             return;
 
         SelectedCourse = null;
-        await Shell.Current.GoToAsync($"course-edit?courseId={course.ID}");
+        await Shell.Current.GoToAsync($"course-edit?courseId={courseWithLastPlayed.Course.ID}");
     }
 
     [RelayCommand]
-    private async Task EditCourseAsync(Course? course)
+    private async Task EditCourseAsync(CourseWithLastPlayed? courseWithLastPlayed)
     {
-        await OpenCourseAsync(course);
+        await OpenCourseAsync(courseWithLastPlayed);
     }
 
     [RelayCommand]
@@ -98,10 +112,12 @@ public partial class CoursesPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task CopyCourseAsync(Course? course)
+    private async Task CopyCourseAsync(CourseWithLastPlayed? courseWithLastPlayed)
     {
-        if (course is null)
+        if (courseWithLastPlayed is null)
             return;
+
+        var course = courseWithLastPlayed.Course;
 
         // Load a fresh copy including holes, then insert as a new item.
         var source = await _courseRepository.GetAsync(course.ID);
@@ -136,10 +152,12 @@ public partial class CoursesPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task DeleteCourseAsync(Course? course)
+    private async Task DeleteCourseAsync(CourseWithLastPlayed? courseWithLastPlayed)
     {
-        if (course is null)
+        if (courseWithLastPlayed is null)
             return;
+
+        var course = courseWithLastPlayed.Course;
 
         var confirm = await Shell.Current.DisplayAlert(
             "Delete Course",

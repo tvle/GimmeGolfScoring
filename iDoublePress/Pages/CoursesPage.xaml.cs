@@ -15,28 +15,28 @@ public partial class CoursesPage : ContentPage
 
     private async void CopyButton_Clicked(object? sender, EventArgs e)
     {
-        var course = (sender as Button)?.CommandParameter as Course;
+        var courseWithLastPlayed = (sender as Button)?.CommandParameter as CourseWithLastPlayed;
         if (Model is null)
             return;
 
-        await Model.CopyCourseCommand.ExecuteAsync(course);
+        await Model.CopyCourseCommand.ExecuteAsync(courseWithLastPlayed);
     }
 
     private async void EditButton_Clicked(object? sender, EventArgs e)
     {
-        var course = (sender as Button)?.CommandParameter as Course;
+        var courseWithLastPlayed = (sender as Button)?.CommandParameter as CourseWithLastPlayed;
         if (Model is null)
             return;
 
-        await Model.EditCourseCommand.ExecuteAsync(course);
+        await Model.EditCourseCommand.ExecuteAsync(courseWithLastPlayed);
     }
 
     private async void DeleteButton_Clicked(object? sender, EventArgs e)
     {
-        var course = (sender as Button)?.CommandParameter as Course;
+        var courseWithLastPlayed = (sender as Button)?.CommandParameter as CourseWithLastPlayed;
         if (Model is null)
             return;
 
-        await Model.DeleteCourseCommand.ExecuteAsync(course);
+        await Model.DeleteCourseCommand.ExecuteAsync(courseWithLastPlayed);
     }
 }
