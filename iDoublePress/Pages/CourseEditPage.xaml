@@ -51,14 +51,34 @@
                         </Border>
                         
                         <!-- Total Par in center -->
-                        <Label Grid.Column="1"
-                               Text="{Binding TotalPar, StringFormat='{0}'}"
-                               Style="{StaticResource Title2}"
-                               FontSize="28"
-                               TextColor="{StaticResource Primary}"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               Margin="10,0" />
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="0"
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             Margin="10,0">
+                            <Label Text="{Binding TotalPar, StringFormat='{0}'}"
+                                   Style="{StaticResource Title2}"
+                                   FontSize="28"
+                                   TextColor="{StaticResource Primary}"
+                                   HorizontalOptions="Center" />
+
+                            <Label FontSize="12"
+                                   Opacity="0.8"
+                                   HorizontalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding TotalYardage}" Value="{x:Null}">
+                                        <Setter Property="Text" Value="----" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding TotalYardage}" Value="0">
+                                        <Setter Property="Text" Value="0" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                                <Label.Text>
+                                    <Binding Path="TotalYardage" StringFormat="{0}" />
+                                </Label.Text>
+                            </Label>
+                        </VerticalStackLayout>
                         
                         <Border Grid.Column="2" 
                                 Style="{StaticResource CardStyle}"
@@ -120,27 +140,41 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:CourseHole">
                     <Border Style="{StaticResource CardStyle}" Margin="0,5">
-                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="10" VerticalOptions="Center" Padding="10">
-                            <Label Text="{Binding HoleNumber, StringFormat='#{0}'}" 
+                        <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto" ColumnSpacing="10" VerticalOptions="Center" Padding="10">
+                            <Label Grid.Column="0"
+                                   Text="{Binding HoleNumber, StringFormat='#{0}'}" 
                                    VerticalOptions="Center" 
                                    Style="{StaticResource Title3}"
                                    MinimumWidthRequest="40" />
 
-                            <Button Grid.Column="2"
+                            <Entry Grid.Column="1"
+                                   Text="{Binding Yardage, Mode=TwoWay, TargetNullValue=''}"
+                                   Placeholder="Yds"
+                                   Keyboard="Numeric"
+                                   MaxLength="3"
+                                   WidthRequest="70"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:NumericValidationBehavior MinimumValue="0" MaximumValue="999" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Button Grid.Column="3"
                                     Text="-"
                                     WidthRequest="44"
                                     HeightRequest="44"
                                     Padding="0"
                                     Clicked="OnDecrementParClicked"
                                     CommandParameter="{Binding .}" />
-                            <Label Grid.Column="3" 
+                            <Label Grid.Column="4" 
                                    Text="{Binding Par}" 
                                    HorizontalOptions="Center" 
                                    VerticalOptions="Center"
                                    Style="{StaticResource Title2}"
                                    MinimumWidthRequest="30"
                                    HorizontalTextAlignment="Center" />
-                            <Button Grid.Column="4"
+                            <Button Grid.Column="5"
                                     Text="+"
                                     WidthRequest="44"
                                     HeightRequest="44"

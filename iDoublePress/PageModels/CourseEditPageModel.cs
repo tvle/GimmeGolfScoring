@@ -29,6 +29,9 @@ public partial class CourseEditPageModel : ObservableObject
     private int totalPar;
 
     [ObservableProperty]
+    private int? totalYardage;
+
+    [ObservableProperty]
     private string? courseRating;
 
     [ObservableProperty]
@@ -63,20 +66,28 @@ public partial class CourseEditPageModel : ObservableObject
             }
         }
 
-        UpdateTotalPar();
+        UpdateTotals();
     }
 
     private void OnHolePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(CourseHole.Par))
+        if (e.PropertyName == nameof(CourseHole.Par) || e.PropertyName == nameof(CourseHole.Yardage))
         {
-            UpdateTotalPar();
+            UpdateTotals();
         }
     }
 
-    private void UpdateTotalPar()
+    private void UpdateTotals()
     {
         TotalPar = Holes.Sum(h => h.Par);
+
+        var yards = Holes
+            .Select(h => h.Yardage)
+            .Where(y => y.HasValue)
+            .Select(y => y!.Value)
+            .ToList();
+
+        TotalYardage = yards.Count == 0 ? null : yards.Sum();
     }
 
     [RelayCommand]
@@ -117,6 +128,8 @@ public partial class CourseEditPageModel : ObservableObject
                 Slope = string.Empty;
                 InitializeHoles();
             }
+
+            UpdateTotals();
         }
         finally
         {
@@ -167,6 +180,8 @@ public partial class CourseEditPageModel : ObservableObject
             // For new courses, reinitialize all holes
             InitializeHoles();
         }
+
+        UpdateTotals();
     }
 
     private void InitializeHoles()
