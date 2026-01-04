@@ -1,6 +1,10 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
+using LiveChartsCore.SkiaSharpView.Maui;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using LiveChartsCore.SkiaSharpView.Maui.Handlers;
+using LiveChartsCore.SkiaSharpView;
 
 namespace iDoublePress;
 
@@ -11,8 +15,10 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.UseMauiCommunityToolkit()
+            .UseSkiaSharp()
+            .UseMauiCommunityToolkit()
 			.ConfigureSyncfusionToolkit()
+			.UseLiveCharts()
 			.ConfigureMauiHandlers(handlers =>
 			{
 #if WINDOWS
@@ -58,6 +64,7 @@ public static class MauiProgram
 		builder.Services.AddTransientWithShellRoute<CoursesPage, CoursesPageModel>("courses");
 		builder.Services.AddTransientWithShellRoute<CourseEditPage, CourseEditPageModel>("course-edit");
 		builder.Services.AddTransientWithShellRoute<RoundSummaryPage, RoundSummaryPageModel>("round-summary");
+		builder.Services.AddTransientWithShellRoute<AnalysisPage, AnalysisPageModel>("analysis");
 		
 		return builder.Build();
 	}

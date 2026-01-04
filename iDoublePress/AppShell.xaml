@@ -21,6 +21,12 @@
         ContentTemplate="{DataTemplate pages:CoursesPage}"
         Route="courses" />
 
+    <ShellContent
+        Title="{ext:Translate Analysis}"
+        Icon="{StaticResource IconAnalysis}"
+        ContentTemplate="{DataTemplate pages:AnalysisPage}"
+        Route="analysis" />
+
     <Shell.FlyoutFooter>
         <Grid Padding="15">
             <sf:SfSegmentedControl x:Name="ThemeSegmentedControl" 
