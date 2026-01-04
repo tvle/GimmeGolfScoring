@@ -190,6 +190,13 @@ public partial class MainPageModel : ObservableObject
 			await Shell.Current.Navigation.PushModalAsync(selectCoursePage);
 			var course = await selectCoursePage.GetResultAsync();
 
+			// Always dismiss the modal exactly once before continuing.
+			if (Shell.Current.Navigation.ModalStack.Count > 0)
+			{
+				await Shell.Current.Navigation.PopModalAsync();
+				await Task.Delay(50);
+			}
+
 			if (course == null)
 				return;
 

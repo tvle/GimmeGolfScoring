@@ -19,19 +19,19 @@ public partial class SelectCoursePage : ContentPage
 
     public Task<Course?> GetResultAsync() => _tcs.Task;
 
-    private async void OnCancelClicked(object? sender, EventArgs e)
+    private void OnCancelClicked(object? sender, EventArgs e)
     {
         _tcs.TrySetResult(null);
-        await Navigation.PopModalAsync();
+        // Let the caller handle modal dismissal
     }
 
-    private async void OnCourseTapped(object? sender, TappedEventArgs e)
+    private void OnCourseTapped(object? sender, TappedEventArgs e)
     {
         if ((sender as BindableObject)?.BindingContext is not CourseWithLastPlayed item)
             return;
 
         _tcs.TrySetResult(item.Course);
-        await Navigation.PopModalAsync();
+        // Let the caller handle modal dismissal
     }
 
     private void OnTabSelectionChanged(object? sender, Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
