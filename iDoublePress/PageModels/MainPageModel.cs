@@ -182,20 +182,14 @@ public partial class MainPageModel : ObservableObject
 				}
 			}
 
-			// Show course selection
+			// Show course selection page
 			var courses = await _courseRepository.ListAsync();
-			var courseNames = courses.Select(c => c.Name).ToArray();
+			var allRounds = await _roundRepository.ListAsync();
+			var selectCoursePage = new SelectCoursePage(courses, allRounds);
 			
-			var selectedCourse = await Shell.Current.DisplayActionSheet(
-				AppResources.SelectCourse,
-				AppResources.Cancel,
-				null,
-				courseNames);
+			await Shell.Current.Navigation.PushModalAsync(selectCoursePage);
+			var course = await selectCoursePage.GetResultAsync();
 
-			if (selectedCourse == AppResources.Cancel || string.IsNullOrEmpty(selectedCourse))
-				return;
-
-			var course = courses.FirstOrDefault(c => c.Name == selectedCourse);
 			if (course == null)
 				return;
 

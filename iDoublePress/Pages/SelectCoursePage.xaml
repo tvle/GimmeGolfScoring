@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:iDoublePress.Models"
+             xmlns:pages="clr-namespace:iDoublePress.Pages"
+             xmlns:ext="clr-namespace:iDoublePress.Extensions"
+             xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
+             x:Class="iDoublePress.Pages.SelectCoursePage"
+             x:Name="PageRoot"
+             Title="{ext:Translate SelectCourse}">
+
+    <Grid Padding="{StaticResource LayoutPadding}"
+          RowDefinitions="Auto,Auto,*,Auto"
+          RowSpacing="10">
+
+        <!-- Title -->
+        <Label Grid.Row="0"
+               Text="Select a course"
+               FontSize="22"
+               HorizontalTextAlignment="Center" />
+
+        <!-- Tab selector -->
+        <sf:SfSegmentedControl Grid.Row="1"
+                               x:Name="TabSelector"
+                               HorizontalOptions="Center"
+                               SelectionChanged="OnTabSelectionChanged"
+                               SelectedIndex="0">
+            <sf:SfSegmentedControl.ItemsSource>
+                <x:Array Type="{x:Type sf:SfSegmentItem}">
+                    <sf:SfSegmentItem Text="Recent" />
+                    <sf:SfSegmentItem Text="All Courses" />
+                </x:Array>
+            </sf:SfSegmentedControl.ItemsSource>
+        </sf:SfSegmentedControl>
+
+        <!-- Recent Courses Tab -->
+        <CollectionView Grid.Row="2"
+                        x:Name="RecentCoursesView"
+                        ItemsSource="{Binding RecentCourses}"
+                        SelectionMode="None"
+                        VerticalOptions="Fill"
+                        IsVisible="True">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="pages:CourseWithLastPlayed">
+                    <Border Style="{StaticResource CardStyle}" Margin="0,5">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCourseTapped" />
+                        </Border.GestureRecognizers>
+                        <Grid RowDefinitions="Auto,Auto"
+                              Padding="8"
+                              RowSpacing="6"
+                              VerticalOptions="Center">
+
+                            <Label Grid.Row="0"
+                                   Text="{Binding Name}"
+                                   Style="{StaticResource Body1}"
+                                   LineBreakMode="TailTruncation" />
+
+                            <Grid Grid.Row="1"
+                                  ColumnDefinitions="Auto,*"
+                                  ColumnSpacing="10">
+                                <Label Grid.Column="0"
+                                       Text="{Binding TotalPar, StringFormat='Par {0}'}"
+                                       Style="{StaticResource Caption1}"
+                                       Opacity="0.8"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding LastPlayedDisplay}"
+                                       IsVisible="{Binding HasLastPlayed}"
+                                       Style="{StaticResource Caption1}"
+                                       Opacity="0.6"
+                                       HorizontalOptions="End"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- All Courses Tab -->
+        <Grid Grid.Row="2"
+              x:Name="AllCoursesView"
+              RowDefinitions="Auto,*"
+              RowSpacing="10"
+              IsVisible="False">
+
+            <!-- Sort buttons -->
+            <Grid Grid.Row="0"
+                  ColumnDefinitions="Auto,Auto,*"
+                  ColumnSpacing="10"
+                  VerticalOptions="Center">
+
+                <Button Grid.Column="0"
+                        ImageSource="{StaticResource IconSortAsc}"
+                        Clicked="OnSortAscClicked"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        WidthRequest="44"
+                        HeightRequest="44"
+                        CornerRadius="22"
+                        Padding="0"
+                        VerticalOptions="Center" />
+
+                <Button Grid.Column="1"
+                        ImageSource="{StaticResource IconSortDesc}"
+                        Clicked="OnSortDescClicked"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        WidthRequest="44"
+                        HeightRequest="44"
+                        CornerRadius="22"
+                        Padding="0"
+                        VerticalOptions="Center" />
+            </Grid>
+
+            <!-- All courses list -->
+            <CollectionView Grid.Row="1"
+                            ItemsSource="{Binding AllCourses}"
+                            SelectionMode="None"
+                            VerticalOptions="Fill">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="pages:CourseWithLastPlayed">
+                        <Border Style="{StaticResource CardStyle}" Margin="0,5">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCourseTapped" />
+                            </Border.GestureRecognizers>
+                            <Grid RowDefinitions="Auto,Auto"
+                                  Padding="8"
+                                  RowSpacing="6"
+                                  VerticalOptions="Center">
+
+                                <Label Grid.Row="0"
+                                       Text="{Binding Name}"
+                                       Style="{StaticResource Body1}"
+                                       LineBreakMode="TailTruncation" />
+
+                                <Grid Grid.Row="1"
+                                      ColumnDefinitions="Auto,*"
+                                      ColumnSpacing="10">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding TotalPar, StringFormat='Par {0}'}"
+                                           Style="{StaticResource Caption1}"
+                                           Opacity="0.8"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding LastPlayedDisplay}"
+                                           IsVisible="{Binding HasLastPlayed}"
+                                           Style="{StaticResource Caption1}"
+                                           Opacity="0.6"
+                                           HorizontalOptions="End"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <!-- Cancel button -->
+        <Button Grid.Row="3"
+                Text="{ext:Translate Cancel}"
+                Clicked="OnCancelClicked"
+                HorizontalOptions="Fill" />
+    </Grid>
+
+</ContentPage>
