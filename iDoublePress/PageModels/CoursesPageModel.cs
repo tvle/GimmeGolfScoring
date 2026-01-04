@@ -156,7 +156,10 @@ public partial class CoursesPageModel : ObservableObject
         };
 
         await _courseRepository.SaveItemAsync(copied);
-        await NavigatedToAsync();
+
+        // After saving the copy, navigate directly to the edit screen for the new course
+        SelectedCourse = null;
+        await Shell.Current.GoToAsync($"course-edit?courseId={copied.ID}");
     }
 
     [RelayCommand]
