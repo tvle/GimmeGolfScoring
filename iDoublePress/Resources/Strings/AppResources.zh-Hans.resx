@@ -508,4 +508,96 @@
     <value>所有球场</value>
     <comment>All courses tab</comment>
   </data>
+  <data name="Analysis" xml:space="preserve">
+    <value>分析</value>
+    <comment>Analysis page title</comment>
+  </data>
+  <data name="StrokesGained" xml:space="preserve">
+    <value>杆数获益 (估算)</value>
+    <comment>Strokes gained section title</comment>
+  </data>
+  <data name="StrokesGainedDescription" xml:space="preserve">
+    <value>基于标准差点基准。</value>
+    <comment>Description for strokes gained</comment>
+  </data>
+  <data name="DrivingBias" xml:space="preserve">
+    <value>开球偏向</value>
+    <comment>Driving bias section title</comment>
+  </data>
+  <data name="PuttingPerformance" xml:space="preserve">
+    <value>推杆表现</value>
+    <comment>Putting performance section title</comment>
+  </data>
+  <data name="Scrambling" xml:space="preserve">
+    <value>救帕</value>
+    <comment>Scrambling section title</comment>
+  </data>
+  <data name="ScramblingDescription" xml:space="preserve">
+    <value>未上果岭时的保帕率</value>
+    <comment>Description for scrambling</comment>
+  </data>
+  <data name="ScoreHistory" xml:space="preserve">
+    <value>成绩记录</value>
+    <comment>Score history section title</comment>
+  </data>
+  <data name="StrokesGainedEst" xml:space="preserve">
+    <value>杆数获益 (估算)</value>
+    <comment>Strokes gained estimated series name</comment>
+  </data>
+  <data name="Driving" xml:space="preserve">
+    <value>开球</value>
+    <comment>Driving category</comment>
+  </data>
+  <data name="Approach" xml:space="preserve">
+    <value>攻果岭</value>
+    <comment>Approach category</comment>
+  </data>
+  <data name="ShortGame" xml:space="preserve">
+    <value>短杆</value>
+    <comment>Short game category</comment>
+  </data>
+  <data name="Putting" xml:space="preserve">
+    <value>推杆</value>
+    <comment>Putting category</comment>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>左</value>
+    <comment>Left direction</comment>
+  </data>
+  <data name="Fairway" xml:space="preserve">
+    <value>球道</value>
+    <comment>Fairway hit</comment>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>右</value>
+    <comment>Right direction</comment>
+  </data>
+  <data name="YourPercentage" xml:space="preserve">
+    <value>你的 %</value>
+    <comment>Your percentage label</comment>
+  </data>
+  <data name="MakeUnder6ft" xml:space="preserve">
+    <value>&lt; 6英尺 进球率</value>
+    <comment>Make percentage under 6ft</comment>
+  </data>
+  <data name="Make6to20ft" xml:space="preserve">
+    <value>6-20英尺 进球率</value>
+    <comment>Make percentage 6 to 20ft</comment>
+  </data>
+  <data name="TwoPuttOver20ft" xml:space="preserve">
+    <value>&gt; 20英尺 2推率</value>
+    <comment>Two-putt percentage over 20ft</comment>
+  </data>
+  <data name="ScramblingPercentage" xml:space="preserve">
+    <value>救帕率 %</value>
+    <comment>Scrambling percentage</comment>
+  </data>
+  <data name="Missed" xml:space="preserve">
+    <value>未进</value>
+    <comment>Missed label</comment>
+  </data>
+  <data name="ScoreToPar" xml:space="preserve">
+    <value>成绩 vs 标准杆</value>
+    <comment>Score to par axis name</comment>
+  </data>
 </root>

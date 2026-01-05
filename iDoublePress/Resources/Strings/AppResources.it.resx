@@ -508,4 +508,96 @@ Riavvia l'applicazione.</value>
     <value>Tutti i campi</value>
     <comment>All courses tab</comment>
   </data>
+  <data name="Analysis" xml:space="preserve">
+    <value>Analisi</value>
+    <comment>Analysis page title</comment>
+  </data>
+  <data name="StrokesGained" xml:space="preserve">
+    <value>Strokes Gained (Stimato)</value>
+    <comment>Strokes gained section title</comment>
+  </data>
+  <data name="StrokesGainedDescription" xml:space="preserve">
+    <value>Basato su benchmark di handicap standard.</value>
+    <comment>Description for strokes gained</comment>
+  </data>
+  <data name="DrivingBias" xml:space="preserve">
+    <value>Tendenza Drive</value>
+    <comment>Driving bias section title</comment>
+  </data>
+  <data name="PuttingPerformance" xml:space="preserve">
+    <value>Performance Putt</value>
+    <comment>Putting performance section title</comment>
+  </data>
+  <data name="Scrambling" xml:space="preserve">
+    <value>Scrambling</value>
+    <comment>Scrambling section title</comment>
+  </data>
+  <data name="ScramblingDescription" xml:space="preserve">
+    <value>% Par salvati mancando il GIR</value>
+    <comment>Description for scrambling</comment>
+  </data>
+  <data name="ScoreHistory" xml:space="preserve">
+    <value>Storico Punteggi</value>
+    <comment>Score history section title</comment>
+  </data>
+  <data name="StrokesGainedEst" xml:space="preserve">
+    <value>Strokes Gained (Stim.)</value>
+    <comment>Strokes gained estimated series name</comment>
+  </data>
+  <data name="Driving" xml:space="preserve">
+    <value>Drive</value>
+    <comment>Driving category</comment>
+  </data>
+  <data name="Approach" xml:space="preserve">
+    <value>Approccio</value>
+    <comment>Approach category</comment>
+  </data>
+  <data name="ShortGame" xml:space="preserve">
+    <value>G. Corto</value>
+    <comment>Short game category</comment>
+  </data>
+  <data name="Putting" xml:space="preserve">
+    <value>Putt</value>
+    <comment>Putting category</comment>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Sinistra</value>
+    <comment>Left direction</comment>
+  </data>
+  <data name="Fairway" xml:space="preserve">
+    <value>Fairway</value>
+    <comment>Fairway hit</comment>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Destra</value>
+    <comment>Right direction</comment>
+  </data>
+  <data name="YourPercentage" xml:space="preserve">
+    <value>Tuo %</value>
+    <comment>Your percentage label</comment>
+  </data>
+  <data name="MakeUnder6ft" xml:space="preserve">
+    <value>% Buca &lt; 6ft</value>
+    <comment>Make percentage under 6ft</comment>
+  </data>
+  <data name="Make6to20ft" xml:space="preserve">
+    <value>% Buca 6-20ft</value>
+    <comment>Make percentage 6 to 20ft</comment>
+  </data>
+  <data name="TwoPuttOver20ft" xml:space="preserve">
+    <value>% 2 Putt &gt; 20ft</value>
+    <comment>Two-putt percentage over 20ft</comment>
+  </data>
+  <data name="ScramblingPercentage" xml:space="preserve">
+    <value>% Scrambling</value>
+    <comment>Scrambling percentage</comment>
+  </data>
+  <data name="Missed" xml:space="preserve">
+    <value>Mancato</value>
+    <comment>Missed label</comment>
+  </data>
+  <data name="ScoreToPar" xml:space="preserve">
+    <value>Punteggio vs Par</value>
+    <comment>Score to par axis name</comment>
+  </data>
 </root>

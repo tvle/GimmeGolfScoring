@@ -310,7 +310,7 @@ Resume it?</value>
   <value>Fairways</value>
   <comment>Fairways section label</comment>
 </data>
-<data name="Proximity" xml:space="preserve">
+  <data name="Proximity" xml:space="preserve">
   <value>Proximity</value>
   <comment>Proximity section label</comment>
 </data>
@@ -562,5 +562,102 @@ Resume it?</value>
   <data name="AllCourses" xml:space="preserve">
     <value>All Courses</value>
     <comment>All courses tab</comment>
+  </data>
+  <data name="Analysis" xml:space="preserve">
+    <value>Analysis</value>
+    <comment>Analysis page title</comment>
+  </data>
+  <!-- Analysis Page -->
+  <data name="Analysis" xml:space="preserve">
+    <value>Analysis</value>
+    <comment>Analysis page title</comment>
+  </data>
+  <data name="StrokesGained" xml:space="preserve">
+    <value>Strokes Gained (Estimated)</value>
+    <comment>Strokes gained section title</comment>
+  </data>
+  <data name="StrokesGainedDescription" xml:space="preserve">
+    <value>Based on standard handicap benchmarks.</value>
+    <comment>Description for strokes gained</comment>
+  </data>
+  <data name="DrivingBias" xml:space="preserve">
+    <value>Driving Bias</value>
+    <comment>Driving bias section title</comment>
+  </data>
+  <data name="PuttingPerformance" xml:space="preserve">
+    <value>Putting Performance</value>
+    <comment>Putting performance section title</comment>
+  </data>
+  <data name="Scrambling" xml:space="preserve">
+    <value>Scrambling</value>
+    <comment>Scrambling section title</comment>
+  </data>
+  <data name="ScramblingDescription" xml:space="preserve">
+    <value>% Par Saves when missing GIR</value>
+    <comment>Description for scrambling</comment>
+  </data>
+  <data name="ScoreHistory" xml:space="preserve">
+    <value>Score History</value>
+    <comment>Score history section title</comment>
+  </data>
+  <data name="StrokesGainedEst" xml:space="preserve">
+    <value>Strokes Gained (Est.)</value>
+    <comment>Strokes gained estimated series name</comment>
+  </data>
+  <data name="Driving" xml:space="preserve">
+    <value>Driving</value>
+    <comment>Driving category</comment>
+  </data>
+  <data name="Approach" xml:space="preserve">
+    <value>Approach</value>
+    <comment>Approach category</comment>
+  </data>
+  <data name="ShortGame" xml:space="preserve">
+    <value>Short Gm</value>
+    <comment>Short game category</comment>
+  </data>
+  <data name="Putting" xml:space="preserve">
+    <value>Putting</value>
+    <comment>Putting category</comment>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Left</value>
+    <comment>Left direction</comment>
+  </data>
+  <data name="Fairway" xml:space="preserve">
+    <value>Fairway</value>
+    <comment>Fairway hit</comment>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Right</value>
+    <comment>Right direction</comment>
+  </data>
+  <data name="YourPercentage" xml:space="preserve">
+    <value>Your %</value>
+    <comment>Your percentage label</comment>
+  </data>
+  <data name="MakeUnder6ft" xml:space="preserve">
+    <value>&lt; 6ft Make %</value>
+    <comment>Make percentage under 6ft</comment>
+  </data>
+  <data name="Make6to20ft" xml:space="preserve">
+    <value>6-20ft Make %</value>
+    <comment>Make percentage 6 to 20ft</comment>
+  </data>
+  <data name="TwoPuttOver20ft" xml:space="preserve">
+    <value>&gt; 20ft 2-Putt %</value>
+    <comment>Two-putt percentage over 20ft</comment>
+  </data>
+  <data name="ScramblingPercentage" xml:space="preserve">
+    <value>Scrambling %</value>
+    <comment>Scrambling percentage</comment>
+  </data>
+  <data name="Missed" xml:space="preserve">
+    <value>Missed</value>
+    <comment>Missed label</comment>
+  </data>
+  <data name="ScoreToPar" xml:space="preserve">
+    <value>Score to Par</value>
+    <comment>Score to par axis name</comment>
   </data>
 </root>

@@ -508,4 +508,96 @@
     <value>전체 코스</value>
     <comment>All courses tab</comment>
   </data>
+  <data name="Analysis" xml:space="preserve">
+    <value>분석</value>
+    <comment>Analysis page title</comment>
+  </data>
+  <data name="StrokesGained" xml:space="preserve">
+    <value>스트로크 게인드 (추정)</value>
+    <comment>Strokes gained section title</comment>
+  </data>
+  <data name="StrokesGainedDescription" xml:space="preserve">
+    <value>표준 핸디캡 벤치마크 기준.</value>
+    <comment>Description for strokes gained</comment>
+  </data>
+  <data name="DrivingBias" xml:space="preserve">
+    <value>드라이빙 편차</value>
+    <comment>Driving bias section title</comment>
+  </data>
+  <data name="PuttingPerformance" xml:space="preserve">
+    <value>퍼팅 퍼포먼스</value>
+    <comment>Putting performance section title</comment>
+  </data>
+  <data name="Scrambling" xml:space="preserve">
+    <value>스크램블링</value>
+    <comment>Scrambling section title</comment>
+  </data>
+  <data name="ScramblingDescription" xml:space="preserve">
+    <value>GIR 실패 시 파 세이브 비율</value>
+    <comment>Description for scrambling</comment>
+  </data>
+  <data name="ScoreHistory" xml:space="preserve">
+    <value>스코어 기록</value>
+    <comment>Score history section title</comment>
+  </data>
+  <data name="StrokesGainedEst" xml:space="preserve">
+    <value>스트로크 게인드 (추정)</value>
+    <comment>Strokes gained estimated series name</comment>
+  </data>
+  <data name="Driving" xml:space="preserve">
+    <value>드라이빙</value>
+    <comment>Driving category</comment>
+  </data>
+  <data name="Approach" xml:space="preserve">
+    <value>어프로치</value>
+    <comment>Approach category</comment>
+  </data>
+  <data name="ShortGame" xml:space="preserve">
+    <value>숏게임</value>
+    <comment>Short game category</comment>
+  </data>
+  <data name="Putting" xml:space="preserve">
+    <value>퍼팅</value>
+    <comment>Putting category</comment>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>좌측</value>
+    <comment>Left direction</comment>
+  </data>
+  <data name="Fairway" xml:space="preserve">
+    <value>페어웨이</value>
+    <comment>Fairway hit</comment>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>우측</value>
+    <comment>Right direction</comment>
+  </data>
+  <data name="YourPercentage" xml:space="preserve">
+    <value>나의 %</value>
+    <comment>Your percentage label</comment>
+  </data>
+  <data name="MakeUnder6ft" xml:space="preserve">
+    <value>&lt; 6ft 성공률</value>
+    <comment>Make percentage under 6ft</comment>
+  </data>
+  <data name="Make6to20ft" xml:space="preserve">
+    <value>6-20ft 성공률</value>
+    <comment>Make percentage 6 to 20ft</comment>
+  </data>
+  <data name="TwoPuttOver20ft" xml:space="preserve">
+    <value>&gt; 20ft 2퍼트율</value>
+    <comment>Two-putt percentage over 20ft</comment>
+  </data>
+  <data name="ScramblingPercentage" xml:space="preserve">
+    <value>스크램블링 %</value>
+    <comment>Scrambling percentage</comment>
+  </data>
+  <data name="Missed" xml:space="preserve">
+    <value>실패</value>
+    <comment>Missed label</comment>
+  </data>
+  <data name="ScoreToPar" xml:space="preserve">
+    <value>스코어 (vs 파)</value>
+    <comment>Score to par axis name</comment>
+  </data>
 </root>

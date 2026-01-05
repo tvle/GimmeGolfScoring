@@ -8,6 +8,7 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.VisualElements; // Needed for Labels
 using SkiaSharp;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace iDoublePress.PageModels;
 
@@ -41,6 +42,8 @@ public partial class AnalysisPageModel : ObservableObject
         _roundRepository = roundRepository;
         _courseRepository = courseRepository;
     }
+
+    private string GetLocalized(string key) => Resources.Strings.AppResources.ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 
     [RelayCommand]
     private async Task NavigatedToAsync()
@@ -95,13 +98,13 @@ public partial class AnalysisPageModel : ObservableObject
             new ColumnSeries<double>
             {
                 Values = new double[] { sgOffTee, sgApproach, sgShortGame, sgPutting },
-                Name = "Strokes Gained (Est.)",
+                Name = GetLocalized("StrokesGainedEst"),
                 // Color bars Red (negative) or Green (positive) dynamically
                 Fill = new SolidColorPaint(SKColors.SlateBlue)
             }
         };
 
-        SGAxesX = new Axis[] { new Axis { Labels = new[] { "Driving", "Approach", "Short Gm", "Putting" } } };
+        SGAxesX = new Axis[] { new Axis { Labels = new[] { GetLocalized("Driving"), GetLocalized("Approach"), GetLocalized("ShortGame"), GetLocalized("Putting") } } };
         SGAxesY = new Axis[] { new Axis { Labeler = value => value.ToString("N1") } }; // Show 1 decimal
     }
 
@@ -116,9 +119,9 @@ public partial class AnalysisPageModel : ObservableObject
 
         DrivingBiasSeries = new ISeries[]
         {
-            new PieSeries<int> { Values = new[] { lefts }, Name = "Left", Fill = new SolidColorPaint(SKColors.OrangeRed) },
-            new PieSeries<int> { Values = new[] { centers }, Name = "Fairway", Fill = new SolidColorPaint(SKColors.ForestGreen) },
-            new PieSeries<int> { Values = new[] { rights }, Name = "Right", Fill = new SolidColorPaint(SKColors.Orange) }
+            new PieSeries<int> { Values = new[] { lefts }, Name = GetLocalized("Left"), Fill = new SolidColorPaint(SKColors.OrangeRed) },
+            new PieSeries<int> { Values = new[] { centers }, Name = GetLocalized("Fairway"), Fill = new SolidColorPaint(SKColors.ForestGreen) },
+            new PieSeries<int> { Values = new[] { rights }, Name = GetLocalized("Right"), Fill = new SolidColorPaint(SKColors.Orange) }
         };
     }
 
@@ -141,10 +144,10 @@ public partial class AnalysisPageModel : ObservableObject
 
         PuttingStatSeries = new ISeries[]
         {
-            new ColumnSeries<double> { Values = new[] { shortPct, medPct, longPct }, Name = "Your %" }
+            new ColumnSeries<double> { Values = new[] { shortPct, medPct, longPct }, Name = GetLocalized("YourPercentage") }
         };
 
-        PuttingXAxes = new Axis[] { new Axis { Labels = new[] { "< 6ft Make %", "6-20ft Make %", "> 20ft 2-Putt %" } } };
+        PuttingXAxes = new Axis[] { new Axis { Labels = new[] { GetLocalized("MakeUnder6ft"), GetLocalized("Make6to20ft"), GetLocalized("TwoPuttOver20ft") } } };
     }
 
     private void CalculateScrambling(List<Hole> holes)
@@ -160,14 +163,14 @@ public partial class AnalysisPageModel : ObservableObject
             new PieSeries<double>
             {
                 Values = new[] { scrambleRate },
-                Name = "Scrambling %",
+                Name = GetLocalized("ScramblingPercentage"),
                 InnerRadius = 50, // Makes it a Donut Chart
                 Fill = new SolidColorPaint(SKColors.Gold)
             },
             new PieSeries<double>
             {
                 Values = new[] { failRate },
-                Name = "Missed",
+                Name = GetLocalized("Missed"),
                 InnerRadius = 50,
                 Fill = new SolidColorPaint(SKColors.LightGray)
             }
@@ -195,7 +198,7 @@ public partial class AnalysisPageModel : ObservableObject
         };
 
         XAxes = new Axis[] { new Axis { Labels = scoreData.Select(d => d.Date.ToString("MMM dd")).ToArray() } };
-        YAxes = new Axis[] { new Axis { Name = "Score to Par" } };
+        YAxes = new Axis[] { new Axis { Name = GetLocalized("ScoreToPar") } };
     }
 
     private void NotifyAllCharts()
