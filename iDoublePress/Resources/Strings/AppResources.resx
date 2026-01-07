@@ -554,7 +554,11 @@ Resume it?</value>
     <value>Delete this in-progress round?</value>
     <comment>Delete in-progress round confirmation message</comment>
   </data>
-  <!-- Course Selection Tabs -->
+	<data name="DeleteCompletedRoundMessage" xml:space="preserve">
+    <value>Delete this completed round?</value>
+    <comment>Delete in-progress round confirmation message</comment>
+  </data>
+	<!-- Course Selection Tabs -->
   <data name="Recent" xml:space="preserve">
     <value>Recent</value>
     <comment>Recent courses tab</comment>

@@ -22,6 +22,12 @@
         Route="courses" />
 
     <ShellContent
+        Title="{ext:Translate Rounds}"
+        Icon="{StaticResource IconRounds}"
+        ContentTemplate="{DataTemplate pages:RoundsPage}"
+        Route="rounds" />
+
+    <ShellContent
         Title="{ext:Translate Analysis}"
         Icon="{StaticResource IconAnalysis}"
         ContentTemplate="{DataTemplate pages:AnalysisPage}"

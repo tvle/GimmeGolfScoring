@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:iDoublePress.PageModels"
+             xmlns:models="clr-namespace:iDoublePress.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:ext="clr-namespace:iDoublePress.Extensions"
+             x:Class="iDoublePress.Pages.RoundsPage"
+             x:DataType="pageModels:RoundsPageModel"
+             x:Name="RoundsPageView"
+             Title="{Binding RoundCount, StringFormat='Rounds ({0})'}">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            BindingContext="{Binding Path=BindingContext, Source={x:Reference RoundsPageView}, x:DataType=ContentPage}"
+            EventName="NavigatedTo"
+            Command="{Binding NavigatedToCommand}" />
+    </ContentPage.Behaviors>
+
+    <Grid Padding="{StaticResource LayoutPadding}"
+          RowDefinitions="Auto,*"
+          RowSpacing="10">
+
+        <!-- Header row: sort buttons -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,Auto,*,Auto"
+              ColumnSpacing="10"
+              VerticalOptions="Center">
+
+            <Button Grid.Column="0"
+                    ImageSource="{StaticResource IconSortAsc}"
+                    Command="{Binding SortByDateAscCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    CornerRadius="22"
+                    Padding="0"
+                    VerticalOptions="Center"
+                    AutomationId="RoundsPage.SortAsc" />
+
+            <Button Grid.Column="1"
+                    ImageSource="{StaticResource IconSortDesc}"
+                    Command="{Binding SortByDateDescCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    CornerRadius="22"
+                    Padding="0"
+                    VerticalOptions="Center"
+                    AutomationId="RoundsPage.SortDesc" />
+        </Grid>
+
+        <!-- Scrollable table -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Rounds}"
+                        SelectionMode="None"
+                        VerticalOptions="Fill">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Round">
+                    <Border Style="{StaticResource CardStyle}" Margin="0,5">
+                        <Grid RowDefinitions="Auto,Auto"
+                              ColumnDefinitions="*,Auto,Auto,Auto"
+                              Padding="8"
+                              ColumnSpacing="10"
+                              RowSpacing="6"
+                              VerticalOptions="Center">
+
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="3"
+                                   Text="{Binding Course.Name}"
+                                   Style="{StaticResource Body1}"
+                                   LineBreakMode="TailTruncation" />
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="{Binding StartTime, StringFormat='{0:MMM dd, yyyy}'}"
+                                   Style="{StaticResource Caption1}"
+                                   Opacity="0.8"
+                                   VerticalOptions="Center" />
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding ScoreDisplay}"
+                                   Style="{StaticResource Caption1}"
+                                   Opacity="0.8"
+                                   VerticalOptions="Center" />
+
+                            <Button Grid.Row="1"
+                                    Grid.Column="2"
+                                    ImageSource="{StaticResource IconEditWhite}"
+                                    Clicked="ViewButton_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    Padding="10,4" />
+
+                            <Button Grid.Row="1"
+                                    Grid.Column="3"
+                                    ImageSource="{StaticResource IconDeleteWhite}"
+                                    Clicked="DeleteButton_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    Padding="10,4" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>
