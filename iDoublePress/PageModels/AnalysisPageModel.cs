@@ -9,6 +9,8 @@ using LiveChartsCore.SkiaSharpView.VisualElements; // Needed for Labels
 using SkiaSharp;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using iDoublePress.Resources.Strings;
+using System.Linq;
 
 namespace iDoublePress.PageModels;
 
@@ -16,6 +18,19 @@ public partial class AnalysisPageModel : ObservableObject
 {
     private readonly RoundRepository _roundRepository;
     private readonly CourseRepository _courseRepository;
+
+    // For filtering
+    private readonly List<Round> _allRounds = new();
+    private List<Round> _displayRounds = new();
+
+    public ObservableCollection<string> Years { get; } = new();
+
+    [ObservableProperty]
+    private string selectedYear;
+
+    public int RoundCount => _displayRounds?.Count ?? 0;
+
+    public string Title => string.Format("{0} ({1})", GetLocalized("Analysis"), RoundCount);
 
     // 1. Strokes Gained Lite (Bar Chart)
     public ISeries[] StrokesGainedSeries { get; set; } = Array.Empty<ISeries>();
@@ -41,6 +56,11 @@ public partial class AnalysisPageModel : ObservableObject
     {
         _roundRepository = roundRepository;
         _courseRepository = courseRepository;
+
+        // Default to current year until populated
+        SelectedYear = DateTime.Now.Year.ToString();
+        Years.Add(AppResources.All);
+        Years.Add(DateTime.Now.Year.ToString());
     }
 
     private string GetLocalized(string key) => Resources.Strings.AppResources.ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
@@ -49,19 +69,75 @@ public partial class AnalysisPageModel : ObservableObject
     private async Task NavigatedToAsync()
     {
         var rounds = await _roundRepository.ListAsync();
-        // Flatten rounds to get all holes for granular analysis
-        // Note: Ensure your Round object has a List<HoleScore> property
-        var allHoles = rounds.SelectMany(r => r.Holes).ToList();
 
-        if (!allHoles.Any()) return;
+        _allRounds.Clear();
+        foreach (var r in rounds)
+            _allRounds.Add(r);
+
+        PopulateYears();
+
+        // Ensure a valid SelectedYear exists after population
+        var currentYearString = DateTime.Now.Year.ToString();
+        if (Years.Contains(currentYearString))
+        {
+            SelectedYear = currentYearString;
+        }
+        else if (Years.Contains(AppResources.All))
+        {
+            SelectedYear = AppResources.All;
+        }
+
+        ApplyFilterAndCalculate();
+    }
+
+    partial void OnSelectedYearChanged(string value)
+    {
+        ApplyFilterAndCalculate();
+    }
+
+    private void ApplyFilterAndCalculate()
+    {
+        IEnumerable<Round> filtered = SelectedYear == AppResources.All ? _allRounds : _allRounds.Where(r => r.StartTime.Year.ToString() == SelectedYear);
+        _displayRounds = filtered.OrderBy(r => r.StartTime).ToList();
+
+        var allHoles = _displayRounds.SelectMany(r => r.Holes).ToList();
+
+        if (!allHoles.Any())
+        {
+            // Clear series
+            StrokesGainedSeries = Array.Empty<ISeries>();
+            DrivingBiasSeries = Array.Empty<ISeries>();
+            PuttingStatSeries = Array.Empty<ISeries>();
+            ScramblingSeries = Array.Empty<ISeries>();
+            ScoreSeries = Array.Empty<ISeries>();
+
+            NotifyAllCharts();
+            OnPropertyChanged(nameof(Title));
+            OnPropertyChanged(nameof(RoundCount));
+            return;
+        }
 
         CalculateStrokesGained(allHoles);
         CalculateDrivingBias(allHoles);
         CalculatePuttingStats(allHoles);
         CalculateScrambling(allHoles);
-        CalculateScoreTrends(rounds); // Your existing logic moved here
+        CalculateScoreTrends(_displayRounds);
 
         NotifyAllCharts();
+        OnPropertyChanged(nameof(Title));
+        OnPropertyChanged(nameof(RoundCount));
+    }
+
+    private void PopulateYears()
+    {
+        var years = _allRounds.Select(r => r.StartTime.Year).Distinct().ToList();
+        years.Add(DateTime.Now.Year);
+        var yearStrings = years.Distinct().OrderByDescending(y => y).Select(y => y.ToString()).ToList();
+
+        Years.Clear();
+        Years.Add(AppResources.All);
+        foreach (var y in yearStrings)
+            Years.Add(y);
     }
 
     private void CalculateStrokesGained(List<Hole> holes)
