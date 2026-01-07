@@ -600,4 +600,16 @@
     <value>스코어 (vs 파)</value>
     <comment>Score to par axis name</comment>
   </data>
+  <data name="All" xml:space="preserve">
+  <value>모두</value>
+  <comment>All years picker entry</comment>
+</data>
+<data name="RoundsCountFormat" xml:space="preserve">
+  <value>라운드 ({0})</value>
+  <comment>Rounds page title with count. {0}=number of rounds</comment>
+</data>
+<data name="InProgressRounds" xml:space="preserve">
+  <value>진행 중인 라운드</value>
+  <comment>Title for in-progress rounds modal/page</comment>
+</data>
 </root>

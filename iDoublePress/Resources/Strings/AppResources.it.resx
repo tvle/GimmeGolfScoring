@@ -600,4 +600,16 @@ Riavvia l'applicazione.</value>
     <value>Punteggio vs Par</value>
     <comment>Score to par axis name</comment>
   </data>
+  <data name="All" xml:space="preserve">
+  <value>Tutti</value>
+  <comment>All years picker entry</comment>
+</data>
+<data name="RoundsCountFormat" xml:space="preserve">
+  <value>Partite ({0})</value>
+  <comment>Rounds page title with count. {0}=number of rounds</comment>
+</data>
+<data name="InProgressRounds" xml:space="preserve">
+  <value>Partite in corso</value>
+  <comment>Title for in-progress rounds modal/page</comment>
+</data>
 </root>

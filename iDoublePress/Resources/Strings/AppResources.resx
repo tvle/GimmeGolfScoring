@@ -150,6 +150,14 @@
     <value>Delete</value>
     <comment>Delete button text</comment>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+    <comment>All years picker entry</comment>
+  </data>
+  <data name="RoundsCountFormat" xml:space="preserve">
+    <value>Rounds ({0})</value>
+    <comment>Rounds page title with count. {0}=number of rounds</comment>
+  </data>
   <!-- Golf Round Management -->
   <data name="Resume" xml:space="preserve">
     <value>Resume</value>
@@ -558,7 +566,11 @@ Resume it?</value>
     <value>Delete this completed round?</value>
     <comment>Delete in-progress round confirmation message</comment>
   </data>
-	<!-- Course Selection Tabs -->
+	<data name="InProgressRounds" xml:space="preserve">
+    <value>In-Progress Rounds</value>
+    <comment>Title for in-progress rounds modal/page</comment>
+  </data>
+  <!-- Course Selection Tabs -->
   <data name="Recent" xml:space="preserve">
     <value>Recent</value>
     <comment>Recent courses tab</comment>

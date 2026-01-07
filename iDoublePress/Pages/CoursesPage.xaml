@@ -8,7 +8,7 @@
              x:Class="iDoublePress.Pages.CoursesPage"
              x:DataType="pageModels:CoursesPageModel"
              x:Name="CoursesPageView"
-             Title="{Binding CourseCount, StringFormat='Courses ({0})'}">
+             Title="{Binding Title}">
 
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior

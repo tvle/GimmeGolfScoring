@@ -600,4 +600,16 @@
     <value>คะแนนเทียบพาร์</value>
     <comment>Score to par axis name</comment>
   </data>
+  <data name="All" xml:space="preserve">
+  <value>ทั้งหมด</value>
+  <comment>All years picker entry</comment>
+</data>
+<data name="RoundsCountFormat" xml:space="preserve">
+  <value>รอบ ({0})</value>
+  <comment>Rounds page title with count. {0}=number of rounds</comment>
+</data>
+<data name="InProgressRounds" xml:space="preserve">
+  <value>รอบที่กำลังดำเนินการ</value>
+  <comment>Title for in-progress rounds modal/page</comment>
+  </data>
 </root>

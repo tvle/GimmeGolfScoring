@@ -600,4 +600,16 @@
     <value>成绩 vs 标准杆</value>
     <comment>Score to par axis name</comment>
   </data>
+  <data name="All" xml:space="preserve">
+  <value>全部</value>
+  <comment>All years picker entry</comment>
+</data>
+<data name="RoundsCountFormat" xml:space="preserve">
+  <value>回合 ({0})</value>
+  <comment>Rounds page title with count. {0}=number of rounds</comment>
+</data>
+<data name="InProgressRounds" xml:space="preserve">
+  <value>进行中的回合</value>
+  <comment>Title for in-progress rounds modal/page</comment>
+</data>
 </root>

@@ -844,6 +844,33 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rounds ({0}).
+        /// </summary>
+        public static string RoundsCountFormat {
+            get {
+                return ResourceManager.GetString("RoundsCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In-Progress Rounds.
+        /// </summary>
+        public static string InProgressRounds {
+            get {
+                return ResourceManager.GetString("InProgressRounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please restart the app for the language change to take full effect..
         /// </summary>
         public static string RestartAppMessage {

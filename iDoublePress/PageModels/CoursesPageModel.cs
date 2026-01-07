@@ -16,6 +16,8 @@ public partial class CoursesPageModel : ObservableObject
 
     public int CourseCount => Courses.Count;
 
+    public string Title => string.Format(AppResources.CoursesCountFormat, CourseCount);
+
     [ObservableProperty]
     private CourseWithLastPlayed? selectedCourse;
 
@@ -29,7 +31,11 @@ public partial class CoursesPageModel : ObservableObject
     {
         _courseRepository = courseRepository;
         _roundRepository = roundRepository;
-        Courses.CollectionChanged += (_, __) => OnPropertyChanged(nameof(CourseCount));
+        Courses.CollectionChanged += (_, __) =>
+        {
+            OnPropertyChanged(nameof(CourseCount));
+            OnPropertyChanged(nameof(Title));
+        };
     }
 
     [RelayCommand]

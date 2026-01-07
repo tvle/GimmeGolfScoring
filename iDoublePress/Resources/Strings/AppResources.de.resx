@@ -600,4 +600,16 @@ Bitte starte die App neu.</value>
     <value>Ergebnis vs. Par</value>
     <comment>Score to par axis name</comment>
   </data>
+  <data name="All" xml:space="preserve">
+  <value>Alle</value>
+  <comment>All years picker entry</comment>
+</data>
+<data name="RoundsCountFormat" xml:space="preserve">
+  <value>Runden ({0})</value>
+  <comment>Rounds page title with count. {0}=number of rounds</comment>
+</data>
+<data name="InProgressRounds" xml:space="preserve">
+  <value>Laufende Runden</value>
+  <comment>Title for in-progress rounds modal/page</comment>
+</data>
   </root>

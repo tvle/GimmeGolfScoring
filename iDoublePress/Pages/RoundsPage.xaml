@@ -8,7 +8,7 @@
              x:Class="iDoublePress.Pages.RoundsPage"
              x:DataType="pageModels:RoundsPageModel"
              x:Name="RoundsPageView"
-             Title="{Binding RoundCount, StringFormat='Rounds ({0})'}">
+             Title="{Binding Title}">
 
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
@@ -50,6 +50,13 @@
                     Padding="0"
                     VerticalOptions="Center"
                     AutomationId="RoundsPage.SortDesc" />
+
+            <Picker Grid.Column="2"
+                    ItemsSource="{Binding Years}"
+                    SelectedItem="{Binding SelectedYear}"
+                    HorizontalOptions="Start"
+                    WidthRequest="120"
+                    VerticalOptions="Center" />
         </Grid>
 
         <!-- Scrollable table -->
