@@ -186,7 +186,7 @@ public partial class ActiveRoundPageModel : ObservableObject
             }
             else
             {
-                await Shell.Current.DisplayAlert(AppResources.Error, AppResources.RoundNotFound, AppResources.OK);
+                await Shell.Current.DisplayAlertAsync(AppResources.Error, AppResources.RoundNotFound, AppResources.OK);
                 await Shell.Current.GoToAsync("..");
             }
         }
@@ -327,7 +327,7 @@ public partial class ActiveRoundPageModel : ObservableObject
     {
         if (CurrentRound == null) return;
 
-        var confirm = await Shell.Current.DisplayAlert(
+        var confirm = await Shell.Current.DisplayAlertAsync(
             AppResources.AbandonRoundTitle,
             AppResources.AbandonRoundMessage,
             AppResources.YesAbandon,

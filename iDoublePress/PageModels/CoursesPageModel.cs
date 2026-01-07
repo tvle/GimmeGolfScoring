@@ -176,7 +176,7 @@ public partial class CoursesPageModel : ObservableObject
 
         var course = courseWithLastPlayed.Course;
 
-        var confirm = await Shell.Current.DisplayAlert(
+        var confirm = await Shell.Current.DisplayAlertAsync(
             AppResources.DeleteCourseTitle,
             string.Format(AppResources.DeleteCourseMessage, course.Name),
             AppResources.Delete,

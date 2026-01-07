@@ -22,6 +22,12 @@ public class ModalErrorHandler : IErrorHandler
 			await _semaphore.WaitAsync();
 			if (Shell.Current is Shell shell)
 				await shell.DisplayAlertAsync("Error", ex.Message, "OK");
+			else
+			{
+                var page = Application.Current?.Windows?.FirstOrDefault()?.Page;
+                if (page != null)
+					await page.DisplayAlertAsync("Error", ex.Message, "OK");
+			}
 		}
 		finally{
 			_semaphore.Release();

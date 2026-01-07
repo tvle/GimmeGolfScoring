@@ -106,11 +106,28 @@ public partial class RoundsPageModel : ObservableObject
             ? AppResources.DeleteCompletedRoundMessage 
             : AppResources.DeleteRoundMessage;
 
-        var confirm = await Shell.Current.DisplayAlert(
-            AppResources.DeleteRoundTitle,
-            message,
-            AppResources.Delete,
-            AppResources.Cancel);
+        var confirm = false;
+
+        if (Shell.Current is Shell shell)
+        {
+            confirm = await shell.DisplayAlertAsync(
+                AppResources.DeleteRoundTitle,
+                message,
+                AppResources.Delete,
+                AppResources.Cancel);
+        }
+        else
+        {
+            var page = Application.Current?.Windows?.FirstOrDefault()?.Page;
+            if (page != null)
+            {
+                confirm = await page.DisplayAlertAsync(
+                    AppResources.DeleteRoundTitle,
+                    message,
+                    AppResources.Delete,
+                    AppResources.Cancel);
+            }
+        }
 
         if (!confirm)
             return;

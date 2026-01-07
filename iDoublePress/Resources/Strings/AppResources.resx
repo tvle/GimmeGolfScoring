@@ -579,10 +579,6 @@ Resume it?</value>
     <value>All Courses</value>
     <comment>All courses tab</comment>
   </data>
-  <data name="Analysis" xml:space="preserve">
-    <value>Analysis</value>
-    <comment>Analysis page title</comment>
-  </data>
   <!-- Analysis Page -->
   <data name="Analysis" xml:space="preserve">
     <value>Analysis</value>

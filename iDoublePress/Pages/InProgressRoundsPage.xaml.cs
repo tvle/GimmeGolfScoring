@@ -71,7 +71,7 @@ public partial class InProgressRoundsPage : ContentPage
         if (sender is not Button button || button.BindingContext is not Round round)
             return;
 
-        var confirm = await DisplayAlert(
+        var confirm = await DisplayAlertAsync(
             AppResources.DeleteRoundTitle, 
             AppResources.DeleteRoundMessage, 
             AppResources.Delete, 

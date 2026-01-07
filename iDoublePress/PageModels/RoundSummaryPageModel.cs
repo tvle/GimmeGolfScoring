@@ -92,7 +92,7 @@ public partial class RoundSummaryPageModel : ObservableObject
 
             if (CurrentRound == null)
             {
-                await Shell.Current.DisplayAlert(AppResources.Error, AppResources.RoundNotFound, AppResources.OK);
+                await Shell.Current.DisplayAlertAsync(AppResources.Error, AppResources.RoundNotFound, AppResources.OK);
                 await Shell.Current.GoToAsync("..");
                 return;
             }
