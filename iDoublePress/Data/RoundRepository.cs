@@ -11,18 +11,16 @@ namespace iDoublePress.Data;
 /// <summary>
 /// Repository class for managing golf rounds in the database.
 /// </summary>
-public class RoundRepository
+public class RoundRepository : RepositoryBase
 {
-    private volatile bool _hasBeenInitialized = false;
-    private readonly SemaphoreSlim _initSemaphore = new(1, 1);
-    private readonly SemaphoreSlim _writeSemaphore = new(1, 1);
-    private readonly ILogger _logger;
+    private readonly SemaphoreSlim _roundWriteSemaphore = new(1, 1);
+    private readonly SemaphoreSlim _holeWriteSemaphore = new(3, 3); // Allow concurrent hole writes
     private readonly CourseRepository _courseRepository;
     private readonly PlayerRepository _playerRepository;
 
     // Simple on-device SQL trace to capture last statements and parameter values.
     // Helps diagnosing native sqlite crashes by recording the SQL being prepared.
-    private void LogSql(SqliteCommand cmd, string note = null)
+    private void LogSql(SqliteCommand cmd, string? note = null)
     {
         try
         {
@@ -48,189 +46,178 @@ public class RoundRepository
         }
     }
 
-    public RoundRepository(CourseRepository courseRepository, PlayerRepository playerRepository, ILogger<RoundRepository> logger)
+    public RoundRepository(CourseRepository courseRepository, PlayerRepository playerRepository, ILogger<RoundRepository> logger) : base(logger)
     {
         _courseRepository = courseRepository;
         _playerRepository = playerRepository;
-        _logger = logger;
     }
 
     private async Task Init()
     {
-        if (_hasBeenInitialized)
-            return;
+        await EnsureInitializedAsync();
+    }
 
-        await _initSemaphore.WaitAsync();
+    protected override async Task InitializeInternalAsync()
+    {
+        await using var connection = await CreateConnectionAsync();
+
         try
         {
-            if (_hasBeenInitialized)
-                return;
+            var pragmaFk = connection.CreateCommand();
+            pragmaFk.CommandText = "PRAGMA foreign_keys = ON;";
+            LogSql(pragmaFk, "PRAGMA foreign_keys");
+            await pragmaFk.ExecuteNonQueryAsync();
 
-            await using var connection = new SqliteConnection(Constants.DatabasePath);
-            await connection.OpenAsync();
+            var pragmaBusy = connection.CreateCommand();
+            pragmaBusy.CommandText = "PRAGMA busy_timeout = 5000;";
+            LogSql(pragmaBusy, "PRAGMA busy_timeout");
+            await pragmaBusy.ExecuteNonQueryAsync();
 
-            try
+            var createRoundTableCmd = connection.CreateCommand();
+            createRoundTableCmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Round (
+                ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                PlayerID INTEGER NOT NULL,
+                CourseID INTEGER NOT NULL,
+                StartTime TEXT NOT NULL,
+                EndTime TEXT,
+                TotalScore INTEGER DEFAULT 0,
+                Status TEXT DEFAULT 'InProgress',
+                Notes TEXT,
+                Weather TEXT,
+                CreatedAt TEXT NOT NULL,
+                UpdatedAt TEXT NOT NULL,
+                FOREIGN KEY (PlayerID) REFERENCES Player(ID) ON DELETE CASCADE,
+                FOREIGN KEY (CourseID) REFERENCES Course(ID) ON DELETE RESTRICT
+            );";
+            LogSql(createRoundTableCmd, "DDL Round");
+            await createRoundTableCmd.ExecuteNonQueryAsync();
+
+            var createHoleTableCmd = connection.CreateCommand();
+            createHoleTableCmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Hole (
+                ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                RoundID INTEGER NOT NULL,
+                HoleNumber INTEGER NOT NULL,
+                Par INTEGER NOT NULL,
+                Yardage INTEGER,
+                Score INTEGER DEFAULT 0,
+                IsScored INTEGER DEFAULT 0,
+                Putts INTEGER,
+                FairwayHit INTEGER,
+                FairwayResult INTEGER DEFAULT 0,
+                FairwayMissPenalty INTEGER DEFAULT 0,
+                GreenInRegulation INTEGER,
+                Penalties INTEGER DEFAULT 0,
+                Proximity TEXT,
+                Notes TEXT,
+                CreatedAt TEXT NOT NULL,
+                UpdatedAt TEXT NOT NULL,
+                FOREIGN KEY (RoundID) REFERENCES Round(ID) ON DELETE CASCADE,
+                UNIQUE(RoundID, HoleNumber)
+            );";
+            LogSql(createHoleTableCmd, "DDL Hole");
+            await createHoleTableCmd.ExecuteNonQueryAsync();
+
+            var checkColumnCmd = connection.CreateCommand();
+            checkColumnCmd.CommandText = "PRAGMA table_info(Hole);";
+            LogSql(checkColumnCmd, "PRAGMA table_info(Hole)");
+
+            var existingColumns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            await using (var reader = await checkColumnCmd.ExecuteReaderAsync())
             {
-                var pragmaFk = connection.CreateCommand();
-                pragmaFk.CommandText = "PRAGMA foreign_keys = ON;";
-                LogSql(pragmaFk, "PRAGMA foreign_keys");
-                await pragmaFk.ExecuteNonQueryAsync();
-
-                var pragmaBusy = connection.CreateCommand();
-                pragmaBusy.CommandText = "PRAGMA busy_timeout = 5000;";
-                LogSql(pragmaBusy, "PRAGMA busy_timeout");
-                await pragmaBusy.ExecuteNonQueryAsync();
-
-                var createRoundTableCmd = connection.CreateCommand();
-                createRoundTableCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Round (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    PlayerID INTEGER NOT NULL,
-                    CourseID INTEGER NOT NULL,
-                    StartTime TEXT NOT NULL,
-                    EndTime TEXT,
-                    TotalScore INTEGER DEFAULT 0,
-                    Status TEXT DEFAULT 'InProgress',
-                    Notes TEXT,
-                    Weather TEXT,
-                    CreatedAt TEXT NOT NULL,
-                    UpdatedAt TEXT NOT NULL,
-                    FOREIGN KEY (PlayerID) REFERENCES Player(ID) ON DELETE CASCADE,
-                    FOREIGN KEY (CourseID) REFERENCES Course(ID) ON DELETE RESTRICT
-                );";
-                LogSql(createRoundTableCmd, "DDL Round");
-                await createRoundTableCmd.ExecuteNonQueryAsync();
-
-                var createHoleTableCmd = connection.CreateCommand();
-                createHoleTableCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Hole (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    RoundID INTEGER NOT NULL,
-                    HoleNumber INTEGER NOT NULL,
-                    Par INTEGER NOT NULL,
-                    Yardage INTEGER,
-                    Score INTEGER DEFAULT 0,
-                    IsScored INTEGER DEFAULT 0,
-                    Putts INTEGER,
-                    FairwayHit INTEGER,
-                    FairwayResult INTEGER DEFAULT 0,
-                    FairwayMissPenalty INTEGER DEFAULT 0,
-                    GreenInRegulation INTEGER,
-                    Penalties INTEGER DEFAULT 0,
-                    Proximity TEXT,
-                    Notes TEXT,
-                    CreatedAt TEXT NOT NULL,
-                    UpdatedAt TEXT NOT NULL,
-                    FOREIGN KEY (RoundID) REFERENCES Round(ID) ON DELETE CASCADE,
-                    UNIQUE(RoundID, HoleNumber)
-                );";
-                LogSql(createHoleTableCmd, "DDL Hole");
-                await createHoleTableCmd.ExecuteNonQueryAsync();
-
-                var checkColumnCmd = connection.CreateCommand();
-                checkColumnCmd.CommandText = "PRAGMA table_info(Hole);";
-                LogSql(checkColumnCmd, "PRAGMA table_info(Hole)");
-
-                var existingColumns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                await using (var reader = await checkColumnCmd.ExecuteReaderAsync())
+                while (await reader.ReadAsync())
                 {
-                    while (await reader.ReadAsync())
-                    {
-                        existingColumns.Add(reader.GetString(1));
-                    }
+                    existingColumns.Add(reader.GetString(1));
                 }
-
-                if (!existingColumns.Contains("Putts"))
-                {
-                    _logger.LogInformation("Adding Putts column to Hole table");
-                    var addColumnCmd = connection.CreateCommand();
-                    addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Putts INTEGER;";
-                    LogSql(addColumnCmd, "ALTER TABLE ADD Putts");
-                    await addColumnCmd.ExecuteNonQueryAsync();
-                }
-
-                if (!existingColumns.Contains("IsScored"))
-                {
-                    _logger.LogInformation("Adding IsScored column to Hole table");
-                    var addColumnCmd = connection.CreateCommand();
-                    addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN IsScored INTEGER DEFAULT 0;";
-                    LogSql(addColumnCmd, "ALTER TABLE ADD IsScored");
-                    await addColumnCmd.ExecuteNonQueryAsync();
-                }
-
-                if (!existingColumns.Contains("FairwayResult"))
-                {
-                    _logger.LogInformation("Adding FairwayResult column to Hole table");
-                    var addColumnCmd = connection.CreateCommand();
-                    addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayResult INTEGER DEFAULT 0;";
-                    LogSql(addColumnCmd, "ALTER TABLE ADD FairwayResult");
-                    await addColumnCmd.ExecuteNonQueryAsync();
-
-                    if (existingColumns.Contains("FairwayHit"))
-                    {
-                        var migrateCmd = connection.CreateCommand();
-                        migrateCmd.CommandText = @"
-                        UPDATE Hole
-                        SET FairwayResult = CASE
-                            WHEN FairwayHit IS NULL THEN 0
-                            WHEN FairwayHit = 1 THEN 2
-                            ELSE 0
-                        END
-                        WHERE FairwayResult = 0;";
-                        LogSql(migrateCmd, "MIGRATE FairwayResult");
-                        await migrateCmd.ExecuteNonQueryAsync();
-                    }
-                }
-
-                if (!existingColumns.Contains("FairwayMissPenalty"))
-                {
-                    _logger.LogInformation("Adding FairwayMissPenalty column to Hole table");
-                    var addColumnCmd = connection.CreateCommand();
-                    addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayMissPenalty INTEGER DEFAULT 0;";
-                    LogSql(addColumnCmd, "ALTER TABLE ADD FairwayMissPenalty");
-                    await addColumnCmd.ExecuteNonQueryAsync();
-                }
-
-                if (!existingColumns.Contains("Proximity"))
-                {
-                    _logger.LogInformation("Adding Proximity column to Hole table");
-                    var addColumnCmd = connection.CreateCommand();
-                    addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Proximity TEXT;";
-                    LogSql(addColumnCmd, "ALTER TABLE ADD Proximity");
-                    await addColumnCmd.ExecuteNonQueryAsync();
-                }
-
-                if (!existingColumns.Contains("Yardage"))
-                {
-                    _logger.LogInformation("Adding Yardage column to Hole table");
-                    var addColumnCmd = connection.CreateCommand();
-                    addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Yardage INTEGER;";
-                    LogSql(addColumnCmd, "ALTER TABLE ADD Yardage");
-                    await addColumnCmd.ExecuteNonQueryAsync();
-                }
-
-                var createIndexes = connection.CreateCommand();
-                createIndexes.CommandText = @"
-                CREATE INDEX IF NOT EXISTS IDX_Round_PlayerID ON Round(PlayerID);
-                CREATE INDEX IF NOT EXISTS IDX_Round_COURSEID ON Round(CourseID);
-                CREATE INDEX IF NOT EXISTS IDX_Round_StartTime ON Round(StartTime DESC);
-                CREATE INDEX IF NOT EXISTS IDX_Round_Status ON Round(Status);
-                CREATE INDEX IF NOT EXISTS IDX_Hole_RoundID ON Hole(RoundID);";
-                LogSql(createIndexes, "CREATE INDEXES");
-                await createIndexes.ExecuteNonQueryAsync();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error creating Round tables");
-                throw;
             }
 
-            _hasBeenInitialized = true;
+            if (!existingColumns.Contains("Putts"))
+            {
+                _logger.LogInformation("Adding Putts column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Putts INTEGER;";
+                LogSql(addColumnCmd, "ALTER TABLE ADD Putts");
+                await addColumnCmd.ExecuteNonQueryAsync();
+            }
+
+            if (!existingColumns.Contains("IsScored"))
+            {
+                _logger.LogInformation("Adding IsScored column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN IsScored INTEGER DEFAULT 0;";
+                LogSql(addColumnCmd, "ALTER TABLE ADD IsScored");
+                await addColumnCmd.ExecuteNonQueryAsync();
+            }
+
+            if (!existingColumns.Contains("FairwayResult"))
+            {
+                _logger.LogInformation("Adding FairwayResult column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayResult INTEGER DEFAULT 0;";
+                LogSql(addColumnCmd, "ALTER TABLE ADD FairwayResult");
+                await addColumnCmd.ExecuteNonQueryAsync();
+
+                if (existingColumns.Contains("FairwayHit"))
+                {
+                    var migrateCmd = connection.CreateCommand();
+                    migrateCmd.CommandText = @"
+                    UPDATE Hole
+                    SET FairwayResult = CASE
+                        WHEN FairwayHit IS NULL THEN 0
+                        WHEN FairwayHit = 1 THEN 2
+                        ELSE 0
+                    END
+                    WHERE FairwayResult = 0;";
+                    LogSql(migrateCmd, "MIGRATE FairwayResult");
+                    await migrateCmd.ExecuteNonQueryAsync();
+                }
+            }
+
+            if (!existingColumns.Contains("FairwayMissPenalty"))
+            {
+                _logger.LogInformation("Adding FairwayMissPenalty column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayMissPenalty INTEGER DEFAULT 0;";
+                LogSql(addColumnCmd, "ALTER TABLE ADD FairwayMissPenalty");
+                await addColumnCmd.ExecuteNonQueryAsync();
+            }
+
+            if (!existingColumns.Contains("Proximity"))
+            {
+                _logger.LogInformation("Adding Proximity column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Proximity TEXT;";
+                LogSql(addColumnCmd, "ALTER TABLE ADD Proximity");
+                await addColumnCmd.ExecuteNonQueryAsync();
+            }
+
+            if (!existingColumns.Contains("Yardage"))
+            {
+                _logger.LogInformation("Adding Yardage column to Hole table");
+                var addColumnCmd = connection.CreateCommand();
+                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Yardage INTEGER;";
+                LogSql(addColumnCmd, "ALTER TABLE ADD Yardage");
+                await addColumnCmd.ExecuteNonQueryAsync();
+            }
+
+            var createIndexes = connection.CreateCommand();
+            createIndexes.CommandText = @"
+            CREATE INDEX IF NOT EXISTS IDX_Round_PlayerID ON Round(PlayerID);
+            CREATE INDEX IF NOT EXISTS IDX_Round_COURSEID ON Round(CourseID);
+            CREATE INDEX IF NOT EXISTS IDX_Round_StartTime ON Round(StartTime DESC);
+            CREATE INDEX IF NOT EXISTS IDX_Round_Status ON Round(Status);
+            CREATE INDEX IF NOT EXISTS IDX_Hole_RoundID ON Hole(RoundID);";
+            LogSql(createIndexes, "CREATE INDEXES");
+            await createIndexes.ExecuteNonQueryAsync();
         }
-        finally
+        catch (Exception e)
         {
-            _initSemaphore.Release();
+            _logger.LogError(e, "Error creating Round tables");
+            throw;
         }
+
+        _hasBeenInitialized = true;
     }
 
     public async Task<List<Round>> ListAsync()
@@ -405,10 +392,10 @@ public class RoundRepository
 
     public async Task<Round> CreateNewRoundAsync(int playerId, int courseId)
     {
-        await _writeSemaphore.WaitAsync();
+        await _roundWriteSemaphore.WaitAsync();
         try
         {
-            await Init();
+            await EnsureInitializedAsync();
 
             var course = await _courseRepository.GetAsync(courseId);
             if (course == null)
@@ -425,8 +412,7 @@ public class RoundRepository
                 Course = course
             };
 
-            await using var connection = new SqliteConnection(Constants.DatabasePath);
-            await connection.OpenAsync();
+            await using var connection = await CreateConnectionAsync();
 
             using var transaction = connection.BeginTransaction();
             try
@@ -476,7 +462,7 @@ public class RoundRepository
         }
         finally
         {
-            _writeSemaphore.Release();
+            _roundWriteSemaphore.Release();
         }
     }
 
@@ -494,19 +480,18 @@ public class RoundRepository
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Lightweight DB read failed — treating database as possibly corrupt");
+            _logger.LogWarning(ex, "Lightweight DB read failed ï¿½ treating database as possibly corrupt");
             return false;
         }
     }
 
     public async Task<int> SaveItemAsync(Round item)
     {
-        await _writeSemaphore.WaitAsync();
+        await _roundWriteSemaphore.WaitAsync();
         try
         {
-            await Init();
-            await using var connection = new SqliteConnection(Constants.DatabasePath);
-            await connection.OpenAsync();
+            await EnsureInitializedAsync();
+            await using var connection = await CreateConnectionAsync();
 
             // Verify DB integrity before performing update to avoid sqlite native crashes
             if (!await CheckDatabaseIntegrityAsync(connection))
@@ -567,18 +552,17 @@ public class RoundRepository
         }
         finally
         {
-            _writeSemaphore.Release();
+            _roundWriteSemaphore.Release();
         }
     }
 
     public async Task SaveHoleAsync(Hole hole)
     {
-        await _writeSemaphore.WaitAsync();
+        await _holeWriteSemaphore.WaitAsync();
         try
         {
-            await Init();
-            await using var connection = new SqliteConnection(Constants.DatabasePath);
-            await connection.OpenAsync();
+            await EnsureInitializedAsync();
+            await using var connection = await CreateConnectionAsync();
 
             if (!await CheckDatabaseIntegrityAsync(connection))
             {
@@ -600,7 +584,7 @@ public class RoundRepository
         }
         finally
         {
-            _writeSemaphore.Release();
+            _holeWriteSemaphore.Release();
         }
     }
 
@@ -682,12 +666,11 @@ public class RoundRepository
 
     public async Task<int> DeleteItemAsync(Round item)
     {
-        await _writeSemaphore.WaitAsync();
+        await _roundWriteSemaphore.WaitAsync();
         try
         {
-            await Init();
-            await using var connection = new SqliteConnection(Constants.DatabasePath);
-            await connection.OpenAsync();
+            await EnsureInitializedAsync();
+            await using var connection = await CreateConnectionAsync();
 
             using var transaction = connection.BeginTransaction();
             try
@@ -710,7 +693,7 @@ public class RoundRepository
         }
         finally
         {
-            _writeSemaphore.Release();
+            _roundWriteSemaphore.Release();
         }
     }
 }

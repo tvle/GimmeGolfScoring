@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using iDoublePress.Models;
 using iDoublePress.Resources.Strings;
+using iDoublePress.Utilities;
 
 namespace iDoublePress.PageModels;
 
@@ -109,11 +110,6 @@ public partial class ActiveRoundPageModel : ObservableObject
         UpdatePuttsDisplay();
     }
 
-    public ActiveRoundPageModel(RoundRepository roundRepository, ModalErrorHandler errorHandler)
-    {
-        _roundRepository = roundRepository;
-        _errorHandler = errorHandler;
-    }
 
     async partial void OnRoundIdChanged(int value)
     {
@@ -458,7 +454,14 @@ public partial class ActiveRoundPageModel : ObservableObject
         OnPropertyChanged(nameof(TotalGIR));
     }
 
-    private CancellationTokenSource? _holeSaveCts;
+    private readonly Debouncer _holeSaveDebouncer;
+
+    public ActiveRoundPageModel(RoundRepository roundRepository, ModalErrorHandler errorHandler)
+    {
+        _roundRepository = roundRepository;
+        _errorHandler = errorHandler;
+        _holeSaveDebouncer = new Debouncer(TimeSpan.FromMilliseconds(150));
+    }
 
     private async void CurrentHole_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -487,19 +490,11 @@ public partial class ActiveRoundPageModel : ObservableObject
                 }
             }
 
-            _holeSaveCts?.Cancel();
-            _holeSaveCts = new CancellationTokenSource();
-            var token = _holeSaveCts.Token;
-
-            try
+            // Use debouncer to prevent race conditions during rapid input
+            _holeSaveDebouncer.Debounce(async () =>
             {
-                await Task.Delay(150, token);
                 await SaveHoleOnlyAsync(hole);
-            }
-            catch (OperationCanceledException)
-            {
-                return;
-            }
+            });
 
             OnPropertyChanged(nameof(CurrentHole));
             OnPropertyChanged(nameof(CanDecreasePutts));
@@ -565,5 +560,12 @@ public partial class ActiveRoundPageModel : ObservableObject
             OnPropertyChanged(nameof(IsProximityM));
             OnPropertyChanged(nameof(IsProximityL));
         }
+    }
+
+    private async void OnDisappearing()
+    {
+        // Clean up debouncer to prevent memory leaks
+        _holeSaveDebouncer.Dispose();
+        await Task.CompletedTask;
     }
 }

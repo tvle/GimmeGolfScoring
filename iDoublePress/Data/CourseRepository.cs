@@ -7,23 +7,21 @@ namespace iDoublePress.Data;
 /// <summary>
 /// Repository class for managing golf courses in the database.
 /// </summary>
-public class CourseRepository
+public class CourseRepository : RepositoryBase
 {
-    private bool _hasBeenInitialized = false;
-    private readonly ILogger _logger;
 
-    public CourseRepository(ILogger<CourseRepository> logger)
+    public CourseRepository(ILogger<CourseRepository> logger) : base(logger)
     {
-        _logger = logger;
     }
 
     private async Task Init()
     {
-        if (_hasBeenInitialized)
-            return;
+        await EnsureInitializedAsync();
+    }
 
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
-        await connection.OpenAsync();
+    protected override async Task InitializeInternalAsync()
+    {
+        await using var connection = await CreateConnectionAsync();
 
         try
         {
@@ -71,9 +69,8 @@ public class CourseRepository
 
     public async Task<List<Course>> ListAsync()
     {
-        await Init();
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
-        await connection.OpenAsync();
+        await EnsureInitializedAsync();
+        await using var connection = await CreateConnectionAsync();
 
         var selectCmd = connection.CreateCommand();
         selectCmd.CommandText = "SELECT * FROM Course ORDER BY Name";
@@ -104,9 +101,8 @@ public class CourseRepository
 
     public async Task<Course?> GetAsync(int id)
     {
-        await Init();
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
-        await connection.OpenAsync();
+        await EnsureInitializedAsync();
+        await using var connection = await CreateConnectionAsync();
 
         var selectCmd = connection.CreateCommand();
         selectCmd.CommandText = "SELECT * FROM Course WHERE ID = @id";
@@ -161,9 +157,8 @@ public class CourseRepository
 
     public async Task<int> SaveItemAsync(Course item)
     {
-        await Init();
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
-        await connection.OpenAsync();
+        await EnsureInitializedAsync();
+        await using var connection = await CreateConnectionAsync();
 
         var saveCmd = connection.CreateCommand();
         if (item.ID == 0)
@@ -232,9 +227,8 @@ public class CourseRepository
 
     public async Task<int> DeleteItemAsync(Course item)
     {
-        await Init();
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
-        await connection.OpenAsync();
+        await EnsureInitializedAsync();
+        await using var connection = await CreateConnectionAsync();
 
         var deleteCmd = connection.CreateCommand();
         deleteCmd.CommandText = "DELETE FROM Course WHERE ID = @ID";
