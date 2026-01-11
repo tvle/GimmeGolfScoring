@@ -5,6 +5,11 @@ using LiveChartsCore.SkiaSharpView.Maui;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using LiveChartsCore.SkiaSharpView.Maui.Handlers;
 using LiveChartsCore.SkiaSharpView;
+using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using iDoublePress.Services;
+using Microsoft.Maui.Controls;
 
 namespace iDoublePress;
 
@@ -68,6 +73,40 @@ public static class MauiProgram
 		builder.Services.AddTransientWithShellRoute<RoundSummaryPage, RoundSummaryPageModel>("round-summary");
 		builder.Services.AddTransientWithShellRoute<AnalysisPage, AnalysisPageModel>("analysis");
 		
-		return builder.Build();
+		var app = builder.Build();
+
+		// Global exception handling - route to ModalErrorHandler to show UI instead of crashing
+		try
+		{
+			var errorHandler = app.Services.GetRequiredService<ModalErrorHandler>();
+
+			AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+			{
+				try
+				{
+					if (e.ExceptionObject is Exception ex)
+						errorHandler.HandleError(ex);
+					else
+						errorHandler.HandleError(new Exception("Unhandled exception: " + e.ExceptionObject));
+				}
+				catch { }
+			};
+
+			TaskScheduler.UnobservedTaskException += (s, e) =>
+			{
+				try
+				{
+					errorHandler.HandleError(e.Exception);
+					e.SetObserved();
+				}
+				catch { }
+			};
+		}
+		catch
+		{
+			// ignore if service not available
+		}
+
+		return app;
 	}
 }
