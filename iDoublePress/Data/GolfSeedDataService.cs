@@ -132,32 +132,5 @@ public class GolfSeedDataService
         par36Course.CourseHoles = par36Holes;
         await _courseRepository.SaveItemAsync(par36Course);
         _logger.LogInformation(AppResources.Par36CourseCreated);
-
-        // Create practice course (18 holes, all par 3)
-        var practiceCourse = new Course
-        {
-            Name = AppResources.PracticeCourse,
-            Location = AppResources.DefaultLocation,
-            TotalPar = 54,
-            Holes = 18,
-            IsCustom = false,
-            CreatedAt = DateTime.Now
-        };
-
-        var practiceHoles = new List<CourseHole>();
-        for (int i = 1; i <= 18; i++)
-        {
-            practiceHoles.Add(new CourseHole
-            {
-                HoleNumber = i,
-                Par = 3,
-                Handicap = i,
-                Yardage = 150
-            });
-        }
-        
-        practiceCourse.CourseHoles = practiceHoles;
-        await _courseRepository.SaveItemAsync(practiceCourse);
-        _logger.LogInformation(AppResources.PracticeCourseCreated);
     }
 }
