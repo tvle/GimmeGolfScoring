@@ -7,7 +7,6 @@
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
-		<integer>2</integer>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
@@ -30,5 +29,9 @@
 	<string>Gimme</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>CFBundleVersion</key>
+	<string>2.0</string>
 </dict>
 </plist>

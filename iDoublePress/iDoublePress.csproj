@@ -122,9 +122,9 @@
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net10.0-ios'">
-	  <CodesignKey>Apple Development: Created via API (L69FGPR387)</CodesignKey>
-	  <ProvisioningType>automatic</ProvisioningType>
-	  <CodesignProvision>VS: com.idoublepress.gimme Development</CodesignProvision>
+	  <CodesignKey>iPhone Distribution</CodesignKey>
+	  <ProvisioningType>manual</ProvisioningType>
+	  <CodesignProvision>Gimme Distribution Profile</CodesignProvision>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">
