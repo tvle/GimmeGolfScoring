@@ -1,0 +1,13 @@
+<Project>
+  <!-- Centralized build properties: enable AAB output and R8 for Android Release -->
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">
+    <AndroidPackageFormat>aab</AndroidPackageFormat>
+    <AndroidUseR8>true</AndroidUseR8>
+    <!-- Ensure R8 runs and emit mapping.txt. Do not set AndroidEnableProguard when using r8. -->
+    <AndroidEnableProguard>false</AndroidEnableProguard>
+    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <!-- Reference a ProGuard/R8 rules file (create the file below) -->
+    <AndroidProguardConfigurationFiles>$(MSBuildProjectDirectory)\iDoublePress\Platforms\Android\proguard-rules.pro</AndroidProguardConfigurationFiles>
+  </PropertyGroup>
+</Project>
