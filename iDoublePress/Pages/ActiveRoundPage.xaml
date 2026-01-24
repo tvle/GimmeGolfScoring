@@ -11,8 +11,7 @@
              x:DataType="pageModels:ActiveRoundPageModel"
              x:Name="RoundPage"
              AutomationId="ActiveRoundPage"
-             Title="{ext:Translate ActiveRound}">
-
+             Title="{Binding CurrentRound.Course.Name, FallbackValue='Standard Course'}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
@@ -26,41 +25,20 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="Auto,*,Auto,Auto"
+    <Grid RowDefinitions="Auto,*,Auto"
           RowSpacing="0">
 
-        <!-- Header: Course Info with Hole Navigation -->
         <Border Grid.Row="0" 
                 Style="{StaticResource CardStyle}"
-                Margin="15,15,15,8"
-                Padding="12"
+                Margin="10,8,10,8"
+                Padding="0"
                 AutomationId="ActiveRoundPage.Header"
                 IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="4">
-                <!-- Course Name - Centered and Truncated -->
-                <Label Grid.Row="0"
-                       Text="{Binding CurrentRound.Course.Name, FallbackValue='Standard Course'}" 
-                       AutomationId="ActiveRoundPage.CourseName"
-                       Style="{StaticResource Title1}"
-                       FontSize="26"
-                       HorizontalTextAlignment="Center"
-                       LineBreakMode="TailTruncation"
-                       MaxLines="1"/>
-
-                <!-- Course Par - Centered below course name -->
-                <Label Grid.Row="1"
-                       Text="{Binding CourseParDisplay}" 
-                       AutomationId="ActiveRoundPage.CoursePar"
-                       Style="{StaticResource Caption1}"
-                       FontSize="14"
-                       HorizontalTextAlignment="Center"
-                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"
-                       Margin="0,-4,0,0"/>
-
+            <Grid RowDefinitions="Auto,Auto" RowSpacing="0" Padding="4">
                 <!-- Score and Score Display -->
-                <Grid Grid.Row="2" 
+                <Grid Grid.Row="0" 
                       ColumnDefinitions="Auto,*,Auto"
-                      Margin="0,-20,0,0">
+                      Margin="0,0,0,0">
                     <!-- Total Putts (left) -->
                     <VerticalStackLayout Grid.Column="0" 
                                         VerticalOptions="Center"
@@ -72,15 +50,15 @@
                                FontSize="24"
                                HorizontalTextAlignment="Center"
                                TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
-                        <Label Text="{ext:Translate PuttsLower}"
-                               Style="{StaticResource Caption1}"
-                               FontSize="10"
+                        <Label Text="{ext:Translate Putts}"
+                               Style="{StaticResource Title1}"
+                               FontSize="14"
                                HorizontalTextAlignment="Center"
                                TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
                     </VerticalStackLayout>
-                    
+
                     <!-- Score (center) -->
-                    <HorizontalStackLayout Grid.Column="1" 
+                    <HorizontalStackLayout Grid.Column="1" Margin="0,0,0,0"
                                           HorizontalOptions="Center" 
                                           Spacing="6">
                         <Label Text="{Binding CurrentRound.TotalScore, FallbackValue='4'}" 
@@ -94,13 +72,22 @@
                                FontSize="24"
                                VerticalTextAlignment="Center"
                                Margin="0,0,0,6"/>
+                        <Label Text="{Binding CourseParDisplay}" 
+                               AutomationId="ActiveRoundPage.CoursePar"
+                               Style="{StaticResource Caption1}"
+                               FontSize="14"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"
+                               Margin="0,0,0,0"/>
+
                     </HorizontalStackLayout>
 
                     <!-- Total GIR (right) -->
                     <VerticalStackLayout Grid.Column="2" 
                                         VerticalOptions="Center"
                                         HorizontalOptions="End"
-                                        Spacing="-2">
+                                        Spacing="0">
                         <Label Text="{Binding TotalGIR}"
                                AutomationId="ActiveRoundPage.TotalGIR"
                                Style="{StaticResource Caption1}"
@@ -108,15 +95,14 @@
                                HorizontalTextAlignment="Center"
                                TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
                         <Label Text="{ext:Translate GIR}"
-                               Style="{StaticResource Caption1}"
-                               FontSize="10"
+                               Style="{StaticResource Title1}"
+                               FontSize="14"
                                HorizontalTextAlignment="Center"
                                TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
                     </VerticalStackLayout>
                 </Grid>
-
                 <!-- Hole Numbers and Scores with Active Indicator -->
-                <Grid Grid.Row="3" RowDefinitions="Auto,Auto" RowSpacing="0" HorizontalOptions="CenterAndExpand">
+                <Grid Grid.Row="1" RowDefinitions="Auto,Auto" RowSpacing="0" HorizontalOptions="Center">
                     <!-- Scores Row -->
                     <CollectionView Grid.Row="0"
                                    ItemsSource="{Binding CurrentRound.Holes}"
@@ -171,7 +157,7 @@
                     </CollectionView>
 
                     <!-- Hole Numbers Row -->
-                    <CollectionView Grid.Row="1"
+                    <CollectionView Grid.Row="3"
                                    ItemsSource="{Binding CurrentRound.Holes}"
                                    HorizontalOptions="Fill"
                                    VerticalOptions="Start"
@@ -220,102 +206,89 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </Grid>
+
             </Grid>
         </Border>
 
-        <!-- Main Scorecard (non-scrolling; fits on screen) -->
-        <Grid Grid.Row="1"
-              AutomationId="ActiveRoundPage.Scorecard"
-              IsVisible="{Binding CurrentHole, Converter={StaticResource IsNotNullConverter}}"
-              Padding="15,0,15,0">
-
-            <Border Style="{StaticResource CardStyle}" Padding="10">
-                <Grid RowDefinitions="Auto,Auto,*,Auto"
-                      RowSpacing="6">
-
+        <!-- Main Scorecard (now vertically scrollable if needed) -->
+        <ScrollView Grid.Row="1" Margin="10,0,10,0" HorizontalOptions="Fill"
+                    AutomationId="ActiveRoundPage.Scorecard.Scroll"
+                    IsVisible="{Binding CurrentHole, Converter={StaticResource IsNotNullConverter}}"
+                    Orientation="Vertical"
+                    Padding="0">
+            <Border Style="{StaticResource CardStyle}" Padding="0">
+                <Grid Padding="4" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,*,*" RowSpacing="6">
                     <!-- Compact top row: hole number (left) / FH (center) / Par (right) -->
-                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto,*" ColumnSpacing="10" VerticalOptions="Center">
-                        <Label Grid.Column="0"
-                               Text="{Binding CurrentHoleNumberDisplay}"
-                               Style="{StaticResource Title1}"
-                               FontSize="32"
-                               HorizontalOptions="Start"
-                               VerticalOptions="Center"
-                               AutomationId="ActiveRoundPage.HoleNumber" />
+                    <HorizontalStackLayout Grid.Row="0" Grid.Column="0">
+                        <Label Text="#" />
+                        <Label Text="{Binding CurrentHoleNumberDisplay}"
+                                Style="{StaticResource Title1}"
+                                FontSize="32"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Center"
+                                AutomationId="ActiveRoundPage.HoleNumber" />
+                        <Label Text="{Binding CurrentParNumberDisplay}" Margin="10,0,0,0"
+                            Style="{StaticResource Title2}"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            AutomationId="ActiveRoundPage.Par" />
+                    </HorizontalStackLayout>
+                    <Label Grid.Row="0" Grid.Column="1" Text="{ext:Translate FairwayHit}" 
+                                Style="{StaticResource Title3}" 
+                                HorizontalTextAlignment="Center" VerticalTextAlignment="End" VerticalOptions="End"
+                                FontSize="20" />
+                    <Label Grid.Row="0" Grid.Column="2" Text="{Binding CurrentHole.Yardage, Converter={StaticResource NullableIntToDashConverter}}"
+                           AutomationId="ActiveRoundPage.Navigation.CurrentHoleYardage"
+                           Style="{StaticResource Title2}"
+                           HorizontalOptions="End"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
 
-                        <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="Center" VerticalOptions="Center">
-                            <Label Text="{ext:Translate FairwayHit}" 
-                                   Style="{StaticResource Title3}" 
-                                   HorizontalTextAlignment="Center"
-                                   FontSize="14" />
-                            <sf:SfSegmentedControl x:Name="FairwaySegmentedControl"
-                                                   SegmentHeight="28"
-                                                   SegmentWidth="52"
-                                                   CornerRadius="16"
-                                                   HorizontalOptions="Center"
-                                                   SelectedIndex="{Binding CurrentHole.FairwayResultIndex, Mode=TwoWay}">
-                                <sf:SfSegmentedControl.ItemsSource>
-                                    <x:Array Type="{x:Type sf:SfSegmentItem}">
-                                        <sf:SfSegmentItem Text="&lt;&lt;&lt;" />
-                                        <sf:SfSegmentItem Text="OOO" />
-                                        <sf:SfSegmentItem Text="&gt;&gt;&gt;" />
-                                    </x:Array>
-                                </sf:SfSegmentedControl.ItemsSource>
-                            </sf:SfSegmentedControl>
-                        </VerticalStackLayout>
-
-                        <Label Grid.Column="2"
-                               Text="{Binding CurrentParNumberDisplay}"
-                               Style="{StaticResource Title2}"
-                               HorizontalOptions="End"
-                               VerticalOptions="Center"
-                               AutomationId="ActiveRoundPage.Par" />
-                    </Grid>
-
-                    <!-- Compact stats sub-row: Penalty (left) / GIR (right) -->
-                    <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="10" VerticalOptions="Center" AutomationId="ActiveRoundPage.Stats">
-                        <HorizontalStackLayout Grid.Column="0" Spacing="4" VerticalOptions="Center">
-                            <Label Text="&#x26A0;"
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4" VerticalOptions="Center">
+                        <Label Text="&#x26A0;"
                                    FontFamily="FluentSystemIcons-Regular"
-                                   FontSize="14"
-                                   VerticalOptions="Center"
-                                   Margin="0,-6,-10,0"
+                                   Style="{StaticResource Title1}"                               
+                                   FontSize="20" TextColor="Red"
+                                   VerticalOptions="End" HorizontalOptions="Start"
+                                   Margin="0,0,0,0"
                                    AutomationProperties.Name="{ext:Translate Penalty}" />
-                            <Switch IsToggled="{Binding CurrentHole.Penalties, Mode=TwoWay, Converter={StaticResource IntToBoolConverter}}"
+                        <Switch IsToggled="{Binding CurrentHole.Penalties, Mode=TwoWay, Converter={StaticResource IntToBoolConverter}}"
+                                    OnColor="{StaticResource Primary}" Margin="0,0,0,0" HorizontalOptions="Start"
+                                    Scale="1" />
+                    </VerticalStackLayout>
+                    <!-- FH Buttons -->
+                    <sf:SfSegmentedControl Grid.Row="1" Grid.Column="1" x:Name="FairwaySegmentedControl" WidthRequest="150" SegmentWidth="50" 
+                                            CornerRadius="16" HorizontalOptions="Center"
+                                            SelectedIndex="{Binding CurrentHole.FairwayResultIndex, Mode=TwoWay}">
+                        <sf:SfSegmentedControl.ItemsSource>
+                            <x:Array Type="{x:Type sf:SfSegmentItem}">
+                                <sf:SfSegmentItem Text="&lt;&lt;&lt;" />
+                                <sf:SfSegmentItem Text="OOO" />
+                                <sf:SfSegmentItem Text="&gt;&gt;&gt;" />
+                            </x:Array>
+                        </sf:SfSegmentedControl.ItemsSource>
+                    </sf:SfSegmentedControl>
+                    <VerticalStackLayout Grid.Row="1" Grid.Column="2" Spacing="0" VerticalOptions="Center">
+                        <Label Text="{ext:Translate GIR}"
+                               Style="{StaticResource Title1}"
+                               FontSize="20" HorizontalOptions="End"
+                               VerticalOptions="End" Margin="0,0,0,0"/>
+                        <Switch IsToggled="{Binding CurrentHole.GreenInRegulation, Mode=TwoWay}" HorizontalOptions="End"
+                                    AutomationId="ActiveRoundPage.GIR.Switch" Margin="0,0,0,0"
                                     OnColor="{StaticResource Primary}"
-                                    Scale="0.75" />
-                        </HorizontalStackLayout>
-
-                        <HorizontalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center" HorizontalOptions="End">
-                            <Label Text="{ext:Translate GIR}" Style="{StaticResource Title3}" VerticalOptions="Center" FontSize="14" Margin="0,0,-10,0" />
-                            <Switch IsToggled="{Binding CurrentHole.GreenInRegulation, Mode=TwoWay}"
-                                    AutomationId="ActiveRoundPage.GIR.Switch"
-                                    OnColor="{StaticResource Primary}"
-                                    Scale="0.75" />
-                        </HorizontalStackLayout>
-                    </Grid>
-
-                    <!-- Score / Putts / Proximity row -->
-                    <Grid Grid.Row="2"
-                          ColumnDefinitions="*,2*,*"
-                          ColumnSpacing="14"
-                          VerticalOptions="Fill">
-
-                        <!-- Putts (left) -->
-                        <VerticalStackLayout Grid.Column="0" Spacing="10" VerticalOptions="Center">
-                            <Label Text="{ext:Translate Putts}"
-                                   Style="{StaticResource Caption1}"
+                                    Scale="1" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="2" Grid.Column="0" Grid.RowSpan="4" Spacing="0" >
+                        <Label Text="{ext:Translate Putts}"
+                                   Style="{StaticResource Title1}" FontSize="20"
                                    TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
 
-                            <Grid ColumnDefinitions="Auto,Auto"
+                        <Grid ColumnDefinitions="Auto,Auto"
                                   RowDefinitions="Auto,Auto"
                                   ColumnSpacing="10"
-                                  RowSpacing="8"
+                                  RowSpacing="0"
                                   VerticalOptions="Center">
-
-                                <!-- +/- stacked vertically -->
-                                <VerticalStackLayout Grid.RowSpan="2" Grid.Column="0" Spacing="8" VerticalOptions="Center">
-                                    <Button Text="-"
+                            <VerticalStackLayout Grid.RowSpan="2" Grid.Column="0" Spacing="8" VerticalOptions="Center">
+                                <Button Text="-"
                                             WidthRequest="44"
                                             HeightRequest="44"
                                             Padding="0"
@@ -323,8 +296,13 @@
                                             HorizontalOptions="Center"
                                             Command="{Binding DecreasePuttsCommand}"
                                             IsEnabled="{Binding CanDecreasePutts}" />
-
-                                    <Button Text="+"
+                                <Label Grid.RowSpan="2" Grid.Column="1"
+                                       Text="{Binding CurrentHole.Putts, Converter={StaticResource NullableIntToDashConverter}}"
+                                       Style="{StaticResource Title2}"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Center"
+                                       MinimumWidthRequest="26" />
+                                <Button Text="+"
                                             WidthRequest="44"
                                             HeightRequest="44"
                                             Padding="0"
@@ -332,161 +310,119 @@
                                             HorizontalOptions="Center"
                                             Command="{Binding IncreasePuttsCommand}"
                                             IsEnabled="{Binding CanIncreasePutts}" />
-                                </VerticalStackLayout>
-
-                                <!-- value centered next to buttons -->
-                                <Label Grid.RowSpan="2" Grid.Column="1"
-                                       Text="{Binding CurrentHole.Putts, Converter={StaticResource NullableIntToDashConverter}}"
-                                       Style="{StaticResource Title2}"
-                                       VerticalTextAlignment="Center"
-                                       HorizontalTextAlignment="Center"
-                                       MinimumWidthRequest="26" />
-
-                            </Grid>
-                        </VerticalStackLayout>
-
-                        <!-- Center score controls -->
-                        <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto,Auto" RowSpacing="2" VerticalOptions="Fill">
-                            <Button Grid.Row="0"
-                                    Text="-"
-                                    AutomationId="ActiveRoundPage.DecreaseScore"
-                                    Command="{Binding DecreaseScoreCommand}"
-                                    IsEnabled="{Binding CanDecreaseScore}"
-                                    HeightRequest="40"
-                                    Padding="0"
-                                    FontSize="28"
-                                    Margin="0" />
-
-                            <Border Grid.Row="1"
-                                    AutomationId="ActiveRoundPage.ScoreDisplayContainer"
-                                    BackgroundColor="{Binding CurrentHole.ScoreColor, FallbackValue={StaticResource Primary}}"
-                                    StrokeThickness="0"
-                                    Padding="0"
-                                    Margin="0"
-                                    VerticalOptions="Fill">
-                                <Label Text="{Binding CurrentHole.Score, FallbackValue='4'}"
-                                       AutomationId="ActiveRoundPage.ScoreValue"
-                                       Style="{StaticResource Display}"
-                                       TextColor="White"
-                                       VerticalOptions="Center"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalTextAlignment="Center"
-                                       Margin="0,-12,0,0"/>
-                            </Border>
-
-                            <Button Grid.Row="2"
-                                    Text="+"
-                                    AutomationId="ActiveRoundPage.IncreaseScore"
-                                    Command="{Binding IncreaseScoreCommand}"
-                                    HeightRequest="40"
-                                    Padding="0"
-                                    FontSize="28"
-                                    Margin="0" />
-
-                            <Label Grid.Row="3"
-                                   Text="{Binding CurrentHole.ScoreRelativeToPar, StringFormat='{0:+0;-#;E}', FallbackValue='E'}"
-                                   AutomationId="ActiveRoundPage.ScoreRelativeToPar"
-                                   Style="{StaticResource Title2}"
-                                   HorizontalTextAlignment="Center"
-                                   Margin="0" />
+                            </VerticalStackLayout>
                         </Grid>
+                    </VerticalStackLayout>
 
-                        <!-- Proximity (right) -->
-                        <VerticalStackLayout Grid.Column="2" Spacing="10">
-                            <RadioButton GroupName="Proximity"
-                                         HorizontalOptions="End"
-                                         FlowDirection="RightToLeft"
+                    <Button Grid.Row="3" Grid.Column="1"
+                                Text="-" 
+                                AutomationId="ActiveRoundPage.DecreaseScore"
+                                Command="{Binding DecreaseScoreCommand}"
+                                IsEnabled="{Binding CanDecreaseScore}"
+                                HeightRequest="40"
+                                Padding="0,0,0,0"
+                                FontSize="28"
+                                Margin="0,0,0,0" />
+
+                    <!-- Proximity (right) -->
+                    <VerticalStackLayout Grid.Row="3" Grid.Column="2" Grid.RowSpan="5" Spacing="0">
+                        <RadioButton GroupName="Proximity"
+                                         HorizontalOptions="End" 
+                                         FlowDirection="RightToLeft" Margin="0,-0,0,0"
                                          IsChecked="{Binding IsProximityS, Mode=TwoWay}" />
-                            <Label Text="{ext:LocalizedUnits ProximityS}" HorizontalTextAlignment="End" Margin="0,-20,10,0" />
+                        <Label Text="{ext:LocalizedUnits ProximityS}" HorizontalTextAlignment="End" Margin="0,-14,0,0" />
 
-                            <RadioButton GroupName="Proximity"
+                        <RadioButton GroupName="Proximity"
                                          HorizontalOptions="End"
                                          FlowDirection="RightToLeft"
                                          IsChecked="{Binding IsProximityM, Mode=TwoWay}" />
-                            <Label Text="{ext:LocalizedUnits ProximityM}" HorizontalTextAlignment="End" Margin="0,-20,10,0" />
+                        <Label Text="{ext:LocalizedUnits ProximityM}" HorizontalTextAlignment="End" Margin="0,-14,0,0" />
 
-                            <RadioButton GroupName="Proximity"
+                        <RadioButton GroupName="Proximity"
                                          HorizontalOptions="End"
                                          FlowDirection="RightToLeft"
                                          IsChecked="{Binding IsProximityL, Mode=TwoWay}" />
-                            <Label Text="{ext:LocalizedUnits ProximityL}" HorizontalTextAlignment="End" Margin="0,-20,10,0" />
-                        </VerticalStackLayout>
+                        <Label Text="{ext:LocalizedUnits ProximityL}" HorizontalTextAlignment="End" Margin="0,-14,0,0" />
+                    </VerticalStackLayout>
 
-                    </Grid>
+                    <HorizontalStackLayout Grid.Row="4" Grid.Column="1" HorizontalOptions="Center">
+                        <Border 
+                                AutomationId="ActiveRoundPage.ScoreDisplayContainer"
+                                BackgroundColor="{Binding CurrentHole.ScoreColor, FallbackValue={StaticResource Primary}}"
+                                StrokeThickness="0"
+                                Padding="0"
+                                Margin="0"
+                                VerticalOptions="Fill">
+                        <Label Text="{Binding CurrentHole.Score, FallbackValue='4'}"
+                                    AutomationId="ActiveRoundPage.ScoreValue"
+                                    Style="{StaticResource Display}"
+                                    TextColor="White"
+                                    VerticalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"
+                                    Margin="0,0,0,0"/>
+                        </Border>
+                        <Label 
+                                Text="{Binding CurrentHole.ScoreRelativeToPar, StringFormat='{0:+0;-#;E}', FallbackValue='E'}"
+                                AutomationId="ActiveRoundPage.ScoreRelativeToPar"
+                                Style="{StaticResource Title2}"
+                                HorizontalTextAlignment="Center"
+                                Margin="0" />
 
+                    </HorizontalStackLayout>
+                    <Button Grid.Row="5" Grid.Column="1"
+                                Text="+"
+                                AutomationId="ActiveRoundPage.IncreaseScore"
+                                Command="{Binding IncreaseScoreCommand}"
+                                HeightRequest="40"
+                                Padding="0,-0,0,0"
+                                FontSize="28"
+                                Margin="0" />
                 </Grid>
             </Border>
-        </Grid>
+        </ScrollView>
 
         <Border Grid.Row="2" 
                 Style="{StaticResource CardStyle}"
-                Margin="15,8,15,8"
-                Padding="12"
+                Margin="10,8,10,8"
+                Padding="4"
                 AutomationId="ActiveRoundPage.NavigationBar"
                 IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
             <!-- Navigation Buttons -->
-            <Grid ColumnDefinitions="*,Auto,*">
+            <Grid ColumnDefinitions="*,Auto">
                 <Button Grid.Column="0"
                         Text="&lt;"
                         WidthRequest="72"
                         HeightRequest="44"
+                        Padding="0,-0,0,0"
                         AutomationId="ActiveRoundPage.PreviousHole"
                         Command="{Binding PreviousHoleCommand}"
                         IsEnabled="{Binding CanGoBack}"
                         HorizontalOptions="Start"/>
 
-                <VerticalStackLayout Grid.Column="1"
-                                    Spacing="0"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center">
-                    <Label Text="{Binding CurrentParNumberDisplay, FallbackValue='Par X'}"
-                           AutomationId="ActiveRoundPage.Navigation.CurrentParDisplay"
-                           Style="{StaticResource Title3}"
-                           HorizontalOptions="Center"/>
-
-                    <Label Text="{Binding CurrentHole.Yardage, Converter={StaticResource NullableIntToDashConverter}}"
-                           AutomationId="ActiveRoundPage.Navigation.CurrentHoleYardage"
-                           Style="{StaticResource Caption1}"
-                           FontSize="12"
-                           HorizontalOptions="Center"
-                           TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
-                </VerticalStackLayout>
-
-                <Button Grid.Column="2"
+                <Button Grid.Column="1"
                         Text="&gt;"
                         WidthRequest="72"
                         HeightRequest="44"
+                        Padding="0,-0,0,0"
                         AutomationId="ActiveRoundPage.NextHole"
                         Command="{Binding NextHoleCommand}"
                         IsEnabled="{Binding CanGoForward}"
-                        HorizontalOptions="End"/>
-            </Grid>
-        </Border>
-
-        <!-- Bottom Action Buttons -->
-        <Grid Grid.Row="3" 
-              ColumnDefinitions="*,*"
-              Padding="15,0,15,15"
-              ColumnSpacing="10"
-              RowSpacing="0"
-              AutomationId="ActiveRoundPage.Actions"
-              IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
-
-            <Button Grid.Column="0"
-                    Text="{ext:Translate Abandon}"
-                    AutomationId="ActiveRoundPage.Abandon"
-                    Command="{Binding AbandonRoundCommand}"
-                    HeightRequest="44"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
-
-            <Button Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding IsLastHole, Converter={StaticResource InvertedBoolConverter}}"/>
+                
+                <Button Grid.Column="1"
                     Text="{ext:Translate CompleteRound}"
                     AutomationId="ActiveRoundPage.Complete"
                     Command="{Binding CompleteRoundCommand}"
                     HeightRequest="44"
+                    Padding="0,-0,0,0"
                     BackgroundColor="{StaticResource Primary}"
+                    HorizontalOptions="Center"                        
                     IsVisible="{Binding IsLastHole}"/>
-        </Grid>
+
+            </Grid>
+        </Border>
 
         <!-- Loading Overlay -->
         <Grid Grid.RowSpan="4" 

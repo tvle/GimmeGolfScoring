@@ -51,4 +51,15 @@ public partial class ActiveRoundPage : ContentPage
         // We can at least set control background/stroke to improve contrast.
         fh.Background = primary;
     }
+    protected override bool OnBackButtonPressed()
+    {
+        // Invoke the ViewModel's NavigateBackCommand if available, otherwise fall back to default behavior.
+        if (BindingContext is ActiveRoundPageModel vm && vm.NavigateBackCommand != null && vm.NavigateBackCommand.CanExecute(null))
+        {
+            vm.NavigateBackCommand.Execute(null);
+            return true; // handled
+        }
+
+        return base.OnBackButtonPressed();
+    }
 }

@@ -37,7 +37,7 @@ public partial class ActiveRoundPageModel : ObservableObject
         CurrentRound?.ScoreDisplay ?? "E";
 
     public string CourseParDisplay =>
-        CurrentRound?.Course?.TotalPar != null 
+        CurrentRound?.Course?.TotalPar != null
             ? string.Format(AppResources.CourseParFormat, CurrentRound.Course.TotalPar)
             : string.Empty;
 
@@ -75,6 +75,13 @@ public partial class ActiveRoundPageModel : ObservableObject
             var current = CurrentHole.Putts ?? -1; // null => treat as -1 so first + sets to 0
             return current + 1 <= CurrentHole.Score;
         }
+    }
+
+    [RelayCommand]
+    private async Task NavigateBack()
+    {
+        await abandonRoundCommand.ExecuteAsync(null);
+        await Shell.Current.GoToAsync("..");
     }
 
     [RelayCommand]
@@ -561,7 +568,6 @@ public partial class ActiveRoundPageModel : ObservableObject
             OnPropertyChanged(nameof(IsProximityL));
         }
     }
-
     private async void OnDisappearing()
     {
         // Clean up debouncer to prevent memory leaks
