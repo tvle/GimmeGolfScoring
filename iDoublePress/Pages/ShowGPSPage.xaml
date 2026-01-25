@@ -19,10 +19,23 @@
     <Grid RowDefinitions="Auto, *" Padding="15" RowSpacing="15">
 
         <Border Grid.Row="0" Style="{StaticResource CardStyle}" Padding="0" VerticalOptions="Start">
-            <Grid Padding="10">
-                <Button Text="📍 Mark Location"
+            <Grid Padding="10" ColumnDefinitions="Auto, *">
+                <HorizontalStackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Start">
+                    <Label Text="#" />
+                    <Label Text="{Binding CurrentHoleNumberDisplay}"
+                                Style="{StaticResource Title1}"
+                                FontSize="32"
+                                VerticalOptions="Center"
+                                AutomationId="ShowGPSPage.HoleNumber" />
+                    <Label Text="{Binding CurrentParNumberDisplay}" Margin="10,0,0,0"
+                            Style="{StaticResource Title2}"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            AutomationId="ShowGPSPage.Par" />
+                </HorizontalStackLayout>
+                <Button Grid.Column="1" Text="📍"
                         Command="{Binding ToggleMeasurementCommand}"
-                        HorizontalOptions="Fill"/>
+                        HorizontalOptions="End"/>
             </Grid>
         </Border>
 

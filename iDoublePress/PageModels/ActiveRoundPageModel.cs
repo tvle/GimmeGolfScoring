@@ -285,7 +285,7 @@ public partial class ActiveRoundPageModel : ObservableObject
     {
         if (CurrentRound == null) return;
 
-        await Shell.Current.GoToAsync($"show-gps?roundId={CurrentRound.ID}");
+        await Shell.Current.GoToAsync($"show-gps?roundId={CurrentRound.ID}&holeIndex={CurrentHoleIndex}");
     }
 
     private async Task CompleteRoundCoreAsync()

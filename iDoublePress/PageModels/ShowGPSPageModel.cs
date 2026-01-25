@@ -1,17 +1,47 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using iDoublePress.Data;
 using iDoublePress.Models;
+using iDoublePress.Resources.Strings;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace iDoublePress.PageModels;
 
+[QueryProperty(nameof(RoundId), "roundId")]
+[QueryProperty(nameof(CurrentHoleIndex), "holeIndex")]
 public partial class ShowGPSPageModel : ObservableObject
 {
+    private readonly RoundRepository _roundRepository;
+    private readonly ModalErrorHandler _errorHandler;
+
     [ObservableProperty]
     private bool isBusy = false;
 
+    [ObservableProperty]
+    private int roundId;
+
+    [ObservableProperty]
+    private int currentHoleIndex;
+
+    [ObservableProperty]
+    private Round? currentRound;
+
+    [ObservableProperty]
+    private Hole? currentHole;
+
     public ObservableCollection<ShotSegment> ShotSegments { get; } = new();
+
+    public string CurrentHoleNumberDisplay =>
+        CurrentHole != null ? CurrentHole.HoleNumber.ToString() : "1";
+    public string CurrentParNumberDisplay =>
+        CurrentHole != null ? string.Format(AppResources.ParFormat, CurrentHole.Par) : string.Format(AppResources.ParFormat, 4);
+
+    public ShowGPSPageModel(RoundRepository roundRepository, ModalErrorHandler errorHandler)
+    {
+        _roundRepository = roundRepository;
+        _errorHandler = errorHandler;
+    }
 
     [RelayCommand]
     private async Task ToggleMeasurement()
@@ -96,4 +126,50 @@ public partial class ShowGPSPageModel : ObservableObject
             }
         }
     }
+
+    async partial void OnRoundIdChanged(int value)
+    {
+        try
+        {
+            if (value > 0)
+            {
+                IsBusy = true;
+                CurrentRound = await _roundRepository.GetAsync(roundId);
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorHandler.HandleError(ex);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+    async partial void OnCurrentHoleIndexChanged(int value)
+    {
+        try
+        {
+            if (value > 0)
+            {
+                IsBusy = true;
+                CurrentHole = CurrentRound.Holes[CurrentHoleIndex];
+                UpdateDisplay();
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorHandler.HandleError(ex);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+    private void UpdateDisplay()
+    {
+        OnPropertyChanged(nameof(CurrentHoleNumberDisplay));
+        OnPropertyChanged(nameof(CurrentParNumberDisplay));
+    }
+
 }
