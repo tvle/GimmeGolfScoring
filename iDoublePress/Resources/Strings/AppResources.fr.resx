@@ -133,7 +133,11 @@ La reprendre ?</value>
     <value>Terminer la partie ?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-  <data name="CompleteRoundMessage" xml:space="preserve">
+	<data name="GPSPageTitle" xml:space="preserve">
+    <value>Page GPS</value>
+    <comment>Title for GPS Page</comment>
+  </data>
+	<data name="CompleteRoundMessage" xml:space="preserve">
     <value>Votre score final est de {0} ({1}).
 Marquer cette partie comme terminée ?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>

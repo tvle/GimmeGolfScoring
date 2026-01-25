@@ -237,11 +237,20 @@
                                 Style="{StaticResource Title3}" 
                                 HorizontalTextAlignment="Center" VerticalTextAlignment="End" VerticalOptions="End"
                                 FontSize="20" />
-                    <Label Grid.Row="0" Grid.Column="2" Text="{Binding CurrentHole.Yardage, Converter={StaticResource NullableIntToDashConverter}}"
+                    <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="Auto, 50" HorizontalOptions="End">
+                        <Button Text="&#x2316;"
+                                WidthRequest="44"
+                                HeightRequest="44"
+                                Padding="0"
+                                VerticalOptions="Center"
+                                HorizontalOptions="End"
+                                Command="{Binding ShowGPSPageCommand}" />
+                        <Label Grid.Column="1" Text="{Binding CurrentHole.Yardage, Converter={StaticResource NullableIntToDashConverter}}"
                            AutomationId="ActiveRoundPage.Navigation.CurrentHoleYardage"
                            Style="{StaticResource Title2}"
                            HorizontalOptions="End"
-                           TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>
+                           TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"/>    
+                    </Grid>
 
                     <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4" VerticalOptions="Center">
                         <Label Text="&#x26A0;"

@@ -133,7 +133,11 @@ Progreso: {2}/{3} hoyos
     <value>¿Terminar ronda?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-  <data name="CompleteRoundMessage" xml:space="preserve">
+  <data name="GPSPageTitle" xml:space="preserve">
+    <value>Página de GPS</value>
+    <comment>Title for GPS Page</comment>
+  </data>
+	<data name="CompleteRoundMessage" xml:space="preserve">
     <value>Tu puntuación final es {0} ({1}).
 ¿Marcar esta ronda como terminada?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>

@@ -133,7 +133,11 @@ Vill du återuppta den?</value>
     <value>Avsluta runda?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-  <data name="CompleteRoundMessage" xml:space="preserve">
+	<data name="GPSPageTitle" xml:space="preserve">
+    <value>GPS-sida</value>
+    <comment>Title for GPS Page</comment>
+  </data>
+	<data name="CompleteRoundMessage" xml:space="preserve">
     <value>Ditt slutresultat är {0} ({1}).
 Vill du markera rundan som klar?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>

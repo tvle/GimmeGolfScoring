@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using iDoublePress.Models;
 using iDoublePress.Resources.Strings;
 using iDoublePress.Utilities;
+using System.Threading.Tasks;
 
 namespace iDoublePress.PageModels;
 
@@ -117,6 +118,13 @@ public partial class ActiveRoundPageModel : ObservableObject
         UpdatePuttsDisplay();
     }
 
+    [RelayCommand]
+    private async Task ShowGPSPage()
+    {
+        if (CurrentHole == null) return;
+
+        await NavigateToShowGPSPage();
+    }
 
     async partial void OnRoundIdChanged(int value)
     {
@@ -272,6 +280,12 @@ public partial class ActiveRoundPageModel : ObservableObject
         if (CurrentRound == null) return;
 
         await Shell.Current.GoToAsync($"round-summary?roundId={CurrentRound.ID}");
+    }
+    private async Task NavigateToShowGPSPage()
+    {
+        if (CurrentRound == null) return;
+
+        await Shell.Current.GoToAsync($"show-gps?roundId={CurrentRound.ID}");
     }
 
     private async Task CompleteRoundCoreAsync()

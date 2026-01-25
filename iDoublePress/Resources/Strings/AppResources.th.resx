@@ -133,7 +133,11 @@
     <value>จบการออกรอบ?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-  <data name="CompleteRoundMessage" xml:space="preserve">
+	<data name="GPSPageTitle" xml:space="preserve">
+    <value>หน้า GPS</value>
+    <comment>Title for GPS Page</comment>
+  </data>
+	<data name="CompleteRoundMessage" xml:space="preserve">
     <value>คะแนนรวมของคุณคือ {0} ({1})
 ทำเครื่องหมายว่าจบการออกรอบนี้หรือไม่?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>

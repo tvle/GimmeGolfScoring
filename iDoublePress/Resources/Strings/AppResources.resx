@@ -200,6 +200,10 @@ Resume it?</value>
     <value>Complete Round?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
+	<data name="GPSPageTitle" xml:space="preserve">
+    <value>GPS Page</value>
+    <comment>Title for GPS Page</comment>
+  </data>
   <data name="CompleteRoundMessage" xml:space="preserve">
     <value>Your final score is {0} ({1}). Mark this round as complete?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>

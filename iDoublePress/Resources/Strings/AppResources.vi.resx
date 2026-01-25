@@ -133,7 +133,11 @@ Bạn có muốn tiếp tục không?</value>
     <value>Hoàn thành vòng chơi?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-  <data name="CompleteRoundMessage" xml:space="preserve">
+	<data name="GPSPageTitle" xml:space="preserve">
+    <value>Trang GPS</value>
+    <comment>Title for GPS Page</comment>
+  </data>
+	<data name="CompleteRoundMessage" xml:space="preserve">
     <value>Tổng điểm của bạn là {0} ({1}).
 Đánh dấu vòng chơi này là hoàn thành?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>

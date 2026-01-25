@@ -81,6 +81,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Pages\ShowGPSPage.xaml.cs">
+		  <DependentUpon>ShowGPSPage.xaml</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\AppResources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -115,6 +118,9 @@
 		<MauiXaml Update="Pages\RoundsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Pages\ShowGPSPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Pages\RoundSummaryPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -124,9 +130,9 @@
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net10.0-ios'">
-	  <CodesignKey>iPhone Distribution</CodesignKey>
+	  <CodesignKey>iPhone Developer</CodesignKey>
 	  <ProvisioningType>manual</ProvisioningType>
-	  <CodesignProvision>Gimme Distribution Profile</CodesignProvision>
+	  <CodesignProvision>Gimme Development on HyperIOS</CodesignProvision>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">

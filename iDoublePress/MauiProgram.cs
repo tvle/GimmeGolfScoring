@@ -71,6 +71,7 @@ public static class MauiProgram
 		builder.Services.AddTransientWithShellRoute<RoundsPage, RoundsPageModel>("rounds");
 		builder.Services.AddTransientWithShellRoute<CourseEditPage, CourseEditPageModel>("course-edit");
 		builder.Services.AddTransientWithShellRoute<RoundSummaryPage, RoundSummaryPageModel>("round-summary");
+		builder.Services.AddTransientWithShellRoute<ShowGPSPage, ShowGPSPageModel>("show-gps");
 		builder.Services.AddTransientWithShellRoute<AnalysisPage, AnalysisPageModel>("analysis");
 		
 		var app = builder.Build();

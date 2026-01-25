@@ -133,7 +133,11 @@
     <value>라운드 종료?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-  <data name="CompleteRoundMessage" xml:space="preserve">
+	<data name="GPSPageTitle" xml:space="preserve">
+    <value>GPS 페이지</value>
+    <comment>Title for GPS Page</comment>
+  </data>
+	<data name="CompleteRoundMessage" xml:space="preserve">
     <value>최종 스코어는 {0} ({1})입니다.
 이 라운드를 완료로 표시하시겠습니까?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>

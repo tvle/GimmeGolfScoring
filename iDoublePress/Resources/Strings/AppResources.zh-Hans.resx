@@ -133,7 +133,11 @@
     <value>完成球局？</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-  <data name="CompleteRoundMessage" xml:space="preserve">
+	<data name="GPSPageTitle" xml:space="preserve">
+    <value>GPS 页面</value>
+    <comment>Title for GPS Page</comment>
+  </data>
+	<data name="CompleteRoundMessage" xml:space="preserve">
     <value>您的最终成绩是 {0} ({1})。
 将此球局标记为完成？</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>

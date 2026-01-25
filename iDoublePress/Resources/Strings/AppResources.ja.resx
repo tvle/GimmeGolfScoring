@@ -133,7 +133,11 @@
     <value>ラウンドを完了？</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-  <data name="CompleteRoundMessage" xml:space="preserve">
+	<data name="GPSPageTitle" xml:space="preserve">
+    <value>GPSページ</value>
+    <comment>Title for GPS Page</comment>
+  </data>
+	<data name="CompleteRoundMessage" xml:space="preserve">
     <value>最終スコアは {0} ({1}) です。
 このラウンドを完了にしますか？</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>

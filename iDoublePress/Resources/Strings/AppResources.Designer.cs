@@ -97,6 +97,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Courses.
         /// </summary>
         public static string AllCourses {
@@ -475,6 +484,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GPS Page.
+        /// </summary>
+        public static string GPSPageTitle {
+            get {
+                return ResourceManager.GetString("GPSPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hole {0}.
         /// </summary>
         public static string HoleFormat {
@@ -507,6 +525,15 @@ namespace iDoublePress.Resources.Strings {
         public static string HoursAgo {
             get {
                 return ResourceManager.GetString("HoursAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In-Progress Rounds.
+        /// </summary>
+        public static string InProgressRounds {
+            get {
+                return ResourceManager.GetString("InProgressRounds", resourceCulture);
             }
         }
         
@@ -844,33 +871,6 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All.
-        /// </summary>
-        public static string All {
-            get {
-                return ResourceManager.GetString("All", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rounds ({0}).
-        /// </summary>
-        public static string RoundsCountFormat {
-            get {
-                return ResourceManager.GetString("RoundsCountFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to In-Progress Rounds.
-        /// </summary>
-        public static string InProgressRounds {
-            get {
-                return ResourceManager.GetString("InProgressRounds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please restart the app for the language change to take full effect..
         /// </summary>
         public static string RestartAppMessage {
@@ -943,6 +943,15 @@ namespace iDoublePress.Resources.Strings {
         public static string Rounds {
             get {
                 return ResourceManager.GetString("Rounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rounds ({0}).
+        /// </summary>
+        public static string RoundsCountFormat {
+            get {
+                return ResourceManager.GetString("RoundsCountFormat", resourceCulture);
             }
         }
         
