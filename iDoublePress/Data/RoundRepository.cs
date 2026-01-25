@@ -210,6 +210,27 @@ public class RoundRepository : RepositoryBase
             CREATE INDEX IF NOT EXISTS IDX_Hole_RoundID ON Hole(RoundID);";
             LogSql(createIndexes, "CREATE INDEXES");
             await createIndexes.ExecuteNonQueryAsync();
+
+            var createShotSegmentTableCmd = connection.CreateCommand();
+            createShotSegmentTableCmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS ShotSegment (
+                ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                HoleID INTEGER NOT NULL,
+                Sequence INTEGER NOT NULL,
+                Latitude REAL NOT NULL,
+                Longitude REAL NOT NULL,
+                CreatedAt TEXT NOT NULL,
+                FOREIGN KEY (HoleID) REFERENCES Hole(ID) ON DELETE CASCADE
+            );";
+            LogSql(createShotSegmentTableCmd, "DDL ShotSegment");
+            await createShotSegmentTableCmd.ExecuteNonQueryAsync();
+
+            var createShotIndexes = connection.CreateCommand();
+            createShotIndexes.CommandText = @"
+            CREATE INDEX IF NOT EXISTS IDX_ShotSegment_HoleID ON ShotSegment(HoleID);
+            CREATE INDEX IF NOT EXISTS IDX_ShotSegment_HoleID_Sequence ON ShotSegment(HoleID, Sequence);";
+            LogSql(createShotIndexes, "CREATE INDEXES ShotSegment");
+            await createShotIndexes.ExecuteNonQueryAsync();
         }
         catch (Exception e)
         {
@@ -387,7 +408,108 @@ public class RoundRepository : RepositoryBase
             });
         }
 
+        // Load shot segments for each hole
+        foreach (var hole in holes)
+        {
+            hole.Notes = hole.Notes; // keep
+            var segments = await GetShotSegmentsForHoleAsync(connection, hole.ID);
+            // Attach segments to hole via a property if needed; currently Hole doesn't have property for segments.
+            // We'll store in a transient dictionary in memory on Round if needed. For now, leave hole unchanged.
+        }
+
         return holes;
+    }
+
+    private async Task<List<ShotSegment>> GetShotSegmentsForHoleAsync(SqliteConnection connection, int holeId)
+    {
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = @"
+            SELECT ID, HoleID, Sequence, Latitude, Longitude, CreatedAt
+            FROM ShotSegment
+            WHERE HoleID = @holeId
+            ORDER BY Sequence DESC";
+        cmd.Parameters.AddWithValue("@holeId", holeId);
+        LogSql(cmd, "GetShotSegmentsForHoleAsync");
+
+        var list = new List<ShotSegment>();
+        await using var reader = await cmd.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
+        {
+            var seg = new ShotSegment
+            {
+                ID = reader.GetInt32(0),
+                HoleID = reader.GetInt32(1),
+                Sequence = reader.GetInt32(2),
+                Point = new Location(reader.GetDouble(3), reader.GetDouble(4)),
+                CreatedAt = DateTime.Parse(reader.GetString(5)),
+                LocationDisplay = $"{reader.GetDouble(3):F7}, {reader.GetDouble(4):F7}",
+                DistanceDisplay = "---"
+            };
+            list.Add(seg);
+        }
+
+        return list;
+    }
+
+    public async Task<List<ShotSegment>> GetShotSegmentsForHoleAsync(int holeId)
+    {
+        await EnsureInitializedAsync();
+        await using var connection = await CreateConnectionAsync();
+        return await GetShotSegmentsForHoleAsync(connection, holeId);
+    }
+
+    public async Task SaveShotSegmentsForHoleAsync(int holeId, IEnumerable<ShotSegment> segments)
+    {
+        await EnsureInitializedAsync();
+        await using var connection = await CreateConnectionAsync();
+
+        using var transaction = connection.BeginTransaction();
+        try
+        {
+            // Delete existing segments for hole then insert provided list with proper sequence
+            var deleteCmd = connection.CreateCommand();
+            deleteCmd.Transaction = transaction;
+            deleteCmd.CommandText = "DELETE FROM ShotSegment WHERE HoleID = @holeId";
+            deleteCmd.Parameters.AddWithValue("@holeId", holeId);
+            LogSql(deleteCmd, "DeleteShotSegmentsForHole");
+            await deleteCmd.ExecuteNonQueryAsync();
+
+            int seq = 0; // newer first expected
+            foreach (var s in segments)
+            {
+                var insertCmd = connection.CreateCommand();
+                insertCmd.Transaction = transaction;
+                insertCmd.CommandText = @"
+                    INSERT INTO ShotSegment (HoleID, Sequence, Latitude, Longitude, CreatedAt)
+                    VALUES (@HoleID, @Sequence, @Latitude, @Longitude, @CreatedAt);";
+                insertCmd.Parameters.AddWithValue("@HoleID", holeId);
+                insertCmd.Parameters.AddWithValue("@Sequence", seq);
+                insertCmd.Parameters.AddWithValue("@Latitude", s.Point.Latitude);
+                insertCmd.Parameters.AddWithValue("@Longitude", s.Point.Longitude);
+                insertCmd.Parameters.AddWithValue("@CreatedAt", (s.CreatedAt == default ? DateTime.Now : s.CreatedAt).ToString("o"));
+                LogSql(insertCmd, "InsertShotSegment");
+                await insertCmd.ExecuteNonQueryAsync();
+                seq++;
+            }
+
+            transaction.Commit();
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
+    }
+
+    public async Task DeleteShotSegmentsForHoleAsync(int holeId)
+    {
+        await EnsureInitializedAsync();
+        await using var connection = await CreateConnectionAsync();
+        var cmd = connection.CreateCommand();
+        cmd.CommandText = "DELETE FROM ShotSegment WHERE HoleID = @holeId";
+        cmd.Parameters.AddWithValue("@holeId", holeId);
+        LogSql(cmd, "DeleteShotSegmentsForHoleAsync");
+        await cmd.ExecuteNonQueryAsync();
     }
 
     public async Task<Round> CreateNewRoundAsync(int playerId, int courseId)

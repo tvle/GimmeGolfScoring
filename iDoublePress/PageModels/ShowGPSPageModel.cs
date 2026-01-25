@@ -76,6 +76,19 @@ public partial class ShowGPSPageModel : ObservableObject
 
             // 3. Recalculate all distances based on the new list order
             RecalculateDistances();
+
+            // Persist segments for this hole
+            try
+            {
+                if (CurrentHole != null)
+                {
+                    await _roundRepository.SaveShotSegmentsForHoleAsync(CurrentHole.ID, ShotSegments);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving shot segments: {ex.Message}");
+            }
         }
         catch (Exception ex)
         {
@@ -94,6 +107,19 @@ public partial class ShowGPSPageModel : ObservableObject
         {
             ShotSegments.Remove(segment);
             RecalculateDistances();
+
+            // Persist removal
+            try
+            {
+                if (CurrentHole != null)
+                {
+                    _ = _roundRepository.SaveShotSegmentsForHoleAsync(CurrentHole.ID, ShotSegments);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving shot segments after delete: {ex.Message}");
+            }
         }
     }
 
@@ -155,6 +181,20 @@ public partial class ShowGPSPageModel : ObservableObject
                 IsBusy = true;
                 CurrentHole = CurrentRound.Holes[CurrentHoleIndex];
                 UpdateDisplay();
+
+                // Load persisted shot segments for this hole
+                ShotSegments.Clear();
+                try
+                {
+                    var loaded = await _roundRepository.GetShotSegmentsForHoleAsync(CurrentHole.ID);
+                    foreach (var s in loaded)
+                        ShotSegments.Add(s);
+                    RecalculateDistances();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Unable to load shot segments: {ex.Message}");
+                }
             }
         }
         catch (Exception ex)

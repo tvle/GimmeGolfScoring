@@ -4,6 +4,12 @@ namespace iDoublePress.Models
 {
     public partial class ShotSegment : ObservableObject
     {
+        // Database identity and relationship
+        public int ID { get; set; }
+        public int HoleID { get; set; }
+        public int Sequence { get; set; }
+        public DateTime CreatedAt { get; set; }
+
         // Store the raw GPS data for recalculation
         public Location Point { get; set; }
 
