@@ -219,6 +219,7 @@ public class RoundRepository : RepositoryBase
                 Sequence INTEGER NOT NULL,
                 Latitude REAL NOT NULL,
                 Longitude REAL NOT NULL,
+                Tag TEXT,
                 CreatedAt TEXT NOT NULL,
                 FOREIGN KEY (HoleID) REFERENCES Hole(ID) ON DELETE CASCADE
             );";
@@ -231,6 +232,27 @@ public class RoundRepository : RepositoryBase
             CREATE INDEX IF NOT EXISTS IDX_ShotSegment_HoleID_Sequence ON ShotSegment(HoleID, Sequence);";
             LogSql(createShotIndexes, "CREATE INDEXES ShotSegment");
             await createShotIndexes.ExecuteNonQueryAsync();
+
+            // Ensure Tag column exists for older databases
+            var checkShotCols = connection.CreateCommand();
+            checkShotCols.CommandText = "PRAGMA table_info(ShotSegment);";
+            LogSql(checkShotCols, "PRAGMA table_info(ShotSegment)");
+            var existingShotCols = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            await using (var readerCols = await checkShotCols.ExecuteReaderAsync())
+            {
+                while (await readerCols.ReadAsync())
+                {
+                    existingShotCols.Add(readerCols.GetString(1));
+                }
+            }
+
+            if (!existingShotCols.Contains("Tag"))
+            {
+                var addTagCmd = connection.CreateCommand();
+                addTagCmd.CommandText = "ALTER TABLE ShotSegment ADD COLUMN Tag TEXT;";
+                LogSql(addTagCmd, "ALTER TABLE ADD Tag ShotSegment");
+                await addTagCmd.ExecuteNonQueryAsync();
+            }
         }
         catch (Exception e)
         {
@@ -424,7 +446,7 @@ public class RoundRepository : RepositoryBase
     {
         var cmd = connection.CreateCommand();
         cmd.CommandText = @"
-            SELECT ID, HoleID, Sequence, Latitude, Longitude, CreatedAt
+            SELECT ID, HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt
             FROM ShotSegment
             WHERE HoleID = @holeId
             ORDER BY Sequence DESC";
@@ -441,7 +463,8 @@ public class RoundRepository : RepositoryBase
                 HoleID = reader.GetInt32(1),
                 Sequence = reader.GetInt32(2),
                 Point = new Location(reader.GetDouble(3), reader.GetDouble(4)),
-                CreatedAt = DateTime.Parse(reader.GetString(5)),
+                Tag = reader.IsDBNull(5) ? null : reader.GetString(5),
+                CreatedAt = DateTime.Parse(reader.GetString(6)),
                 LocationDisplay = $"{reader.GetDouble(3):F7}, {reader.GetDouble(4):F7}",
                 DistanceDisplay = "---"
             };
@@ -480,12 +503,13 @@ public class RoundRepository : RepositoryBase
                 var insertCmd = connection.CreateCommand();
                 insertCmd.Transaction = transaction;
                 insertCmd.CommandText = @"
-                    INSERT INTO ShotSegment (HoleID, Sequence, Latitude, Longitude, CreatedAt)
-                    VALUES (@HoleID, @Sequence, @Latitude, @Longitude, @CreatedAt);";
+                    INSERT INTO ShotSegment (HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt)
+                    VALUES (@HoleID, @Sequence, @Latitude, @Longitude, @Tag, @CreatedAt);";
                 insertCmd.Parameters.AddWithValue("@HoleID", holeId);
                 insertCmd.Parameters.AddWithValue("@Sequence", seq);
                 insertCmd.Parameters.AddWithValue("@Latitude", s.Point.Latitude);
                 insertCmd.Parameters.AddWithValue("@Longitude", s.Point.Longitude);
+                insertCmd.Parameters.AddWithValue("@Tag", (object?)s.Tag ?? DBNull.Value);
                 insertCmd.Parameters.AddWithValue("@CreatedAt", (s.CreatedAt == default ? DateTime.Now : s.CreatedAt).ToString("o"));
                 LogSql(insertCmd, "InsertShotSegment");
                 await insertCmd.ExecuteNonQueryAsync();

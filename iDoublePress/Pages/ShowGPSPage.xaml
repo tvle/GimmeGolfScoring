@@ -8,8 +8,7 @@
              x:Class="iDoublePress.Pages.ShowGPSPage"
              x:DataType="pageModels:ShowGPSPageModel"
              x:Name="ThisPage"
-             Title="{ext:Translate GPSPageTitle}">
-
+             Title="{Binding CurrentRound.Course.Name, FallbackValue='Standard Course'}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
@@ -44,23 +43,36 @@
                         EmptyView="----">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:ShotSegment">
-                    <Grid ColumnDefinitions="80, *, 50" Padding="0,8">
+                    <Grid ColumnDefinitions="80, 50, *, 50" Padding="0,8">
 
-                        <Label Grid.Column="0" 
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label
                                Text="{Binding DistanceDisplay}" 
                                FontSize="18" 
                                FontAttributes="Bold"
                                TextColor="{StaticResource Primary}"
-                               VerticalOptions="Center"/>
-                        <Label Grid.Column="1" 
+                               VerticalOptions="Center" />
+                            <Label
+                               Text="{Binding Tag}"
+                               FontSize="16"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center">
+                            </Label>
+                        </VerticalStackLayout>
+                        <Button Grid.Column="1"
+                                Text="🏷️"
+                                Clicked="TagButton_Clicked"
+                                CommandParameter="{Binding .}"
+                                Padding="10,4" />
+
+                        <Label Grid.Column="2" 
                                Text="{Binding LocationDisplay}" 
-                               FontSize="14" 
+                               FontSize="10" 
                                TextColor="Gray"
                                VerticalOptions="Center"/>
-                        <Button Grid.Row="1"
-                                Grid.Column="2"
+                        <Button Grid.Column="3"
                                 ImageSource="{StaticResource IconDeleteWhite}"
-                                Clicked="Button_Clicked"
+                                Clicked="DeleteButton_Clicked"
                                 CommandParameter="{Binding .}"
                                 Padding="10,4" />
                     </Grid>

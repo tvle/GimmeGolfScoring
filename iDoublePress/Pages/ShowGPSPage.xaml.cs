@@ -24,7 +24,30 @@ public partial class ShowGPSPage : ContentPage
         BindingContext = viewModel;
     }
 
-    private void Button_Clicked(object sender, EventArgs e)
+    private async void TagButton_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            if (sender is Button btn && btn.BindingContext is ShotSegment segment && BindingContext is ShowGPSPageModel vm)
+            {
+                var options = new string[] { "Tee Box", "D", "3W", "5W", "3H", "4H", "4I", "5I", "6I", "7I", "8I", "9I", "PW", "GW", "SW", "LW", "Front", "Center", "Back" };
+                var result = await DisplayActionSheet("Select Tag", "Cancel", null, options);
+                if (!string.IsNullOrEmpty(result) && result != "Cancel")
+                {
+                    segment.Tag = result;
+                    // Persist via ViewModel
+                    await vm.PersistShotSegmentsAsync();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Tag selection failed: {ex}");
+        }
+
+    }
+
+    private void DeleteButton_Clicked(object sender, EventArgs e)
     {
         // 1. Get the button that was clicked
         if (sender is Button button)

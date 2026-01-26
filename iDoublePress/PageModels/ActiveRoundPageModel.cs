@@ -81,7 +81,17 @@ public partial class ActiveRoundPageModel : ObservableObject
     [RelayCommand]
     private async Task NavigateBack()
     {
-        await abandonRoundCommand.ExecuteAsync(null);
+        // Use the generated public command property so the command is lazily initialized by the source generator.
+        // Fall back to calling the handler directly if the command is not available.
+        if (AbandonRoundCommand?.CanExecute(null) == true)
+        {
+            await AbandonRoundCommand.ExecuteAsync(null);
+        }
+        else
+        {
+            await AbandonRound();
+        }
+
         await Shell.Current.GoToAsync("..");
     }
 

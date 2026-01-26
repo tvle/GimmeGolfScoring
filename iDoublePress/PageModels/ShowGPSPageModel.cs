@@ -67,12 +67,14 @@ public partial class ShowGPSPageModel : ObservableObject
             // 2. Add New Segment to Top of List
             var newSegment = new ShotSegment
             {
+                CreatedAt = DateTime.UtcNow,
+                HoleID = CurrentHole.ID,
                 Point = location,
                 LocationDisplay = $"{location.Latitude:F7}, {location.Longitude:F7}",
                 DistanceDisplay = "---" // Temporary, will be fixed by Recalculate
             };
 
-            ShotSegments.Insert(0, newSegment);
+            ShotSegments.Insert(0,newSegment);
 
             // 3. Recalculate all distances based on the new list order
             RecalculateDistances();
@@ -187,7 +189,10 @@ public partial class ShowGPSPageModel : ObservableObject
                 try
                 {
                     var loaded = await _roundRepository.GetShotSegmentsForHoleAsync(CurrentHole.ID);
-                    foreach (var s in loaded)
+
+                    // FIX: Ensure segments are ordered Newest First (Desc) to match ToggleMeasurement logic
+                    // This ensures the logic in RecalculateDistances aligns tags with the correct intervals.
+                    foreach (var s in loaded.OrderByDescending(x => x.CreatedAt))
                         ShotSegments.Add(s);
                     RecalculateDistances();
                 }
@@ -210,6 +215,21 @@ public partial class ShowGPSPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(CurrentHoleNumberDisplay));
         OnPropertyChanged(nameof(CurrentParNumberDisplay));
+    }
+
+    public async Task PersistShotSegmentsAsync()
+    {
+        try
+        {
+            if (CurrentHole != null)
+            {
+                await _roundRepository.SaveShotSegmentsForHoleAsync(CurrentHole.ID, ShotSegments);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error persisting shot segments: {ex.Message}");
+        }
     }
 
 }

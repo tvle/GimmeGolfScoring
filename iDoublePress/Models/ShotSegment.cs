@@ -19,5 +19,8 @@ namespace iDoublePress.Models
 
         [ObservableProperty]
         private string locationDisplay;
+
+        [ObservableProperty]
+        private string tag;
     }
 }
