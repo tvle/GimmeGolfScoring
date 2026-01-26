@@ -163,6 +163,7 @@ public partial class ShowGPSPageModel : ObservableObject
             {
                 IsBusy = true;
                 CurrentRound = await _roundRepository.GetAsync(roundId);
+                await GetShotSegments();    // for some reason on Android, the OnCurrentHoleIndexChanged doesn't fire so calling this here also
             }
         }
         catch (Exception ex)
@@ -174,6 +175,29 @@ public partial class ShowGPSPageModel : ObservableObject
             IsBusy = false;
         }
     }
+
+    private async Task GetShotSegments()
+    {
+        CurrentHole = CurrentRound?.Holes[CurrentHoleIndex];
+        // Load persisted shot segments for this hole
+        ShotSegments.Clear();
+        try
+        {
+            var loaded = await _roundRepository.GetShotSegmentsForHoleAsync(CurrentHole.ID);
+
+            // FIX: Ensure segments are ordered Newest First (Desc) to match ToggleMeasurement logic
+            // This ensures the logic in RecalculateDistances aligns tags with the correct intervals.
+            foreach (var s in loaded.OrderByDescending(x => x.CreatedAt))
+                ShotSegments.Add(s);
+            RecalculateDistances();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Unable to load shot segments: {ex.Message}");
+        }
+        UpdateDisplay();
+    }
+
     async partial void OnCurrentHoleIndexChanged(int value)
     {
         try
@@ -181,25 +205,7 @@ public partial class ShowGPSPageModel : ObservableObject
             if (value > 0)
             {
                 IsBusy = true;
-                CurrentHole = CurrentRound.Holes[CurrentHoleIndex];
-                UpdateDisplay();
-
-                // Load persisted shot segments for this hole
-                ShotSegments.Clear();
-                try
-                {
-                    var loaded = await _roundRepository.GetShotSegmentsForHoleAsync(CurrentHole.ID);
-
-                    // FIX: Ensure segments are ordered Newest First (Desc) to match ToggleMeasurement logic
-                    // This ensures the logic in RecalculateDistances aligns tags with the correct intervals.
-                    foreach (var s in loaded.OrderByDescending(x => x.CreatedAt))
-                        ShotSegments.Add(s);
-                    RecalculateDistances();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Unable to load shot segments: {ex.Message}");
-                }
+                await GetShotSegments();                
             }
         }
         catch (Exception ex)

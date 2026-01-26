@@ -43,39 +43,74 @@
                         EmptyView="----">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:ShotSegment">
-                    <Grid ColumnDefinitions="80, 50, *, 50" Padding="0,8">
-
-                        <VerticalStackLayout Grid.Column="0" Spacing="2">
-                            <Label
-                               Text="{Binding DistanceDisplay}" 
-                               FontSize="18" 
-                               FontAttributes="Bold"
-                               TextColor="{StaticResource Primary}"
-                               VerticalOptions="Center" />
-                            <Label
-                               Text="{Binding Tag}"
-                               FontSize="16"
-                               TextColor="{StaticResource Primary}"
-                               VerticalOptions="Center">
-                            </Label>
-                        </VerticalStackLayout>
-                        <Button Grid.Column="1"
-                                Text="🏷️"
-                                Clicked="TagButton_Clicked"
-                                CommandParameter="{Binding .}"
-                                Padding="10,4" />
+                    <Grid ColumnDefinitions="*, 50, 50, 50" Padding="0,8">
 
                         <Label Grid.Column="2" 
                                Text="{Binding LocationDisplay}" 
                                FontSize="10" 
                                TextColor="Gray"
                                VerticalOptions="Center"/>
-                        <Button Grid.Column="3"
-                                ImageSource="{StaticResource IconDeleteWhite}"
-                                Clicked="DeleteButton_Clicked"
-                                CommandParameter="{Binding .}"
-                                Padding="10,4" />
                     </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding ShotSegments}"
+                        SelectionMode="None"
+                        EmptyView="----"
+                        VerticalOptions="Fill">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ShotSegment">
+                    <Border Style="{StaticResource CardStyle}" Margin="0,5">
+                        <Grid RowDefinitions="Auto,Auto"
+                              ColumnDefinitions="*,Auto,Auto,Auto"
+                              Padding="8"
+                              ColumnSpacing="10"
+                              RowSpacing="6"
+                              VerticalOptions="Center">
+
+                            <Label Grid.Column="0"
+                                    Grid.ColumnSpan="4"
+                                    Text="{Binding DistanceDisplay}" 
+                                    FontSize="18" 
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource Primary}"
+                                    LineBreakMode="TailTruncation" 
+                                    Style="{StaticResource Body1}"/>
+
+                            <Button Grid.Row="0"
+                                    Grid.Column="2"
+                                    Text="🏷️"
+                                    Clicked="TagButton_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    Padding="10,4" />
+
+                            <Button Grid.Row="0"
+                                    Grid.Column="3"
+                                    ImageSource="{StaticResource IconDeleteWhite}"
+                                    Clicked="DeleteButton_Clicked"
+                                    CommandParameter="{Binding .}"
+                                    Padding="10,4" />
+
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="4" 
+                                   Text="{Binding Tag}"
+                                    FontSize="18" 
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource Primary}"
+                                    LineBreakMode="TailTruncation" 
+                                    Style="{StaticResource Body1}"/>
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="4"
+                                   Text="{Binding LocationDisplay}"
+                                   Style="{StaticResource Caption1}"
+                                   Opacity="0.6"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
