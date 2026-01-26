@@ -334,6 +334,71 @@ Starta om appen.</value>
     <value>Par 36-bana skapad</value>
     <comment>Log message when par 36 course is created</comment>
   </data>
+  <data name="SelectTag" xml:space="preserve">
+    <value>Välj tagg</value>
+    <comment>Title for tag selection action sheet</comment>
+  </data>
+  <data name="PageLoadErrorFormat" xml:space="preserve">
+    <value>Fel vid inläsning av sidan: {0}</value>
+    <comment>Displayed when a page fails to initialize. {0}=exception message</comment>
+  </data>
+  <data name="Tag_TeeBox" xml:space="preserve">
+    <value>Tee</value>
+  </data>
+  <data name="Tag_D" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="Tag_3W" xml:space="preserve">
+    <value>3W</value>
+  </data>
+  <data name="Tag_5W" xml:space="preserve">
+    <value>5W</value>
+  </data>
+  <data name="Tag_3H" xml:space="preserve">
+    <value>3H</value>
+  </data>
+  <data name="Tag_4H" xml:space="preserve">
+    <value>4H</value>
+  </data>
+  <data name="Tag_4I" xml:space="preserve">
+    <value>4I</value>
+  </data>
+  <data name="Tag_5I" xml:space="preserve">
+    <value>5I</value>
+  </data>
+  <data name="Tag_6I" xml:space="preserve">
+    <value>6I</value>
+  </data>
+  <data name="Tag_7I" xml:space="preserve">
+    <value>7I</value>
+  </data>
+  <data name="Tag_8I" xml:space="preserve">
+    <value>8I</value>
+  </data>
+  <data name="Tag_9I" xml:space="preserve">
+    <value>9I</value>
+  </data>
+  <data name="Tag_PW" xml:space="preserve">
+    <value>PW</value>
+  </data>
+  <data name="Tag_GW" xml:space="preserve">
+    <value>GW</value>
+  </data>
+  <data name="Tag_SW" xml:space="preserve">
+    <value>SW</value>
+  </data>
+  <data name="Tag_LW" xml:space="preserve">
+    <value>LW</value>
+  </data>
+  <data name="Tag_Front" xml:space="preserve">
+    <value>Fram</value>
+  </data>
+  <data name="Tag_Center" xml:space="preserve">
+    <value>Mitten</value>
+  </data>
+  <data name="Tag_Back" xml:space="preserve">
+    <value>Bak</value>
+  </data>
   <data name="PracticeCourseCreated" xml:space="preserve">
     <value>Övningsbana skapad</value>
     <comment>Log message when practice course is created</comment>

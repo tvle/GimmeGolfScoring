@@ -1,5 +1,6 @@
 using iDoublePress.Models;
 using iDoublePress.PageModels;
+using iDoublePress.Resources.Strings;
 
 namespace iDoublePress.Pages;
 
@@ -16,7 +17,7 @@ public partial class ShowGPSPage : ContentPage
             System.Diagnostics.Debug.WriteLine($"ShowGPSPage InitializeComponent failed: {ex}");
             Content = new Label
             {
-                Text = $"Page load error: {ex.Message}",
+                Text = string.Format(AppResources.PageLoadErrorFormat, ex.Message),
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
             };
@@ -30,9 +31,15 @@ public partial class ShowGPSPage : ContentPage
         {
             if (sender is Button btn && btn.BindingContext is ShotSegment segment && BindingContext is ShowGPSPageModel vm)
             {
-                var options = new string[] { "Tee Box", "D", "3W", "5W", "3H", "4H", "4I", "5I", "6I", "7I", "8I", "9I", "PW", "GW", "SW", "LW", "Front", "Center", "Back" };
-                var result = await DisplayActionSheet("Select Tag", "Cancel", null, options);
-                if (!string.IsNullOrEmpty(result) && result != "Cancel")
+                var options = new string[] {
+                    AppResources.Tag_TeeBox, AppResources.Tag_D, AppResources.Tag_3W, AppResources.Tag_5W,
+                    AppResources.Tag_3H, AppResources.Tag_4H, AppResources.Tag_4I, AppResources.Tag_5I,
+                    AppResources.Tag_6I, AppResources.Tag_7I, AppResources.Tag_8I, AppResources.Tag_9I,
+                    AppResources.Tag_PW, AppResources.Tag_GW, AppResources.Tag_SW, AppResources.Tag_LW,
+                    AppResources.Tag_Front, AppResources.Tag_Center, AppResources.Tag_Back
+                };
+                var result = await DisplayActionSheet(AppResources.SelectTag, AppResources.Cancel, null, options);
+                if (!string.IsNullOrEmpty(result) && result != AppResources.Cancel)
                 {
                     segment.Tag = result;
                     // Persist via ViewModel

@@ -491,6 +491,45 @@ namespace iDoublePress.Resources.Strings {
                 return ResourceManager.GetString("GPSPageTitle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Select Tag.
+        /// </summary>
+        public static string SelectTag {
+            get {
+                return ResourceManager.GetString("SelectTag", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Page load error: {0}.
+        /// </summary>
+        public static string PageLoadErrorFormat {
+            get {
+                return ResourceManager.GetString("PageLoadErrorFormat", resourceCulture);
+            }
+        }
+
+        // Tag options
+        public static string Tag_TeeBox { get { return ResourceManager.GetString("Tag_TeeBox", resourceCulture); } }
+        public static string Tag_D { get { return ResourceManager.GetString("Tag_D", resourceCulture); } }
+        public static string Tag_3W { get { return ResourceManager.GetString("Tag_3W", resourceCulture); } }
+        public static string Tag_5W { get { return ResourceManager.GetString("Tag_5W", resourceCulture); } }
+        public static string Tag_3H { get { return ResourceManager.GetString("Tag_3H", resourceCulture); } }
+        public static string Tag_4H { get { return ResourceManager.GetString("Tag_4H", resourceCulture); } }
+        public static string Tag_4I { get { return ResourceManager.GetString("Tag_4I", resourceCulture); } }
+        public static string Tag_5I { get { return ResourceManager.GetString("Tag_5I", resourceCulture); } }
+        public static string Tag_6I { get { return ResourceManager.GetString("Tag_6I", resourceCulture); } }
+        public static string Tag_7I { get { return ResourceManager.GetString("Tag_7I", resourceCulture); } }
+        public static string Tag_8I { get { return ResourceManager.GetString("Tag_8I", resourceCulture); } }
+        public static string Tag_9I { get { return ResourceManager.GetString("Tag_9I", resourceCulture); } }
+        public static string Tag_PW { get { return ResourceManager.GetString("Tag_PW", resourceCulture); } }
+        public static string Tag_GW { get { return ResourceManager.GetString("Tag_GW", resourceCulture); } }
+        public static string Tag_SW { get { return ResourceManager.GetString("Tag_SW", resourceCulture); } }
+        public static string Tag_LW { get { return ResourceManager.GetString("Tag_LW", resourceCulture); } }
+        public static string Tag_Front { get { return ResourceManager.GetString("Tag_Front", resourceCulture); } }
+        public static string Tag_Center { get { return ResourceManager.GetString("Tag_Center", resourceCulture); } }
+        public static string Tag_Back { get { return ResourceManager.GetString("Tag_Back", resourceCulture); } }
         
         /// <summary>
         ///   Looks up a localized string similar to Hole {0}.
