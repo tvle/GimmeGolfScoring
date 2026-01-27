@@ -15,7 +15,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="Auto, *" Padding="15" RowSpacing="15">
+    <Grid RowDefinitions="Auto, *, Auto" Padding="15" RowSpacing="15">
 
         <Border Grid.Row="0" Style="{StaticResource CardStyle}" Padding="0" VerticalOptions="Start">
             <Grid Padding="10" ColumnDefinitions="Auto, *">
@@ -82,7 +82,7 @@
                                    Text="{Binding Tag}"
                                     FontSize="18" 
                                     FontAttributes="Bold"
-                                    TextColor="{StaticResource Primary}"
+                                    TextColor="OrangeRed"
                                     LineBreakMode="TailTruncation" 
                                     Style="{StaticResource Body1}"/>
                             <Label Grid.Row="2"
@@ -98,8 +98,27 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        <Border Grid.Row="2" 
+                Style="{StaticResource CardStyle}"
+                Margin="10,8,10,8"
+                Padding="4"
+                AutomationId="ShowGPSPage.NavigationBar"
+                IsVisible="{Binding CurrentRound, Converter={StaticResource IsNotNullConverter}}">
+            <!-- Navigation Buttons -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Button Grid.Column="0"
+                        Text="&lt;"
+                        WidthRequest="72"
+                        HeightRequest="44"
+                        Padding="0,-0,0,0"
+                        AutomationId="ShowGPSPage.Back"
+                        Command="{Binding BackCommand}"
+                        HorizontalOptions="Start"/>
 
-        <Grid Grid.RowSpan="2"
+            </Grid>
+        </Border>
+
+        <Grid Grid.RowSpan="3"
               IsVisible="{Binding IsBusy}"
               BackgroundColor="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}"
               ZIndex="99">

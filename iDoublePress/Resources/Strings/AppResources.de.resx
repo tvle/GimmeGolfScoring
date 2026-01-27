@@ -693,5 +693,8 @@ Bitte starte die App neu.</value>
 </data>
 <data name="ClubDistances" xml:space="preserve">
   <value>Schlägerdistanzen</value>
-</data>	
+</data>
+	<data name="ApproachAccuracy" xml:space="preserve">
+  <value>Annäherungsgenauigkeit</value>
+</data>
 </root>

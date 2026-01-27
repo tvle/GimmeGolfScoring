@@ -693,5 +693,8 @@ Veuillez redémarrer l'application.</value>
 </data>
 	<data name="ClubDistances" xml:space="preserve">
   <value>Distances des Clubs</value>
-</data>	
+</data>
+	<data name="ApproachAccuracy" xml:space="preserve">
+  <value>Précision d'Approche</value>
+</data>
 </root>

@@ -693,5 +693,8 @@
 </data>
 	<data name="ClubDistances" xml:space="preserve">
   <value>클럽별 거리</value>
-</data>	
+</data>
+	<data name="ApproachAccuracy" xml:space="preserve">
+  <value>어프로치 정확도</value>
+</data>
 </root>

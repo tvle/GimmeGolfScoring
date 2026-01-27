@@ -40,14 +40,10 @@ public static class ShotSegmentUtilities
             }
         }
     }
-    public static void RecalculateDistances(ObservableCollection<ShotSegment> segments)
+    public static List<ShotSegment> RecalculateDistances(ObservableCollection<ShotSegment> segments)
     {
-        segments.Clear();
         var segmentList = new List<ShotSegment>(segments);
         RecalculateDistances(segmentList);
-        foreach (var s in segmentList)
-        {
-            segments.Add(s);
-        }
+        return segmentList;
     }
 }

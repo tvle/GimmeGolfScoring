@@ -72,7 +72,7 @@ public partial class RoundSummaryPageModel : ObservableObject
     private string averageDriveDisplay = "---";
 
     public ObservableCollection<ClubDistanceStat> ClubStats { get; } = new();
-
+    public ObservableCollection<GreenStat> GreenStats { get; } = new();
     public RoundSummaryPageModel(RoundRepository roundRepository, ModalErrorHandler errorHandler)
     {
         _roundRepository = roundRepository;
@@ -110,6 +110,7 @@ public partial class RoundSummaryPageModel : ObservableObject
 
             await CalculateDrivingStats();
             await CalculateClubStats();
+            await CalculateGreenStats();
 
             CalculateStats();
         }
@@ -297,5 +298,59 @@ public partial class RoundSummaryPageModel : ObservableObject
         {
             ClubStats.Add(stat);
         }
+    }
+    private async Task CalculateGreenStats()
+    {
+        GreenStats.Clear();
+        var greenShots = new List<string>();
+
+        // Get the localized strings to match against DB values
+        string tagFront = AppResources.Tag_Front;   // e.g. "Green - Front"
+        string tagCenter = AppResources.Tag_Center; // e.g. "Green - Center"
+        string tagBack = AppResources.Tag_Back;     // e.g. "Green - Back"
+
+        // A. Gather Data
+        foreach (var hole in CurrentRound.Holes)
+        {
+            var segments = await _roundRepository.GetShotSegmentsForHoleAsync(hole.ID);
+            foreach (var s in segments)
+            {
+                if (s.Tag == tagFront || s.Tag == tagCenter || s.Tag == tagBack)
+                {
+                    greenShots.Add(s.Tag);
+                }
+            }
+        }
+
+        double total = greenShots.Count;
+
+        if (total == 0) return;
+
+        // B. Manually create the 3 rows so they always appear in Front->Back order
+        // Even if the count is 0, it's useful to see "Front: 0"
+
+        GreenStats.Add(new GreenStat
+        {
+            ZoneName = tagFront,
+            Count = greenShots.Count(x => x == tagFront),
+            TotalShots = total,
+            Order = 1
+        });
+
+        GreenStats.Add(new GreenStat
+        {
+            ZoneName = tagCenter,
+            Count = greenShots.Count(x => x == tagCenter),
+            TotalShots = total,
+            Order = 2
+        });
+
+        GreenStats.Add(new GreenStat
+        {
+            ZoneName = tagBack,
+            Count = greenShots.Count(x => x == tagBack),
+            TotalShots = total,
+            Order = 3
+        });
     }
 }

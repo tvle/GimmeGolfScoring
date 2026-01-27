@@ -692,5 +692,8 @@ Reinicia la aplicación.</value>
 </data>
 	<data name="ClubDistances" xml:space="preserve">
   <value>Distancias de Palos</value>
-</data>	
+</data>
+	<data name="ApproachAccuracy" xml:space="preserve">
+  <value>Precisión de Aproximación</value>
+</data>
 </root>

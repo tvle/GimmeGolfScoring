@@ -158,7 +158,39 @@
                         </StackLayout>
                     </VerticalStackLayout>
                 </Border>
-                
+
+                <Border Style="{StaticResource CardStyle}" Padding="15" 
+                        IsVisible="{Binding GreenStats.Count, Converter={toolkit:IntToBoolConverter}}">
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{ext:Translate ApproachAccuracy}" 
+                               Style="{StaticResource Title3}"
+                               Margin="0,0,0,5" />
+
+                        <StackLayout BindableLayout.ItemsSource="{Binding GreenStats}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:GreenStat">
+                                    <Grid ColumnDefinitions="*, Auto" Padding="0,6">
+                                        <BoxView Grid.ColumnSpan="2" VerticalOptions="End" HeightRequest="1" 
+                                 Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+
+                                        <Label Grid.Column="0" 
+                               Text="{Binding ZoneName}" 
+                               Style="{StaticResource Body}"
+                               VerticalOptions="Center" />
+
+                                        <Label Grid.Column="1" 
+                               Text="{Binding DisplayValue}" 
+                               Style="{StaticResource Title3}"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
                 <Border Style="{StaticResource CardStyle}" Padding="15">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto"
                           ColumnDefinitions="*,Auto"

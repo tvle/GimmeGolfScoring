@@ -77,7 +77,10 @@ public partial class ShowGPSPageModel : ObservableObject
             ShotSegments.Insert(0,newSegment);
 
             // 3. Recalculate all distances based on the new list order
-            ShotSegmentUtilities.RecalculateDistances(ShotSegments);
+            var segmentsUpdated = ShotSegmentUtilities.RecalculateDistances(ShotSegments);
+            ShotSegments.Clear();
+            foreach (var s in segmentsUpdated)
+                ShotSegments.Add(s);
 
             // Persist segments for this hole
             try
@@ -108,7 +111,10 @@ public partial class ShowGPSPageModel : ObservableObject
         if (ShotSegments.Contains(segment))
         {
             ShotSegments.Remove(segment);
-            ShotSegmentUtilities.RecalculateDistances(ShotSegments);
+            var segmentsUpdated = ShotSegmentUtilities.RecalculateDistances(ShotSegments);
+            ShotSegments.Clear();
+            foreach (var s in segmentsUpdated)
+                ShotSegments.Add(s);
 
             // Persist removal
             try
@@ -204,5 +210,9 @@ public partial class ShowGPSPageModel : ObservableObject
             Console.WriteLine($"Error persisting shot segments: {ex.Message}");
         }
     }
-
+    [RelayCommand]
+    private async void Back()
+    {
+        await Shell.Current.GoToAsync("..");
+    }
 }

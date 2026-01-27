@@ -753,5 +753,8 @@ Resume it?</value>
 </data>
 	<data name="ClubDistances" xml:space="preserve">
   <value>Club Distances</value>
-</data>	
+</data>
+	<data name="ApproachAccuracy" xml:space="preserve">
+  <value>Approach Accuracy</value>
+</data>
 </root>

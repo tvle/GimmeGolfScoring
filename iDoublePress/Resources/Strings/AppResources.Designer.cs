@@ -142,6 +142,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approach Accuracy.
+        /// </summary>
+        public static string ApproachAccuracy {
+            get {
+                return ResourceManager.GetString("ApproachAccuracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average.
         /// </summary>
         public static string AverageDrive {

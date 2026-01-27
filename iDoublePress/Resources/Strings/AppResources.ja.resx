@@ -693,5 +693,8 @@
 </data>
 	<data name="ClubDistances" xml:space="preserve">
   <value>クラブ飛距離</value>
-</data>	
+</data>
+	<data name="ApproachAccuracy" xml:space="preserve">
+  <value>アプローチ精度</value>
+</data>
 </root>

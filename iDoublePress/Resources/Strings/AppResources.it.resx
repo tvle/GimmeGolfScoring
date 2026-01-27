@@ -692,5 +692,8 @@ Riavvia l'applicazione.</value>
 </data>
 	<data name="ClubDistances" xml:space="preserve">
   <value>Distanze Bastoni</value>
-</data>	
+</data>
+	<data name="ApproachAccuracy" xml:space="preserve">
+  <value>Precisione Approccio</value>
+</data>
 </root>
