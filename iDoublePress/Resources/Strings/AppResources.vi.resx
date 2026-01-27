@@ -682,4 +682,13 @@ Vui lòng khởi động lại ứng dụng.</value>
   <value>Các vòng đang tiến hành</value>
   <comment>Title for in-progress rounds modal/page</comment>
 </data>
+	<data name="DrivingStats" xml:space="preserve">
+  <value>Hiệu suất phát bóng</value>
+</data>
+	<data name="LongestDrive" xml:space="preserve">
+  <value>Xa nhất</value>
+</data>
+	<data name="AverageDrive" xml:space="preserve">
+  <value>Trung bình</value>
+</data>	
   </root>

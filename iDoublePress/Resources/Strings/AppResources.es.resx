@@ -681,4 +681,13 @@ Reinicia la aplicación.</value>
   <value>Partidas en curso</value>
   <comment>Title for in-progress rounds modal/page</comment>
 </data>
+	<data name="DrivingStats" xml:space="preserve">
+  <value>Rendimiento de Drive</value>
+</data>
+	<data name="LongestDrive" xml:space="preserve">
+  <value>Más largo</value>
+</data>
+	<data name="AverageDrive" xml:space="preserve">
+  <value>Promedio</value>
+</data>
 </root>

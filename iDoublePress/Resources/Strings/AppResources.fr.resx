@@ -682,4 +682,13 @@ Veuillez redémarrer l'application.</value>
   <value>Parties en cours</value>
   <comment>Title for in-progress rounds modal/page</comment>
   </data>
+	<data name="DrivingStats" xml:space="preserve">
+  <value>Performance au Drive</value>
+</data>
+	<data name="LongestDrive" xml:space="preserve">
+  <value>Le plus long</value>
+</data>
+	<data name="AverageDrive" xml:space="preserve">
+  <value>Moyenne</value>
+</data>
 </root>

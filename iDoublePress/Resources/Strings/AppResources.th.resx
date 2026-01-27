@@ -682,4 +682,13 @@
   <value>รอบที่กำลังดำเนินการ</value>
   <comment>Title for in-progress rounds modal/page</comment>
   </data>
+	<data name="DrivingStats" xml:space="preserve">
+  <value>ประสิทธิภาพการไดร์ฟ</value>
+</data>
+	<data name="LongestDrive" xml:space="preserve">
+  <value>ไกลที่สุด</value>
+</data>
+	<data name="AverageDrive" xml:space="preserve">
+  <value>เฉลี่ย</value>
+</data>	
 </root>

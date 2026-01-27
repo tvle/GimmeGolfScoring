@@ -742,4 +742,13 @@ Resume it?</value>
     <value>Score to Par</value>
     <comment>Score to par axis name</comment>
   </data>
+	<data name="DrivingStats" xml:space="preserve">
+  <value>Driving Performance</value>
+</data>
+	<data name="LongestDrive" xml:space="preserve">
+  <value>Longest</value>
+</data>
+	<data name="AverageDrive" xml:space="preserve">
+  <value>Average</value>
+</data>	
 </root>

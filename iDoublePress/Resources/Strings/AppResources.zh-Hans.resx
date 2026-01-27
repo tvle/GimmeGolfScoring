@@ -682,4 +682,13 @@
   <value>进行中的回合</value>
   <comment>Title for in-progress rounds modal/page</comment>
 </data>
+	<data name="DrivingStats" xml:space="preserve">
+  <value>开球表现</value>
+</data>
+	<data name="LongestDrive" xml:space="preserve">
+  <value>最远</value>
+</data>
+	<data name="AverageDrive" xml:space="preserve">
+  <value>平均</value>
+</data>	
 </root>

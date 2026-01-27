@@ -681,4 +681,13 @@ Starta om appen.</value>
   <value>Pågående rundor</value>
   <comment>Title for in-progress rounds modal/page</comment>
 </data>
+	<data name="DrivingStats" xml:space="preserve">
+  <value>Drivestatistik</value>
+</data>
+	<data name="LongestDrive" xml:space="preserve">
+  <value>Längsta</value>
+</data>
+	<data name="AverageDrive" xml:space="preserve">
+  <value>Snitt</value>
+</data>	
 </root>

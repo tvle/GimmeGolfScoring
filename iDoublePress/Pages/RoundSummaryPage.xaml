@@ -96,6 +96,35 @@
                 </Border>
 
                 <Border Style="{StaticResource CardStyle}" Padding="15">
+                    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*" RowSpacing="12" ColumnSpacing="20">
+
+                        <Label Grid.Row="0" Grid.ColumnSpan="2"
+                               Text="{ext:Translate DrivingStats}" 
+                               Style="{StaticResource Title3}"
+                               Margin="0,0,0,4" />
+
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="2">
+                            <Label Text="{ext:Translate LongestDrive}"
+                                   Style="{StaticResource Body}"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
+                            <Label Text="{Binding LongestDriveDisplay}"
+                                   Style="{StaticResource Title2}"
+                                   TextColor="{StaticResource Primary}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="2">
+                            <Label Text="{ext:Translate AverageDrive}"
+                                   Style="{StaticResource Body}"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
+                            <Label Text="{Binding AverageDriveDisplay}"
+                                   Style="{StaticResource Title2}"
+                                   TextColor="{StaticResource Primary}" />
+                        </VerticalStackLayout>
+
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Padding="15">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto"
                           ColumnDefinitions="*,Auto"
                           RowSpacing="12"

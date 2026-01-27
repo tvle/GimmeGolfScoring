@@ -4,7 +4,7 @@ using iDoublePress.Data;
 using iDoublePress.Models;
 using iDoublePress.Resources.Strings;
 using System.Collections.ObjectModel;
-using System.Globalization;
+using iDoublePress.Utilities;
 
 namespace iDoublePress.PageModels;
 
@@ -77,7 +77,7 @@ public partial class ShowGPSPageModel : ObservableObject
             ShotSegments.Insert(0,newSegment);
 
             // 3. Recalculate all distances based on the new list order
-            RecalculateDistances();
+            ShotSegmentUtilities.RecalculateDistances(ShotSegments);
 
             // Persist segments for this hole
             try
@@ -108,7 +108,7 @@ public partial class ShowGPSPageModel : ObservableObject
         if (ShotSegments.Contains(segment))
         {
             ShotSegments.Remove(segment);
-            RecalculateDistances();
+            ShotSegmentUtilities.RecalculateDistances(ShotSegments);
 
             // Persist removal
             try
@@ -125,35 +125,6 @@ public partial class ShowGPSPageModel : ObservableObject
         }
     }
 
-    private void RecalculateDistances()
-    {
-        // Iterate from the NEWEST (Index 0) to the OLDEST (Index Count-1)
-        for (int i = 0; i < ShotSegments.Count; i++)
-        {
-            // The last item in the list is the "Start Point" (no previous point to measure from)
-            if (i == ShotSegments.Count - 1)
-            {
-                ShotSegments[i].DistanceDisplay = "---";
-                continue;
-            }
-
-            // Calculate distance from the point "Below" this one (i + 1)
-            // Example: Point A (0) measures distance from Point B (1)
-            var currentPoint = ShotSegments[i].Point;
-            var startPoint = ShotSegments[i + 1].Point;
-
-            if (RegionInfo.CurrentRegion.IsMetric)
-            {
-                double kms = Location.CalculateDistance(startPoint, currentPoint, DistanceUnits.Kilometers);
-                ShotSegments[i].DistanceDisplay = $"{kms * 1000:F0}m";
-            }
-            else
-            {
-                double miles = Location.CalculateDistance(startPoint, currentPoint, DistanceUnits.Miles);
-                ShotSegments[i].DistanceDisplay = $"{miles * 1760:F0}y";
-            }
-        }
-    }
 
     async partial void OnRoundIdChanged(int value)
     {
@@ -189,7 +160,7 @@ public partial class ShowGPSPageModel : ObservableObject
             // This ensures the logic in RecalculateDistances aligns tags with the correct intervals.
             foreach (var s in loaded.OrderByDescending(x => x.CreatedAt))
                 ShotSegments.Add(s);
-            RecalculateDistances();
+            ShotSegmentUtilities.RecalculateDistances(ShotSegments);
         }
         catch (Exception ex)
         {

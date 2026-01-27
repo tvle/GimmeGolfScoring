@@ -682,4 +682,13 @@ Bitte starte die App neu.</value>
   <value>Laufende Runden</value>
   <comment>Title for in-progress rounds modal/page</comment>
 </data>
-  </root>
+	<data name="DrivingStats" xml:space="preserve">
+  <value>Driving-Statistik</value>
+</data>
+	<data name="LongestDrive" xml:space="preserve">
+  <value>Längster</value>
+</data>
+	<data name="AverageDrive" xml:space="preserve">
+  <value>Durchschnitt</value>
+</data>  
+</root>

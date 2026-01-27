@@ -2,6 +2,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using iDoublePress.Models;
 using iDoublePress.Resources.Strings;
+using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace iDoublePress.PageModels;
 
@@ -62,6 +64,12 @@ public partial class RoundSummaryPageModel : ObservableObject
     [ObservableProperty]
     private bool is18Holes;
 
+    [ObservableProperty]
+    private string longestDriveDisplay = "---";
+
+    [ObservableProperty]
+    private string averageDriveDisplay = "---";
+
     public RoundSummaryPageModel(RoundRepository roundRepository, ModalErrorHandler errorHandler)
     {
         _roundRepository = roundRepository;
@@ -96,6 +104,8 @@ public partial class RoundSummaryPageModel : ObservableObject
                 await Shell.Current.GoToAsync("..");
                 return;
             }
+
+            await CalculateDrivingStats();
 
             CalculateStats();
         }
@@ -181,5 +191,55 @@ public partial class RoundSummaryPageModel : ObservableObject
     private async Task GoBack()
     {
         await Shell.Current.GoToAsync("..");
+    }
+
+    private async Task CalculateDrivingStats()
+    {
+        var driverDistances = new List<double>();
+
+        // 1. Loop through all holes to get all segments
+        foreach (var hole in CurrentRound.Holes)
+        {
+            // Fetch segments from DB
+            var segments = await _roundRepository.GetShotSegmentsForHoleAsync(hole.ID);
+            // need to calculate distances first
+            var segmentsUpdated = new ObservableCollection<ShotSegment>(segments);
+            ShotSegmentUtilities.RecalculateDistances(segmentsUpdated);
+
+            // 2. Filter for "Driver" tag
+            // Note: Use the same Resource string you used in the ActionSheet
+            var drives = segmentsUpdated.Where(s => s.Tag == AppResources.Tag_D);
+
+            foreach (var drive in drives)
+            {
+                // 3. Parse the numeric value from the string (e.g., "250y" -> 250)
+                // We strip 'y', 'm', and whitespace
+                string cleanDist = drive.DistanceDisplay
+                    .Replace("y", "")
+                    .Replace("m", "")
+                    .Trim();
+
+                if (double.TryParse(cleanDist, out double dist))
+                {
+                    driverDistances.Add(dist);
+                }
+            }
+        }
+
+        // 4. Compute Stats
+        if (driverDistances.Any())
+        {
+            double max = driverDistances.Max();
+            double avg = driverDistances.Average();
+            string unit = RegionInfo.CurrentRegion.IsMetric ? "m" : "y";
+
+            LongestDriveDisplay = $"{max:F0}{unit}";
+            AverageDriveDisplay = $"{avg:F0}{unit}";
+        }
+        else
+        {
+            LongestDriveDisplay = "---";
+            AverageDriveDisplay = "---";
+        }
     }
 }
