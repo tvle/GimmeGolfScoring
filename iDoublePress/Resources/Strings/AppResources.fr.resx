@@ -691,4 +691,7 @@ Veuillez redémarrer l'application.</value>
 	<data name="AverageDrive" xml:space="preserve">
   <value>Moyenne</value>
 </data>
+	<data name="ClubDistances" xml:space="preserve">
+  <value>Distances des Clubs</value>
+</data>	
 </root>

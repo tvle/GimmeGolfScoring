@@ -690,4 +690,7 @@ Reinicia la aplicación.</value>
 	<data name="AverageDrive" xml:space="preserve">
   <value>Promedio</value>
 </data>
+	<data name="ClubDistances" xml:space="preserve">
+  <value>Distancias de Palos</value>
+</data>	
 </root>

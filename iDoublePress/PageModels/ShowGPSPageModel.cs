@@ -155,12 +155,8 @@ public partial class ShowGPSPageModel : ObservableObject
         try
         {
             var loaded = await _roundRepository.GetShotSegmentsForHoleAsync(CurrentHole.ID);
-
-            // FIX: Ensure segments are ordered Newest First (Desc) to match ToggleMeasurement logic
-            // This ensures the logic in RecalculateDistances aligns tags with the correct intervals.
-            foreach (var s in loaded.OrderByDescending(x => x.CreatedAt))
+            foreach (var s in loaded)
                 ShotSegments.Add(s);
-            ShotSegmentUtilities.RecalculateDistances(ShotSegments);
         }
         catch (Exception ex)
         {

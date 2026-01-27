@@ -691,4 +691,7 @@
 	<data name="AverageDrive" xml:space="preserve">
   <value>平均</value>
 </data>
+	<data name="ClubDistances" xml:space="preserve">
+  <value>クラブ飛距離</value>
+</data>	
 </root>

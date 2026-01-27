@@ -690,5 +690,8 @@
 </data>
 	<data name="AverageDrive" xml:space="preserve">
   <value>평균</value>
+</data>
+	<data name="ClubDistances" xml:space="preserve">
+  <value>클럽별 거리</value>
 </data>	
 </root>

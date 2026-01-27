@@ -750,5 +750,8 @@ Resume it?</value>
 </data>
 	<data name="AverageDrive" xml:space="preserve">
   <value>Average</value>
+</data>
+	<data name="ClubDistances" xml:space="preserve">
+  <value>Club Distances</value>
 </data>	
 </root>

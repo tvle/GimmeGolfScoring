@@ -689,5 +689,8 @@ Starta om appen.</value>
 </data>
 	<data name="AverageDrive" xml:space="preserve">
   <value>Snitt</value>
+</data>
+	<data name="ClubDistances" xml:space="preserve">
+  <value>Klubbdistanser</value>
 </data>	
 </root>

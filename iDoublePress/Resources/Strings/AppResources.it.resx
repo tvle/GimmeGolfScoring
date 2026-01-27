@@ -689,5 +689,8 @@ Riavvia l'applicazione.</value>
 </data>
 	<data name="AverageDrive" xml:space="preserve">
   <value>Media</value>
+</data>
+	<data name="ClubDistances" xml:space="preserve">
+  <value>Distanze Bastoni</value>
 </data>	
 </root>

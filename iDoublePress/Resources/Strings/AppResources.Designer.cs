@@ -187,6 +187,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Club Distances.
+        /// </summary>
+        public static string ClubDistances {
+            get {
+                return ResourceManager.GetString("ClubDistances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Complete Round.
         /// </summary>
         public static string CompleteRound {

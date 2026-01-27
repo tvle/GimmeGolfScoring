@@ -690,5 +690,8 @@ Bitte starte die App neu.</value>
 </data>
 	<data name="AverageDrive" xml:space="preserve">
   <value>Durchschnitt</value>
-</data>  
+</data>
+<data name="ClubDistances" xml:space="preserve">
+  <value>Schlägerdistanzen</value>
+</data>	
 </root>

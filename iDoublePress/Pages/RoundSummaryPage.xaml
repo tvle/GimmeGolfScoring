@@ -6,6 +6,7 @@
              xmlns:ext="clr-namespace:iDoublePress.Extensions"
              x:Class="iDoublePress.Pages.RoundSummaryPage"
              x:DataType="pageModels:RoundSummaryPageModel"
+             xmlns:models="clr-namespace:iDoublePress.Models"
              Title="{ext:Translate CompleteRoundTitle}">
 
     <ContentPage.Resources>
@@ -124,6 +125,40 @@
                     </Grid>
                 </Border>
 
+                <Border Style="{StaticResource CardStyle}" Padding="15" 
+                        IsVisible="{Binding ClubStats.Count, Converter={toolkit:IntToBoolConverter}}">
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{ext:Translate ClubDistances}" 
+                               Style="{StaticResource Title3}"
+                               Margin="0,0,0,5" />
+
+                        <StackLayout BindableLayout.ItemsSource="{Binding ClubStats}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:ClubDistanceStat">
+                                    <Grid ColumnDefinitions="*, Auto" Padding="0,6">
+
+                                        <BoxView Grid.ColumnSpan="2" VerticalOptions="End" HeightRequest="1" 
+                         Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+
+                                        <Label Grid.Column="0" 
+                       Text="{Binding ClubName}" 
+                       Style="{StaticResource Body}"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" />
+
+                                        <Label Grid.Column="1" 
+                       Text="{Binding AverageDistance}" 
+                       Style="{StaticResource Title3}"
+                       TextColor="{StaticResource Primary}"
+                       VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </VerticalStackLayout>
+                </Border>
+                
                 <Border Style="{StaticResource CardStyle}" Padding="15">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto"
                           ColumnDefinitions="*,Auto"
@@ -156,11 +191,6 @@
                                Text="{Binding PenaltyHoles}"
                                Style="{StaticResource Title3}"
                                HorizontalTextAlignment="End" />
-
-                        <BoxView Grid.Row="3" Grid.ColumnSpan="2"
-                                 HeightRequest="1"
-                                 Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"
-                                 Margin="0,4" />
                     </Grid>
                 </Border>
 

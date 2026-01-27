@@ -690,5 +690,8 @@
 </data>
 	<data name="AverageDrive" xml:space="preserve">
   <value>เฉลี่ย</value>
+</data>
+	<data name="ClubDistances" xml:space="preserve">
+  <value>ระยะไม้กอล์ฟ</value>
 </data>	
 </root>

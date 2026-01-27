@@ -1,5 +1,4 @@
 using iDoublePress.Models;
-using iDoublePress.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
@@ -10,7 +9,7 @@ namespace iDoublePress.Utilities;
 /// </summary>
 public static class ShotSegmentUtilities
 {
-    public static void RecalculateDistances(ObservableCollection<ShotSegment> segments)
+    public static void RecalculateDistances(List<ShotSegment> segments)
     {
         // Iterate from the NEWEST (Index 0) to the OLDEST (Index Count-1)
         for (int i = 0; i < segments.Count; i++)
@@ -35,8 +34,20 @@ public static class ShotSegmentUtilities
             else
             {
                 double miles = Location.CalculateDistance(startPoint, currentPoint, DistanceUnits.Miles);
+                //for testing, generate a random distance between 100 and 250yards
+                //segments[i].DistanceDisplay = $"{new Random().Next(100, 250)}y";
                 segments[i].DistanceDisplay = $"{miles * 1760:F0}y";
             }
+        }
+    }
+    public static void RecalculateDistances(ObservableCollection<ShotSegment> segments)
+    {
+        segments.Clear();
+        var segmentList = new List<ShotSegment>(segments);
+        RecalculateDistances(segmentList);
+        foreach (var s in segmentList)
+        {
+            segments.Add(s);
         }
     }
 }

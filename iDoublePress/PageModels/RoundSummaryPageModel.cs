@@ -4,6 +4,7 @@ using iDoublePress.Models;
 using iDoublePress.Resources.Strings;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace iDoublePress.PageModels;
 
@@ -70,6 +71,8 @@ public partial class RoundSummaryPageModel : ObservableObject
     [ObservableProperty]
     private string averageDriveDisplay = "---";
 
+    public ObservableCollection<ClubDistanceStat> ClubStats { get; } = new();
+
     public RoundSummaryPageModel(RoundRepository roundRepository, ModalErrorHandler errorHandler)
     {
         _roundRepository = roundRepository;
@@ -106,6 +109,7 @@ public partial class RoundSummaryPageModel : ObservableObject
             }
 
             await CalculateDrivingStats();
+            await CalculateClubStats();
 
             CalculateStats();
         }
@@ -202,13 +206,10 @@ public partial class RoundSummaryPageModel : ObservableObject
         {
             // Fetch segments from DB
             var segments = await _roundRepository.GetShotSegmentsForHoleAsync(hole.ID);
-            // need to calculate distances first
-            var segmentsUpdated = new ObservableCollection<ShotSegment>(segments);
-            ShotSegmentUtilities.RecalculateDistances(segmentsUpdated);
 
             // 2. Filter for "Driver" tag
             // Note: Use the same Resource string you used in the ActionSheet
-            var drives = segmentsUpdated.Where(s => s.Tag == AppResources.Tag_D);
+            var drives = segments.Where(s => s.Tag == AppResources.Tag_D);
 
             foreach (var drive in drives)
             {
@@ -240,6 +241,61 @@ public partial class RoundSummaryPageModel : ObservableObject
         {
             LongestDriveDisplay = "---";
             AverageDriveDisplay = "---";
+        }
+    }
+    private async Task CalculateClubStats()
+    {
+        ClubStats.Clear();
+        var allShots = new List<(string Tag, double Distance)>();
+
+        // A. Gather all valid shots from all holes
+        foreach (var hole in CurrentRound.Holes)
+        {
+            var segments = await _roundRepository.GetShotSegmentsForHoleAsync(hole.ID);
+            if ((segments == null) || (segments.Count == 0))
+                continue;
+
+            foreach (var shot in segments)
+            {
+                // Filter OUT the non-club tags (Locations)
+                // You can add "Bunker" or others here if you use them
+                if (string.IsNullOrEmpty(shot.Tag) ||
+                    shot.Tag.StartsWith(AppResources.Tag_Front) ||
+                    shot.Tag.StartsWith(AppResources.Tag_Center) || 
+                    shot.Tag.StartsWith(AppResources.Tag_Back) ||
+                    shot.Tag == AppResources.Tag_TeeBox ||
+                    shot.Tag == "Tee Box") // Hardcoded fallback just in case
+                {
+                    continue;
+                }
+
+                // Parse Distance
+                string cleanDist = shot.DistanceDisplay
+                    .Replace("y", "")
+                    .Replace("m", "")
+                    .Trim();
+
+                if (double.TryParse(cleanDist, out double dist) && dist > 0)
+                {
+                    allShots.Add((shot.Tag, dist));
+                }
+            }
+        }
+
+        // B. Group by Club Tag and Calculate Average
+        var grouped = allShots.GroupBy(x => x.Tag)
+                              .Select(g => new ClubDistanceStat
+                              {
+                                  ClubName = g.Key,
+                                  SortOrder = g.Average(x => x.Distance), // Use distance to sort (Driver top, Wedge bottom)
+                                  AverageDistance = $"{g.Average(x => x.Distance):F0}{(RegionInfo.CurrentRegion.IsMetric ? "m" : "y")}"
+                              })
+                              .OrderByDescending(x => x.SortOrder); // Longest clubs first
+
+        // C. Add to ObservableCollection
+        foreach (var stat in grouped)
+        {
+            ClubStats.Add(stat);
         }
     }
 }
