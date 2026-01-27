@@ -93,7 +93,7 @@ public partial class RoundsPageModel : ObservableObject
         if (round is null)
             return;
 
-        await Shell.Current.GoToAsync($"round-summary?roundId={round.ID}");
+        await Shell.Current.GoToAsync($"active-round?roundId={round.ID}");
     }
 
     [RelayCommand]

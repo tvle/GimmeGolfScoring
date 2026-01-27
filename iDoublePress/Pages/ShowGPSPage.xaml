@@ -38,22 +38,6 @@
             </Grid>
         </Border>
 
-        <CollectionView Grid.Row="1" x:Name="ShotList"
-                        ItemsSource="{Binding ShotSegments}"
-                        EmptyView="----">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:ShotSegment">
-                    <Grid ColumnDefinitions="*, 50, 50, 50" Padding="0,8">
-
-                        <Label Grid.Column="2" 
-                               Text="{Binding LocationDisplay}" 
-                               FontSize="10" 
-                               TextColor="Gray"
-                               VerticalOptions="Center"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding ShotSegments}"
                         SelectionMode="None"
