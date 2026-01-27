@@ -26,8 +26,8 @@
 		<ApplicationId>com.idoublepress.gimme</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-		<ApplicationVersion>3</ApplicationVersion>
+		<ApplicationDisplayVersion>1.2</ApplicationDisplayVersion>
+		<ApplicationVersion>5</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
@@ -130,9 +130,9 @@
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net10.0-ios'">
-	  <CodesignKey>iPhone Developer</CodesignKey>
+	  <CodesignKey>iPhone Distribution</CodesignKey>
 	  <ProvisioningType>manual</ProvisioningType>
-	  <CodesignProvision>Gimme Development on HyperIOS</CodesignProvision>
+	  <CodesignProvision>Gimme Distribution Profile</CodesignProvision>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">

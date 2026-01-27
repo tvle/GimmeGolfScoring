@@ -32,7 +32,7 @@
 	<key>CFBundleIdentifier</key>
 	<string></string>
 	<key>CFBundleVersion</key>
-	<string>3.0</string>
+	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to measure the distance of your golf shots on the course.</string>
 </dict>
