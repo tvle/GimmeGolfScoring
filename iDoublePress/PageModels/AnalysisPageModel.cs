@@ -2,14 +2,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using iDoublePress.Data;
 using iDoublePress.Models;
+using iDoublePress.Resources.Strings;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView.VisualElements; // Needed for Labels
 using SkiaSharp;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using iDoublePress.Resources.Strings;
 using System.Linq;
 
 namespace iDoublePress.PageModels;
@@ -19,35 +18,55 @@ public partial class AnalysisPageModel : ObservableObject
     private readonly RoundRepository _roundRepository;
     private readonly CourseRepository _courseRepository;
 
-    // For filtering
     private readonly List<Round> _allRounds = new();
     private List<Round> _displayRounds = new();
+    // Cache for segments to avoid re-fetching on every filter change if possible, 
+    // but simplified here to fetch on filter for accuracy.
+    private List<ShotSegment> _currentSegments = new();
 
     public ObservableCollection<string> Years { get; } = new();
 
     [ObservableProperty]
     private string selectedYear;
 
+    [ObservableProperty]
+    private bool isBusy; // Added for async loading UI
+
     public int RoundCount => _displayRounds?.Count ?? 0;
 
     public string Title => string.Format("{0} ({1})", GetLocalized("Analysis"), RoundCount);
 
-    // 1. Strokes Gained Lite (Bar Chart)
+    // --- 1. Strokes Gained (Existing) ---
     public ISeries[] StrokesGainedSeries { get; set; } = Array.Empty<ISeries>();
     public Axis[] SGAxesX { get; set; } = Array.Empty<Axis>();
     public Axis[] SGAxesY { get; set; } = Array.Empty<Axis>();
 
-    // 2. Driving Bias (Pie Chart)
+    // --- 2. Driving Stats (NEW) ---
+    [ObservableProperty]
+    private string averageDriveDisplay = "---";
+    [ObservableProperty]
+    private string longestDriveDisplay = "---";
+
+    // Combined with existing Bias
     public ISeries[] DrivingBiasSeries { get; set; } = Array.Empty<ISeries>();
 
-    // 3. Putting Performance (Grouped Column)
+    // --- 3. Approach Accuracy (NEW) ---
+    public ISeries[] ApproachAccuracySeries { get; set; } = Array.Empty<ISeries>();
+    public Axis[] ApproachXAxes { get; set; } = Array.Empty<Axis>();
+
+    // --- 4. Club Distances (NEW) ---
+    public ISeries[] ClubDistanceSeries { get; set; } = Array.Empty<ISeries>();
+    public Axis[] ClubYAxes { get; set; } = Array.Empty<Axis>(); // Clubs on Y for RowSeries
+    public Axis[] ClubXAxes { get; set; } = Array.Empty<Axis>();
+
+    // --- 5. Putting (Existing) ---
     public ISeries[] PuttingStatSeries { get; set; } = Array.Empty<ISeries>();
     public Axis[] PuttingXAxes { get; set; } = Array.Empty<Axis>();
 
-    // 4. Scrambling (Gauge/Pie)
+    // --- 6. Scrambling (Existing) ---
     public ISeries[] ScramblingSeries { get; set; } = Array.Empty<ISeries>();
 
-    // Existing Trend Charts
+    // --- 7. History (Existing) ---
     public ISeries[] ScoreSeries { get; set; } = Array.Empty<ISeries>();
     public Axis[] XAxes { get; set; } = Array.Empty<Axis>();
     public Axis[] YAxes { get; set; } = Array.Empty<Axis>();
@@ -57,7 +76,6 @@ public partial class AnalysisPageModel : ObservableObject
         _roundRepository = roundRepository;
         _courseRepository = courseRepository;
 
-        // Default to current year until populated
         SelectedYear = DateTime.Now.Year.ToString();
         Years.Add(AppResources.All);
         Years.Add(DateTime.Now.Year.ToString());
@@ -68,78 +86,254 @@ public partial class AnalysisPageModel : ObservableObject
     [RelayCommand]
     private async Task NavigatedToAsync()
     {
-        var rounds = await _roundRepository.ListAsync();
-
-        _allRounds.Clear();
-        foreach (var r in rounds)
-            _allRounds.Add(r);
-
-        PopulateYears();
-
-        // Ensure a valid SelectedYear exists after population
-        var currentYearString = DateTime.Now.Year.ToString();
-        if (Years.Contains(currentYearString))
+        IsBusy = true;
+        try
         {
-            SelectedYear = currentYearString;
-        }
-        else if (Years.Contains(AppResources.All))
-        {
-            SelectedYear = AppResources.All;
-        }
+            var rounds = await _roundRepository.ListAsync();
+            _allRounds.Clear();
+            foreach (var r in rounds) _allRounds.Add(r);
 
-        ApplyFilterAndCalculate();
+            PopulateYears();
+
+            var currentYearString = DateTime.Now.Year.ToString();
+            if (Years.Contains(currentYearString)) SelectedYear = currentYearString;
+            else if (Years.Contains(AppResources.All)) SelectedYear = AppResources.All;
+
+            await ApplyFilterAndCalculateAsync();
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
-    partial void OnSelectedYearChanged(string value)
+    // Changed to Async to handle DB fetching
+    async partial void OnSelectedYearChanged(string value)
     {
-        ApplyFilterAndCalculate();
+        await ApplyFilterAndCalculateAsync();
     }
 
-    private void ApplyFilterAndCalculate()
+    private async Task ApplyFilterAndCalculateAsync()
     {
-        IEnumerable<Round> filtered = SelectedYear == AppResources.All ? _allRounds : _allRounds.Where(r => r.StartTime.Year.ToString() == SelectedYear);
-        _displayRounds = filtered.OrderBy(r => r.StartTime).ToList();
-
-        var allHoles = _displayRounds.SelectMany(r => r.Holes).ToList();
-
-        if (!allHoles.Any())
+        IsBusy = true;
+        try
         {
-            // Clear series
-            StrokesGainedSeries = Array.Empty<ISeries>();
-            DrivingBiasSeries = Array.Empty<ISeries>();
-            PuttingStatSeries = Array.Empty<ISeries>();
-            ScramblingSeries = Array.Empty<ISeries>();
-            ScoreSeries = Array.Empty<ISeries>();
+            IEnumerable<Round> filtered = SelectedYear == AppResources.All
+                ? _allRounds
+                : _allRounds.Where(r => r.StartTime.Year.ToString() == SelectedYear);
+
+            _displayRounds = filtered.OrderBy(r => r.StartTime).ToList();
+            var allHoles = _displayRounds.SelectMany(r => r.Holes).ToList();
+
+            // Clear old data
+            if (!allHoles.Any())
+            {
+                ClearCharts();
+                return;
+            }
+
+            // 1. Fetch ALL segments for these rounds (Performance intensive, but necessary for aggregates)
+            _currentSegments.Clear();
+            foreach (var hole in allHoles)
+            {
+                var segs = await _roundRepository.GetShotSegmentsForHoleAsync(hole.ID);
+                _currentSegments.AddRange(segs);
+            }
+
+            // 2. Calculate All Stats
+            CalculateStrokesGained(allHoles);
+            CalculateDrivingStats(allHoles); // Updates Bias Chart + New Text Stats
+            CalculateApproachStats();        // New Chart
+            CalculateClubStats();            // New Chart
+            CalculatePuttingStats(allHoles);
+            CalculateScrambling(allHoles);
+            CalculateScoreTrends(_displayRounds);
 
             NotifyAllCharts();
             OnPropertyChanged(nameof(Title));
             OnPropertyChanged(nameof(RoundCount));
-            return;
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Analysis Error: {ex.Message}");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
 
-        CalculateStrokesGained(allHoles);
-        CalculateDrivingBias(allHoles);
-        CalculatePuttingStats(allHoles);
-        CalculateScrambling(allHoles);
-        CalculateScoreTrends(_displayRounds);
+    private void ClearCharts()
+    {
+        StrokesGainedSeries = Array.Empty<ISeries>();
+        DrivingBiasSeries = Array.Empty<ISeries>();
+        ApproachAccuracySeries = Array.Empty<ISeries>();
+        ClubDistanceSeries = Array.Empty<ISeries>();
+        PuttingStatSeries = Array.Empty<ISeries>();
+        ScramblingSeries = Array.Empty<ISeries>();
+        ScoreSeries = Array.Empty<ISeries>();
+
+        AverageDriveDisplay = "---";
+        LongestDriveDisplay = "---";
 
         NotifyAllCharts();
         OnPropertyChanged(nameof(Title));
         OnPropertyChanged(nameof(RoundCount));
     }
 
+    // ... [Keep CalculateStrokesGained, CalculatePuttingStats, CalculateScrambling, CalculateScoreTrends as they were] ...
+    // For brevity, I am not repeating the unchanged methods here, but YOU SHOULD KEEP THEM.
+    // I will insert the NEW calculation methods below.
+
+    private void CalculateDrivingStats(List<Hole> holes)
+    {
+        // A. Existing Bias Chart Logic
+        var drivingHoles = holes.Where(h => h.Par > 3).ToList();
+        var lefts = drivingHoles.Count(h => h.FairwayResult == FairwayResult.Left);
+        var rights = drivingHoles.Count(h => h.FairwayResult == FairwayResult.Right);
+        var centers = drivingHoles.Count(h => h.FairwayResult == FairwayResult.Fairway);
+
+        DrivingBiasSeries = new ISeries[]
+        {
+            new PieSeries<int> { Values = new[] { lefts }, Name = GetLocalized("Left"), Fill = new SolidColorPaint(SKColors.OrangeRed) },
+            new PieSeries<int> { Values = new[] { centers }, Name = GetLocalized("Fairway"), Fill = new SolidColorPaint(SKColors.ForestGreen) },
+            new PieSeries<int> { Values = new[] { rights }, Name = GetLocalized("Right"), Fill = new SolidColorPaint(SKColors.Orange) }
+        };
+
+        // B. New Distance Logic
+        if (_currentSegments.Any())
+        {
+            var drives = _currentSegments.Where(s => s.Tag == AppResources.Tag_D || s.Tag == "Driver");
+            var distances = new List<double>();
+
+            foreach (var d in drives)
+            {
+                string cleanDist = d.DistanceDisplay.Replace("y", "").Replace("m", "").Trim();
+                if (double.TryParse(cleanDist, out double val) && val > 0)
+                    distances.Add(val);
+            }
+
+            if (distances.Any())
+            {
+                string unit = RegionInfo.CurrentRegion.IsMetric ? "m" : "y";
+                AverageDriveDisplay = $"{distances.Average():F0}{unit}";
+                LongestDriveDisplay = $"{distances.Max():F0}{unit}";
+            }
+            else
+            {
+                AverageDriveDisplay = "---";
+                LongestDriveDisplay = "---";
+            }
+        }
+    }
+
+    private void CalculateApproachStats()
+    {
+        // Count instances of "Green - Front", "Center", "Back"
+        int front = _currentSegments.Count(s => s.Tag == AppResources.Tag_Front);
+        int center = _currentSegments.Count(s => s.Tag == AppResources.Tag_Center);
+        int back = _currentSegments.Count(s => s.Tag == AppResources.Tag_Back);
+
+        if (front + center + back == 0)
+        {
+            ApproachAccuracySeries = Array.Empty<ISeries>();
+            return;
+        }
+
+        ApproachAccuracySeries = new ISeries[]
+        {
+            new ColumnSeries<int> { Values = new[] { front }, Name = GetLocalized("Front"), Fill = new SolidColorPaint(SKColors.Goldenrod) },
+            new ColumnSeries<int> { Values = new[] { center }, Name = GetLocalized("Center"), Fill = new SolidColorPaint(SKColors.ForestGreen) },
+            new ColumnSeries<int> { Values = new[] { back }, Name = GetLocalized("Back"), Fill = new SolidColorPaint(SKColors.CornflowerBlue) }
+        };
+
+        ApproachXAxes = new Axis[]
+        {
+            new Axis { Labels = new[] { GetLocalized("Front"), GetLocalized("Center"), GetLocalized("Back") } }
+        };
+    }
+
+    private void CalculateClubStats()
+    {
+        var clubStats = new List<ClubStat>();
+
+        // Group by Tag
+        var groups = _currentSegments.GroupBy(s => s.Tag);
+
+        foreach (var grp in groups)
+        {
+            // Filter out non-clubs (Locations, empty tags)
+            if (string.IsNullOrEmpty(grp.Key) ||
+                grp.Key == AppResources.Tag_TeeBox ||
+                grp.Key.StartsWith("Green") ||
+                grp.Key == AppResources.Tag_Front ||
+                grp.Key == AppResources.Tag_Center ||
+                grp.Key == AppResources.Tag_Back)
+                continue;
+
+            var dists = new List<double>();
+            foreach (var item in grp)
+            {
+                string clean = item.DistanceDisplay.Replace("y", "").Replace("m", "").Trim();
+                if (double.TryParse(clean, out double v) && v > 0) dists.Add(v);
+            }
+
+            if (dists.Any())
+            {
+                clubStats.Add(new ClubStat
+                {
+                    Name = grp.Key,
+                    Average = dists.Average()
+                });
+            }
+        }
+
+        if (!clubStats.Any())
+        {
+            ClubDistanceSeries = Array.Empty<ISeries>();
+            return;
+        }
+
+        // Sort by distance (Wedges at top, Driver at bottom? Or reverse? Let's do longest at top)
+        var sorted = clubStats.OrderBy(c => c.Average).ToList();
+
+        // Use RowSeries (Horizontal Bars) for readable club names
+        ClubDistanceSeries = new ISeries[]
+        {
+            new RowSeries<double>
+            {
+                Values = sorted.Select(c => c.Average).ToArray(),
+                Fill = new SolidColorPaint(SKColors.SlateBlue),
+                DataLabelsSize = 12,
+                DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.End,
+                DataLabelsFormatter = (p) => $"{p.Model:F0}"
+            }
+        };
+
+        ClubYAxes = new Axis[]
+        {
+            new Axis { Labels = sorted.Select(c => c.Name).ToArray() }
+        };
+
+        ClubXAxes = new Axis[]
+        {
+            new Axis { Labeler = val => $"{val:F0}" }
+        };
+    }
+
+    // Helper class for calculation
+    private class ClubStat { public string Name { get; set; } public double Average { get; set; } }
+
     private void PopulateYears()
     {
         var years = _allRounds.Select(r => r.StartTime.Year).Distinct().ToList();
         years.Add(DateTime.Now.Year);
         var yearStrings = years.Distinct().OrderByDescending(y => y).Select(y => y.ToString()).ToList();
-
         Years.Clear();
         Years.Add(AppResources.All);
-        foreach (var y in yearStrings)
-            Years.Add(y);
+        foreach (var y in yearStrings) Years.Add(y);
     }
-
     private void CalculateStrokesGained(List<Hole> holes)
     {
         // Simple Algorithm to approximate Strokes Gained without PGA database
@@ -182,23 +376,6 @@ public partial class AnalysisPageModel : ObservableObject
 
         SGAxesX = new Axis[] { new Axis { Labels = new[] { GetLocalized("Driving"), GetLocalized("Approach"), GetLocalized("ShortGame"), GetLocalized("Putting") } } };
         SGAxesY = new Axis[] { new Axis { Labeler = value => value.ToString("N1") } }; // Show 1 decimal
-    }
-
-    private void CalculateDrivingBias(List<Hole> holes)
-    {
-        // Filter only holes that are NOT Par 3s (if your model has Par info)
-        var drivingHoles = holes.Where(h => h.Par > 3).ToList();
-
-        var lefts = drivingHoles.Count(h => h.FairwayResult == FairwayResult.Left);
-        var rights = drivingHoles.Count(h => h.FairwayResult == FairwayResult.Right);
-        var centers = drivingHoles.Count(h => h.FairwayResult == FairwayResult.Fairway);
-
-        DrivingBiasSeries = new ISeries[]
-        {
-            new PieSeries<int> { Values = new[] { lefts }, Name = GetLocalized("Left"), Fill = new SolidColorPaint(SKColors.OrangeRed) },
-            new PieSeries<int> { Values = new[] { centers }, Name = GetLocalized("Fairway"), Fill = new SolidColorPaint(SKColors.ForestGreen) },
-            new PieSeries<int> { Values = new[] { rights }, Name = GetLocalized("Right"), Fill = new SolidColorPaint(SKColors.Orange) }
-        };
     }
 
     private void CalculatePuttingStats(List<Hole> holes)
@@ -289,5 +466,13 @@ public partial class AnalysisPageModel : ObservableObject
         OnPropertyChanged(nameof(ScoreSeries));
         OnPropertyChanged(nameof(XAxes));
         OnPropertyChanged(nameof(YAxes));
+        OnPropertyChanged(nameof(AverageDriveDisplay));
+        OnPropertyChanged(nameof(LongestDriveDisplay));
+        OnPropertyChanged(nameof(ApproachAccuracySeries));
+        OnPropertyChanged(nameof(ApproachXAxes));
+        OnPropertyChanged(nameof(ClubDistanceSeries));
+        OnPropertyChanged(nameof(ClubXAxes));
+        OnPropertyChanged(nameof(ClubYAxes));
+
     }
 }

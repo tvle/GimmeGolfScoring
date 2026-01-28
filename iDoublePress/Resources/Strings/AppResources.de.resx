@@ -697,4 +697,10 @@ Bitte starte die App neu.</value>
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>Annäherungsgenauigkeit</value>
 </data>
+	<data name="ApproachZones" xml:space="preserve">
+  <value>Grüntreffer nach Zone</value>
+</data>
+	<data name="DrivingPerformance" xml:space="preserve">
+  <value>Drive-Leistung</value>
+</data>
 </root>

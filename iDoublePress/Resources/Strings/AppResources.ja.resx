@@ -697,4 +697,10 @@
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>アプローチ精度</value>
 </data>
+	<data name="ApproachZones" xml:space="preserve">
+  <value>ゾーン別グリーンヒット</value>
+</data>
+	<data name="DrivingPerformance" xml:space="preserve">
+  <value>ドライバーのパフォーマンス</value>
+</data>
 </root>

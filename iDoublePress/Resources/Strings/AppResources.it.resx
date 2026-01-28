@@ -696,4 +696,10 @@ Riavvia l'applicazione.</value>
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>Precisione Approccio</value>
 </data>
+	<data name="ApproachZones" xml:space="preserve">
+  <value>Green presi per zona</value>
+</data>
+	<data name="DrivingPerformance" xml:space="preserve">
+  <value>Prestazioni drive</value>
+</data>
 </root>

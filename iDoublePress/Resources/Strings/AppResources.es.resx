@@ -696,4 +696,10 @@ Reinicia la aplicación.</value>
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>Precisión de Aproximación</value>
 </data>
+	<data name="ApproachZones" xml:space="preserve">
+  <value>Impactos en green por zona</value>
+</data>
+	<data name="DrivingPerformance" xml:space="preserve">
+  <value>Rendimiento del drive</value>
+</data>
 </root>

@@ -697,4 +697,10 @@
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>어프로치 정확도</value>
 </data>
+	<data name="ApproachZones" xml:space="preserve">
+  <value>구역별 그린 적중</value>
+</data>
+	<data name="DrivingPerformance" xml:space="preserve">
+  <value>드라이빙 성과</value>
+</data>
 </root>

@@ -697,4 +697,10 @@
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>ความแม่นยำในการขึ้นกรีน</value>
 </data>
+	<data name="ApproachZones" xml:space="preserve">
+  <value>การตีขึ้นกรีนแบ่งตามโซน</value>
+</data>
+	<data name="DrivingPerformance" xml:space="preserve">
+  <value>ประสิทธิภาพการไดร์ฟ</value>
+</data>
 </root>

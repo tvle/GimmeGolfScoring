@@ -697,4 +697,10 @@
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>进攻略准度</value>
 </data>
+	<data name="ApproachZones" xml:space="preserve">
+  <value>区域上果岭率</value>
+</data>
+	<data name="DrivingPerformance" xml:space="preserve">
+  <value>开球表现</value>
+</data>
 </root>

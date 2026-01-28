@@ -17,90 +17,117 @@
             Command="{Binding NavigatedToCommand}" />
     </ContentPage.Behaviors>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="25">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="25">
 
-            <!-- Year filter picker -->
-            <Grid ColumnDefinitions="Auto,*" HorizontalOptions="Start">
-                <Picker Grid.Column="1"
-                        ItemsSource="{Binding Years}"
-                        SelectedItem="{Binding SelectedYear}"
-                        WidthRequest="140"
-                        HorizontalOptions="Start" />
-            </Grid>
+                <Grid ColumnDefinitions="*,Auto" HorizontalOptions="Fill">
+                    <Label Text="{ext:Translate StrokesGained}" Style="{StaticResource Title2}" VerticalOptions="Center"/>
+                    <Picker Grid.Column="1"
+                            ItemsSource="{Binding Years}"
+                            SelectedItem="{Binding SelectedYear}"
+                            WidthRequest="120"
+                            HorizontalOptions="End" />
+                </Grid>
 
-            <VerticalStackLayout Spacing="10">
-                
-                <Label Text="{ext:Translate StrokesGained}" Style="{StaticResource Title2}" />
-                <Label Text="{ext:Translate StrokesGainedDescription}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="{ext:Translate StrokesGainedDescription}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+                        <lvc:CartesianChart
+                            Series="{Binding StrokesGainedSeries}"
+                            XAxes="{Binding SGAxesX}"
+                            YAxes="{Binding SGAxesY}"
+                            HeightRequest="220"
+                            TooltipPosition="Top">
+                        </lvc:CartesianChart>
+                    </Border>
+                </VerticalStackLayout>
 
-                <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
-                    <lvc:CartesianChart
-                        Series="{Binding StrokesGainedSeries}"
-                        XAxes="{Binding SGAxesX}"
-                        YAxes="{Binding SGAxesY}"
-                        HeightRequest="250"
-                        TooltipPosition="Top">
-                    </lvc:CartesianChart>
-                </Border>
-            </VerticalStackLayout>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{ext:Translate DrivingPerformance}" Style="{StaticResource Title2}" />
 
-            <VerticalStackLayout Spacing="10">
-                <Label Text="{ext:Translate DrivingBias}" Style="{StaticResource Title2}" />
+                    <Border StrokeShape="RoundRectangle 10" Padding="15" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+                        <Grid ColumnDefinitions="*,*">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                <Label Text="{ext:Translate AverageDrive}" FontSize="12" TextColor="{StaticResource Gray400}"/>
+                                <Label Text="{Binding AverageDriveDisplay}" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                                <Label Text="{ext:Translate LongestDrive}" FontSize="12" TextColor="{StaticResource Gray400}"/>
+                                <Label Text="{Binding LongestDriveDisplay}" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
 
-                <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
-                    <Grid ColumnDefinitions="*, Auto">
+                    <Label Text="{ext:Translate DrivingBias}" FontSize="14" FontAttributes="Bold" Margin="0,5,0,0"/>
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
                         <lvc:PieChart
-                            Grid.Column="0"
                             Series="{Binding DrivingBiasSeries}"
                             LegendPosition="Right"
                             HeightRequest="200" />
+                    </Border>
+                </VerticalStackLayout>
 
-                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="5">
-                        </VerticalStackLayout>
-                    </Grid>
-                </Border>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{ext:Translate ApproachAccuracy}" Style="{StaticResource Title2}" />
+                    <Label Text="{ext:Translate ApproachZones}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+                        <lvc:CartesianChart
+                            Series="{Binding ApproachAccuracySeries}"
+                            XAxes="{Binding ApproachXAxes}"
+                            HeightRequest="220">
+                        </lvc:CartesianChart>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{ext:Translate ClubDistances}" Style="{StaticResource Title2}" />
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+                        <lvc:CartesianChart
+                            Series="{Binding ClubDistanceSeries}"
+                            XAxes="{Binding ClubXAxes}"
+                            YAxes="{Binding ClubYAxes}"
+                            HeightRequest="350">
+                        </lvc:CartesianChart>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{ext:Translate PuttingPerformance}" Style="{StaticResource Title2}" />
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+                        <lvc:CartesianChart
+                            Series="{Binding PuttingStatSeries}"
+                            XAxes="{Binding PuttingXAxes}"
+                            HeightRequest="220">
+                        </lvc:CartesianChart>
+                    </Border>
+
+                    <Label Text="{ext:Translate Scrambling}" Style="{StaticResource Title2}" Margin="0,10,0,0" />
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+                        <lvc:PieChart
+                            Series="{Binding ScramblingSeries}"
+                            LegendPosition="Right"
+                            HeightRequest="200" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{ext:Translate ScoreHistory}" Style="{StaticResource Title2}" />
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+                        <lvc:CartesianChart
+                            Series="{Binding ScoreSeries}"
+                            XAxes="{Binding XAxes}"
+                            YAxes="{Binding YAxes}"
+                            HeightRequest="250" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <BoxView HeightRequest="50" Color="Transparent"/>
             </VerticalStackLayout>
+        </ScrollView>
 
-            <VerticalStackLayout Spacing="10">
-                <Label Text="{ext:Translate PuttingPerformance}" Style="{StaticResource Title2}" />
-
-                <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
-                    <lvc:CartesianChart
-                        Series="{Binding PuttingStatSeries}"
-                        XAxes="{Binding PuttingXAxes}"
-                        HeightRequest="250">
-                    </lvc:CartesianChart>
-                </Border>
-            </VerticalStackLayout>
-
-            <VerticalStackLayout Spacing="10">
-                <Label Text="{ext:Translate Scrambling}" Style="{StaticResource Title2}" />
-                <Label Text="{ext:Translate ScramblingDescription}" FontSize="12" TextColor="{StaticResource Gray400}" />
-
-                <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
-                    <lvc:PieChart
-                        Series="{Binding ScramblingSeries}"
-                        LegendPosition="Right"
-                        HeightRequest="200" />
-                </Border>
-            </VerticalStackLayout>
-
-            <VerticalStackLayout Spacing="10">
-                <Label Text="{ext:Translate ScoreHistory}" Style="{StaticResource Title2}" />
-
-                <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
-                    <lvc:CartesianChart
-                        Series="{Binding ScoreSeries}"
-                        XAxes="{Binding XAxes}"
-                        YAxes="{Binding YAxes}"
-                        HeightRequest="250" />
-                </Border>
-            </VerticalStackLayout>
-
-            <BoxView HeightRequest="50" Color="Transparent"/>
-
-        </VerticalStackLayout>
-    </ScrollView>
-
+        <Grid IsVisible="{Binding IsBusy}" BackgroundColor="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}">
+            <ActivityIndicator IsRunning="True" Color="{StaticResource Primary}" VerticalOptions="Center" HorizontalOptions="Center"/>
+        </Grid>
+    </Grid>
 </ContentPage>

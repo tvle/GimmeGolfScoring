@@ -757,4 +757,12 @@ Resume it?</value>
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>Approach Accuracy</value>
 </data>
+	<data name="DrivingPerformance" xml:space="preserve">
+    <value>Driving Performance</value>
+    <comment>Driving performance section title</comment>
+  </data>
+	<data name="ApproachZones" xml:space="preserve">
+    <value>Green hits by zone</value>
+    <comment>Subtitle for approach accuracy chart</comment>
+  </data>
 </root>

@@ -151,6 +151,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Green hits by zone.
+        /// </summary>
+        public static string ApproachZones {
+            get {
+                return ResourceManager.GetString("ApproachZones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average.
         /// </summary>
         public static string AverageDrive {
@@ -399,6 +408,15 @@ namespace iDoublePress.Resources.Strings {
         public static string DrivingBias {
             get {
                 return ResourceManager.GetString("DrivingBias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driving Performance.
+        /// </summary>
+        public static string DrivingPerformance {
+            get {
+                return ResourceManager.GetString("DrivingPerformance", resourceCulture);
             }
         }
         

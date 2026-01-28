@@ -697,4 +697,10 @@ Vui lòng khởi động lại ứng dụng.</value>
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>Độ chính xác tiếp cận</value>
 </data>
+	<data name="ApproachZones" xml:space="preserve">
+  <value>Lên green theo khu vực</value>
+</data>
+	<data name="DrivingPerformance" xml:space="preserve">
+  <value>Hiệu suất phát bóng</value>
+</data>
   </root>

@@ -696,4 +696,10 @@ Starta om appen.</value>
 	<data name="ApproachAccuracy" xml:space="preserve">
   <value>Inspels-precision</value>
 </data>
+	<data name="ApproachZones" xml:space="preserve">
+  <value>Greenträffar per zon</value>
+</data>
+	<data name="DrivingPerformance" xml:space="preserve">
+  <value>Drive-prestation</value>
+</data>
 </root>
