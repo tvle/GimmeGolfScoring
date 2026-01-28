@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:iDoublePress.PageModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="iDoublePress.Pages.ImportCoursePage"
+             x:DataType="pageModels:ImportCoursePageModel"
+             Title="Import Course">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *, Auto" Padding="20" RowSpacing="15">
+
+        <Label Grid.Row="0" 
+               Text="Paste the Course JSON below:" 
+               Style="{StaticResource SubHeadline}" />
+
+        <Editor Grid.Row="1"
+                Text="{Binding JsonInput}"
+                AutoSize="TextChanges"
+                BackgroundColor="{AppThemeBinding Light=#F0F0F0, Dark=#303030}"
+                VerticalOptions="Fill" />
+
+        <Label Grid.Row="1" 
+               Text="Example: { &quot;Name&quot;: &quot;My Course&quot;, &quot;Holes&quot;: 18, &quot;CourseHoles&quot;: [ ... ] }"
+               TextColor="Gray"
+               VerticalOptions="End" 
+               HorizontalOptions="Center"
+               InputTransparent="True"
+               Margin="10"
+               IsVisible="{Binding JsonInput, Converter={StaticResource StringNullOrEmptyConverter}}"/>
+
+        <Button Grid.Row="2"
+                Text="Import Course"
+                Command="{Binding ImportCommand}"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                HeightRequest="50" />
+
+        <ActivityIndicator Grid.RowSpan="3"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Color="{StaticResource Primary}" />
+    </Grid>
+</ContentPage>

@@ -227,4 +227,11 @@ public partial class CoursesPageModel : ObservableObject
         _isSortAscending = false;
         ApplySort();
     }
+
+    [RelayCommand]
+    private async Task ImportCourseAsync()
+    {
+        // Navigate to the import page (route name defined in Step 5)
+        await Shell.Current.GoToAsync("course-import");
+    }
 }

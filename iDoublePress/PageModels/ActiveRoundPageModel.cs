@@ -279,6 +279,19 @@ public partial class ActiveRoundPageModel : ObservableObject
     {
         if (CurrentRound == null) return;
 
+        if (CurrentHole != null && !CurrentHole.IsScored)
+        {
+            // If the user didn't adjust the score but is moving on, treat the default par as the entered score.
+            // This allows "tap next" to accept par without manually changing the score control.
+            if (CurrentHole.Score == CurrentHole.Par)
+            {
+                CurrentHole.IsScored = true;
+            }
+        }
+
+        EnsureStatsDefaults(CurrentHole);
+        UpdateDisplay();
+
         // Save the last hole as-is (it may still be unscored)
         await SaveCurrentHole();
 

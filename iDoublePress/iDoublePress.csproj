@@ -81,6 +81,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Pages\ImportCoursePage.xaml.cs">
+		  <DependentUpon>ImportCoursePage.xaml</DependentUpon>
+		</Compile>
 		<Compile Update="Pages\ShowGPSPage.xaml.cs">
 		  <DependentUpon>ShowGPSPage.xaml</DependentUpon>
 		</Compile>
@@ -113,6 +116,9 @@
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\InProgressRoundsPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\ImportCoursePage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\RoundsPage.xaml">

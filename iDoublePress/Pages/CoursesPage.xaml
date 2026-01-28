@@ -23,7 +23,7 @@
 
         <!-- Header row: sort buttons + add button -->
         <Grid Grid.Row="0"
-              ColumnDefinitions="Auto,Auto,*,Auto"
+              ColumnDefinitions="Auto,Auto,*,Auto,Auto"
               ColumnSpacing="10"
               VerticalOptions="Center">
 
@@ -51,7 +51,20 @@
                     VerticalOptions="Center"
                     AutomationId="CoursesPage.SortDesc" />
 
-            <Button Grid.Column="3"
+            <Button Grid.Column="3" IsVisible="False"
+                    Text="&#x2935;" 
+                    Command="{Binding ImportCourseCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    CornerRadius="22"
+                    FontSize="20"
+                    Padding="0"
+                    VerticalOptions="Center"
+                    AutomationId="CoursesPage.ImportCourse" />
+            
+            <Button Grid.Column="4"
                     Text="+"
                     Command="{Binding AddCourseCommand}"
                     BackgroundColor="{StaticResource Primary}"

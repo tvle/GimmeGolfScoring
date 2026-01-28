@@ -73,8 +73,9 @@ public static class MauiProgram
 		builder.Services.AddTransientWithShellRoute<RoundSummaryPage, RoundSummaryPageModel>("round-summary");
 		builder.Services.AddTransientWithShellRoute<ShowGPSPage, ShowGPSPageModel>("show-gps");
 		builder.Services.AddTransientWithShellRoute<AnalysisPage, AnalysisPageModel>("analysis");
-		
-		var app = builder.Build();
+		builder.Services.AddTransientWithShellRoute<ImportCoursePage, ImportCoursePageModel>("course-import");
+
+        var app = builder.Build();
 
 		// Global exception handling - route to ModalErrorHandler to show UI instead of crashing
 		try
