@@ -703,4 +703,34 @@ Vui lòng khởi động lại ứng dụng.</value>
 	<data name="DrivingPerformance" xml:space="preserve">
   <value>Hiệu suất phát bóng</value>
 </data>
+  <data name="GpsPermissionDenied" xml:space="preserve">
+    <value>🔴 Quyền bị từ chối</value>
+  </data>
+  <data name="GpsAcquiring" xml:space="preserve">
+    <value>🟡 Đang thu nhận...</value>
+  </data>
+  <data name="GpsListenerFailed" xml:space="preserve">
+    <value>🔴 Bộ thu thất bại</value>
+  </data>
+  <data name="GpsError" xml:space="preserve">
+    <value>🔴 Lỗi GPS</value>
+  </data>
+  <data name="GpsStopped" xml:space="preserve">
+    <value>🔴 Đã dừng</value>
+  </data>
+  <data name="GpsReadyFormat" xml:space="preserve">
+    <value>🟢 Sẵn sàng (±{0:F0}m)</value>
+  </data>
+  <data name="GpsOkFormat" xml:space="preserve">
+    <value>🟡 OK (±{0:F0}m)</value>
+  </data>
+  <data name="GpsWeakFormat" xml:space="preserve">
+    <value>🔴 Yếu (±{0:F0}m)</value>
+  </data>
+  <data name="GpsLowAccuracyTitle" xml:space="preserve">
+    <value>Độ chính xác GPS thấp</value>
+  </data>
+  <data name="GpsLowAccuracyMessage" xml:space="preserve">
+    <value>Không thể nhận tín hiệu GPS chính xác (cần ≤{0:F0}m). Vui lòng di chuyển đến khu vực trống tránh xa cây cối và tòa nhà, rồi thử lại.</value>
+  </data>
   </root>

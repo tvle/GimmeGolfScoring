@@ -547,6 +547,96 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🟡 Acquiring....
+        /// </summary>
+        public static string GpsAcquiring {
+            get {
+                return ResourceManager.GetString("GpsAcquiring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔴 GPS Error.
+        /// </summary>
+        public static string GpsError {
+            get {
+                return ResourceManager.GetString("GpsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔴 Listener Failed.
+        /// </summary>
+        public static string GpsListenerFailed {
+            get {
+                return ResourceManager.GetString("GpsListenerFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to get an accurate GPS fix (need ≤{0:F0}m)....
+        /// </summary>
+        public static string GpsLowAccuracyMessage {
+            get {
+                return ResourceManager.GetString("GpsLowAccuracyMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low GPS Accuracy.
+        /// </summary>
+        public static string GpsLowAccuracyTitle {
+            get {
+                return ResourceManager.GetString("GpsLowAccuracyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🟡 OK (±{0:F0}m).
+        /// </summary>
+        public static string GpsOkFormat {
+            get {
+                return ResourceManager.GetString("GpsOkFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔴 Permission Denied.
+        /// </summary>
+        public static string GpsPermissionDenied {
+            get {
+                return ResourceManager.GetString("GpsPermissionDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🟢 Ready (±{0:F0}m).
+        /// </summary>
+        public static string GpsReadyFormat {
+            get {
+                return ResourceManager.GetString("GpsReadyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔴 Stopped.
+        /// </summary>
+        public static string GpsStopped {
+            get {
+                return ResourceManager.GetString("GpsStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔴 Weak (±{0:F0}m).
+        /// </summary>
+        public static string GpsWeakFormat {
+            get {
+                return ResourceManager.GetString("GpsWeakFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hole {0}.
         /// </summary>
         public static string HoleFormat {

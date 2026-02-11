@@ -703,4 +703,34 @@
 	<data name="DrivingPerformance" xml:space="preserve">
   <value>ドライバーのパフォーマンス</value>
 </data>
+  <data name="GpsPermissionDenied" xml:space="preserve">
+    <value>🔴 権限が拒否されました</value>
+  </data>
+  <data name="GpsAcquiring" xml:space="preserve">
+    <value>🟡 取得中...</value>
+  </data>
+  <data name="GpsListenerFailed" xml:space="preserve">
+    <value>🔴 リスナー失敗</value>
+  </data>
+  <data name="GpsError" xml:space="preserve">
+    <value>🔴 GPSエラー</value>
+  </data>
+  <data name="GpsStopped" xml:space="preserve">
+    <value>🔴 停止</value>
+  </data>
+  <data name="GpsReadyFormat" xml:space="preserve">
+    <value>🟢 準備完了 (±{0:F0}m)</value>
+  </data>
+  <data name="GpsOkFormat" xml:space="preserve">
+    <value>🟡 OK (±{0:F0}m)</value>
+  </data>
+  <data name="GpsWeakFormat" xml:space="preserve">
+    <value>🔴 弱い (±{0:F0}m)</value>
+  </data>
+  <data name="GpsLowAccuracyTitle" xml:space="preserve">
+    <value>GPS精度が低い</value>
+  </data>
+  <data name="GpsLowAccuracyMessage" xml:space="preserve">
+    <value>正確なGPS信号を取得できません（≤{0:F0}m必要）。木や建物から離れた開けた場所に移動して、もう一度お試しください。</value>
+  </data>
 </root>

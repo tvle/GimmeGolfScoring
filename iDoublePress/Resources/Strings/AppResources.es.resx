@@ -702,4 +702,34 @@ Reinicia la aplicación.</value>
 	<data name="DrivingPerformance" xml:space="preserve">
   <value>Rendimiento del drive</value>
 </data>
+  <data name="GpsPermissionDenied" xml:space="preserve">
+    <value>🔴 Permiso denegado</value>
+  </data>
+  <data name="GpsAcquiring" xml:space="preserve">
+    <value>🟡 Adquiriendo...</value>
+  </data>
+  <data name="GpsListenerFailed" xml:space="preserve">
+    <value>🔴 Error de escucha</value>
+  </data>
+  <data name="GpsError" xml:space="preserve">
+    <value>🔴 Error GPS</value>
+  </data>
+  <data name="GpsStopped" xml:space="preserve">
+    <value>🔴 Detenido</value>
+  </data>
+  <data name="GpsReadyFormat" xml:space="preserve">
+    <value>🟢 Listo (±{0:F0}m)</value>
+  </data>
+  <data name="GpsOkFormat" xml:space="preserve">
+    <value>🟡 OK (±{0:F0}m)</value>
+  </data>
+  <data name="GpsWeakFormat" xml:space="preserve">
+    <value>🔴 Débil (±{0:F0}m)</value>
+  </data>
+  <data name="GpsLowAccuracyTitle" xml:space="preserve">
+    <value>Baja precisión GPS</value>
+  </data>
+  <data name="GpsLowAccuracyMessage" xml:space="preserve">
+    <value>No se pudo obtener una señal GPS precisa (se necesita ≤{0:F0}m). Muévase a un área abierta lejos de árboles y edificios, luego intente de nuevo.</value>
+  </data>
 </root>

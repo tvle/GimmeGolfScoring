@@ -765,4 +765,44 @@ Resume it?</value>
     <value>Green hits by zone</value>
     <comment>Subtitle for approach accuracy chart</comment>
   </data>
+  <data name="GpsPermissionDenied" xml:space="preserve">
+    <value>🔴 Permission Denied</value>
+    <comment>GPS status when location permission is denied</comment>
+  </data>
+  <data name="GpsAcquiring" xml:space="preserve">
+    <value>🟡 Acquiring...</value>
+    <comment>GPS status while acquiring signal</comment>
+  </data>
+  <data name="GpsListenerFailed" xml:space="preserve">
+    <value>🔴 Listener Failed</value>
+    <comment>GPS status when listener failed to start</comment>
+  </data>
+  <data name="GpsError" xml:space="preserve">
+    <value>🔴 GPS Error</value>
+    <comment>GPS status on error</comment>
+  </data>
+  <data name="GpsStopped" xml:space="preserve">
+    <value>🔴 Stopped</value>
+    <comment>GPS status when stopped</comment>
+  </data>
+  <data name="GpsReadyFormat" xml:space="preserve">
+    <value>🟢 Ready (±{0:F0}m)</value>
+    <comment>GPS status when accuracy is good. {0}=accuracy in meters</comment>
+  </data>
+  <data name="GpsOkFormat" xml:space="preserve">
+    <value>🟡 OK (±{0:F0}m)</value>
+    <comment>GPS status when accuracy is acceptable. {0}=accuracy in meters</comment>
+  </data>
+  <data name="GpsWeakFormat" xml:space="preserve">
+    <value>🔴 Weak (±{0:F0}m)</value>
+    <comment>GPS status when accuracy is poor. {0}=accuracy in meters</comment>
+  </data>
+  <data name="GpsLowAccuracyTitle" xml:space="preserve">
+    <value>Low GPS Accuracy</value>
+    <comment>Alert title when GPS accuracy is too low</comment>
+  </data>
+  <data name="GpsLowAccuracyMessage" xml:space="preserve">
+    <value>Unable to get an accurate GPS fix (need ≤{0:F0}m). Please move to an open area away from trees and buildings, then try again.</value>
+    <comment>Alert message when GPS accuracy is too low. {0}=threshold meters</comment>
+  </data>
 </root>

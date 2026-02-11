@@ -702,4 +702,34 @@ Starta om appen.</value>
 	<data name="DrivingPerformance" xml:space="preserve">
   <value>Drive-prestation</value>
 </data>
+  <data name="GpsPermissionDenied" xml:space="preserve">
+    <value>🔴 Behörighet nekad</value>
+  </data>
+  <data name="GpsAcquiring" xml:space="preserve">
+    <value>🟡 Hämtar...</value>
+  </data>
+  <data name="GpsListenerFailed" xml:space="preserve">
+    <value>🔴 Lyssnare misslyckades</value>
+  </data>
+  <data name="GpsError" xml:space="preserve">
+    <value>🔴 GPS-fel</value>
+  </data>
+  <data name="GpsStopped" xml:space="preserve">
+    <value>🔴 Stoppad</value>
+  </data>
+  <data name="GpsReadyFormat" xml:space="preserve">
+    <value>🟢 Redo (±{0:F0}m)</value>
+  </data>
+  <data name="GpsOkFormat" xml:space="preserve">
+    <value>🟡 OK (±{0:F0}m)</value>
+  </data>
+  <data name="GpsWeakFormat" xml:space="preserve">
+    <value>🔴 Svag (±{0:F0}m)</value>
+  </data>
+  <data name="GpsLowAccuracyTitle" xml:space="preserve">
+    <value>Låg GPS-noggrannhet</value>
+  </data>
+  <data name="GpsLowAccuracyMessage" xml:space="preserve">
+    <value>Kunde inte få en exakt GPS-signal (behöver ≤{0:F0}m). Flytta till ett öppet område bort från träd och byggnader, och försök igen.</value>
+  </data>
 </root>

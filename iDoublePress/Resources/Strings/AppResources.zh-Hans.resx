@@ -703,4 +703,34 @@
 	<data name="DrivingPerformance" xml:space="preserve">
   <value>开球表现</value>
 </data>
+  <data name="GpsPermissionDenied" xml:space="preserve">
+    <value>🔴 权限被拒绝</value>
+  </data>
+  <data name="GpsAcquiring" xml:space="preserve">
+    <value>🟡 获取中...</value>
+  </data>
+  <data name="GpsListenerFailed" xml:space="preserve">
+    <value>🔴 监听失败</value>
+  </data>
+  <data name="GpsError" xml:space="preserve">
+    <value>🔴 GPS错误</value>
+  </data>
+  <data name="GpsStopped" xml:space="preserve">
+    <value>🔴 已停止</value>
+  </data>
+  <data name="GpsReadyFormat" xml:space="preserve">
+    <value>🟢 就绪 (±{0:F0}m)</value>
+  </data>
+  <data name="GpsOkFormat" xml:space="preserve">
+    <value>🟡 良好 (±{0:F0}m)</value>
+  </data>
+  <data name="GpsWeakFormat" xml:space="preserve">
+    <value>🔴 弱 (±{0:F0}m)</value>
+  </data>
+  <data name="GpsLowAccuracyTitle" xml:space="preserve">
+    <value>GPS精度低</value>
+  </data>
+  <data name="GpsLowAccuracyMessage" xml:space="preserve">
+    <value>无法获取准确的GPS信号（需要≤{0:F0}m）。请移动到远离树木和建筑物的开阔区域，然后重试。</value>
+  </data>
 </root>

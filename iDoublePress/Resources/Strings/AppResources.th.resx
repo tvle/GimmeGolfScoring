@@ -703,4 +703,34 @@
 	<data name="DrivingPerformance" xml:space="preserve">
   <value>ประสิทธิภาพการไดร์ฟ</value>
 </data>
+  <data name="GpsPermissionDenied" xml:space="preserve">
+    <value>🔴 ถูกปฏิเสธสิทธิ์</value>
+  </data>
+  <data name="GpsAcquiring" xml:space="preserve">
+    <value>🟡 กำลังรับสัญญาณ...</value>
+  </data>
+  <data name="GpsListenerFailed" xml:space="preserve">
+    <value>🔴 ตัวรับสัญญาณล้มเหลว</value>
+  </data>
+  <data name="GpsError" xml:space="preserve">
+    <value>🔴 ข้อผิดพลาด GPS</value>
+  </data>
+  <data name="GpsStopped" xml:space="preserve">
+    <value>🔴 หยุดแล้ว</value>
+  </data>
+  <data name="GpsReadyFormat" xml:space="preserve">
+    <value>🟢 พร้อม (±{0:F0}ม.)</value>
+  </data>
+  <data name="GpsOkFormat" xml:space="preserve">
+    <value>🟡 ใช้ได้ (±{0:F0}ม.)</value>
+  </data>
+  <data name="GpsWeakFormat" xml:space="preserve">
+    <value>🔴 อ่อน (±{0:F0}ม.)</value>
+  </data>
+  <data name="GpsLowAccuracyTitle" xml:space="preserve">
+    <value>ความแม่นยำ GPS ต่ำ</value>
+  </data>
+  <data name="GpsLowAccuracyMessage" xml:space="preserve">
+    <value>ไม่สามารถรับสัญญาณ GPS ที่แม่นยำได้ (ต้องการ ≤{0:F0}ม.) กรุณาย้ายไปยังพื้นที่โล่งห่างจากต้นไม้และอาคาร แล้วลองอีกครั้ง</value>
+  </data>
 </root>

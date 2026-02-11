@@ -703,4 +703,34 @@
 	<data name="DrivingPerformance" xml:space="preserve">
   <value>드라이빙 성과</value>
 </data>
+  <data name="GpsPermissionDenied" xml:space="preserve">
+    <value>🔴 권한 거부됨</value>
+  </data>
+  <data name="GpsAcquiring" xml:space="preserve">
+    <value>🟡 수신 중...</value>
+  </data>
+  <data name="GpsListenerFailed" xml:space="preserve">
+    <value>🔴 리스너 실패</value>
+  </data>
+  <data name="GpsError" xml:space="preserve">
+    <value>🔴 GPS 오류</value>
+  </data>
+  <data name="GpsStopped" xml:space="preserve">
+    <value>🔴 중지됨</value>
+  </data>
+  <data name="GpsReadyFormat" xml:space="preserve">
+    <value>🟢 준비 완료 (±{0:F0}m)</value>
+  </data>
+  <data name="GpsOkFormat" xml:space="preserve">
+    <value>🟡 양호 (±{0:F0}m)</value>
+  </data>
+  <data name="GpsWeakFormat" xml:space="preserve">
+    <value>🔴 약함 (±{0:F0}m)</value>
+  </data>
+  <data name="GpsLowAccuracyTitle" xml:space="preserve">
+    <value>낮은 GPS 정확도</value>
+  </data>
+  <data name="GpsLowAccuracyMessage" xml:space="preserve">
+    <value>정확한 GPS 신호를 받을 수 없습니다 (≤{0:F0}m 필요). 나무와 건물에서 벗어난 개방된 곳으로 이동한 후 다시 시도하세요.</value>
+  </data>
 </root>
