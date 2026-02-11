@@ -18,7 +18,7 @@
     <Grid RowDefinitions="Auto, *, Auto" Padding="15" RowSpacing="15">
 
         <Border Grid.Row="0" Style="{StaticResource CardStyle}" Padding="0" VerticalOptions="Start">
-            <Grid Padding="10" ColumnDefinitions="Auto, *">
+            <Grid Padding="10" ColumnDefinitions="Auto, *, Auto">
                 <HorizontalStackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Start">
                     <Label Text="#" />
                     <Label Text="{Binding CurrentHoleNumberDisplay}"
@@ -32,7 +32,14 @@
                             VerticalOptions="Center"
                             AutomationId="ShowGPSPage.Par" />
                 </HorizontalStackLayout>
-                <Button Grid.Column="1" Text="📍"
+                <Label Grid.Column="1"
+                       Text="{Binding GpsStatusDisplay}"
+                       TextColor="{Binding GpsStatusColor}"
+                       FontSize="12"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       AutomationId="ShowGPSPage.GpsStatus" />
+                <Button Grid.Column="2" Text="📍"
                         Command="{Binding ToggleMeasurementCommand}"
                         HorizontalOptions="End"/>
             </Grid>
@@ -92,6 +99,13 @@
                                    Style="{StaticResource Caption1}"
                                    Opacity="0.6"
                                    HorizontalOptions="End"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Text="{Binding AccuracyDisplay}"
+                                   Style="{StaticResource Caption1}"
+                                   Opacity="0.7"
+                                   HorizontalOptions="Start"
                                    VerticalOptions="Center" />
                         </Grid>
                     </Border>

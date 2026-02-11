@@ -25,6 +25,17 @@ public partial class ShowGPSPage : ContentPage
         BindingContext = viewModel;
     }
 
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        // Stop the GPS location listener when leaving the page to conserve battery
+        if (BindingContext is ShowGPSPageModel vm)
+        {
+            vm.StopLocationListener();
+        }
+    }
+
     private async void TagButton_Clicked(object sender, EventArgs e)
     {
         try

@@ -13,6 +13,19 @@ namespace iDoublePress.Models
         // Store the raw GPS data for recalculation
         public Location Point { get; set; }
 
+        /// <summary>
+        /// Horizontal accuracy of the GPS fix in meters.
+        /// Lower is better — values ≤10m are considered good for golf.
+        /// </summary>
+        public double? AccuracyMeters { get; set; }
+
+        /// <summary>
+        /// Human-readable accuracy indicator (e.g. "±3m").
+        /// </summary>
+        public string AccuracyDisplay => AccuracyMeters.HasValue
+            ? $"±{AccuracyMeters.Value:F0}m"
+            : "---";
+
         // Observable so the UI updates when we change "150y" to "165y"
         [ObservableProperty]
         private string distanceDisplay;

@@ -253,6 +253,14 @@ public class RoundRepository : RepositoryBase
                 LogSql(addTagCmd, "ALTER TABLE ADD Tag ShotSegment");
                 await addTagCmd.ExecuteNonQueryAsync();
             }
+
+            if (!existingShotCols.Contains("Accuracy"))
+            {
+                var addAccuracyCmd = connection.CreateCommand();
+                addAccuracyCmd.CommandText = "ALTER TABLE ShotSegment ADD COLUMN Accuracy REAL;";
+                LogSql(addAccuracyCmd, "ALTER TABLE ADD Accuracy ShotSegment");
+                await addAccuracyCmd.ExecuteNonQueryAsync();
+            }
         }
         catch (Exception e)
         {
@@ -446,7 +454,7 @@ public class RoundRepository : RepositoryBase
     {
         var cmd = connection.CreateCommand();
         cmd.CommandText = @"
-            SELECT ID, HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt
+            SELECT ID, HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt, Accuracy
             FROM ShotSegment
             WHERE HoleID = @holeId
             ORDER BY Sequence DESC";
@@ -465,6 +473,7 @@ public class RoundRepository : RepositoryBase
                 Point = new Location(reader.GetDouble(3), reader.GetDouble(4)),
                 Tag = reader.IsDBNull(5) ? null : reader.GetString(5),
                 CreatedAt = DateTime.Parse(reader.GetString(6)),
+                AccuracyMeters = reader.IsDBNull(7) ? null : reader.GetDouble(7),
                 LocationDisplay = $"{reader.GetDouble(3):F7}, {reader.GetDouble(4):F7}",
                 DistanceDisplay = "---"
             };
@@ -511,14 +520,15 @@ public class RoundRepository : RepositoryBase
                 var insertCmd = connection.CreateCommand();
                 insertCmd.Transaction = transaction;
                 insertCmd.CommandText = @"
-                    INSERT INTO ShotSegment (HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt)
-                    VALUES (@HoleID, @Sequence, @Latitude, @Longitude, @Tag, @CreatedAt);";
+                    INSERT INTO ShotSegment (HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt, Accuracy)
+                    VALUES (@HoleID, @Sequence, @Latitude, @Longitude, @Tag, @CreatedAt, @Accuracy);";
                 insertCmd.Parameters.AddWithValue("@HoleID", holeId);
                 insertCmd.Parameters.AddWithValue("@Sequence", seq);
                 insertCmd.Parameters.AddWithValue("@Latitude", s.Point.Latitude);
                 insertCmd.Parameters.AddWithValue("@Longitude", s.Point.Longitude);
                 insertCmd.Parameters.AddWithValue("@Tag", (object?)s.Tag ?? DBNull.Value);
                 insertCmd.Parameters.AddWithValue("@CreatedAt", (s.CreatedAt == default ? DateTime.Now : s.CreatedAt).ToString("o"));
+                insertCmd.Parameters.AddWithValue("@Accuracy", (object?)s.AccuracyMeters ?? DBNull.Value);
                 LogSql(insertCmd, "InsertShotSegment");
                 await insertCmd.ExecuteNonQueryAsync();
                 seq++;
