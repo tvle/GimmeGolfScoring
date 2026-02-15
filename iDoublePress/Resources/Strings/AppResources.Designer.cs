@@ -1451,6 +1451,15 @@ namespace iDoublePress.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove Tag.
+        /// </summary>
+        public static string RemoveTag {
+            get {
+                return ResourceManager.GetString("RemoveTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Center.
         /// </summary>
         public static string Tag_Center {

@@ -399,6 +399,9 @@ Starta om appen.</value>
   <data name="Tag_Back" xml:space="preserve">
     <value>Bak</value>
   </data>
+  <data name="RemoveTag" xml:space="preserve">
+    <value>Ta bort tagg</value>
+  </data>
   <data name="PracticeCourseCreated" xml:space="preserve">
     <value>Övningsbana skapad</value>
     <comment>Log message when practice course is created</comment>
@@ -477,7 +480,7 @@ Starta om appen.</value>
     <comment>Golf</comment>
   </data>
   <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ Starta ny runda</value>
+    <value>⛳ Starta/återuppta runda</value>
     <comment>Start new round button</comment>
   </data>
   <data name="StartNewRoundDescription" xml:space="preserve">
@@ -567,6 +570,10 @@ Starta om appen.</value>
   <data name="DeleteRoundMessage" xml:space="preserve">
     <value>Ta bort denna pågående runda?</value>
     <comment>Delete in-progress round confirmation message</comment>
+  </data>
+  <data name="DeleteCompletedRoundMessage" xml:space="preserve">
+    <value>Ta bort denna avslutade runda?</value>
+    <comment>Delete completed round confirmation message</comment>
   </data>
 
   <data name="Recent" xml:space="preserve">

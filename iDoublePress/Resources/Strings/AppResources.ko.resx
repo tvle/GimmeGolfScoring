@@ -400,6 +400,9 @@
   <data name="Tag_Back" xml:space="preserve">
     <value>백</value>
   </data>
+  <data name="RemoveTag" xml:space="preserve">
+    <value>태그 제거</value>
+  </data>
   <data name="PracticeCourseCreated" xml:space="preserve">
     <value>연습 코스 생성됨</value>
     <comment>Log message when practice course is created</comment>
@@ -478,7 +481,7 @@
     <comment>Golf</comment>
   </data>
   <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ 새 라운드 시작</value>
+    <value>⛳ 라운드 시작/재개</value>
     <comment>Start new round button</comment>
   </data>
   <data name="StartNewRoundDescription" xml:space="preserve">
@@ -568,6 +571,10 @@
   <data name="DeleteRoundMessage" xml:space="preserve">
     <value>진행 중인 이 라운드를 삭제하시겠습니까?</value>
     <comment>Delete in-progress round confirmation message</comment>
+  </data>
+  <data name="DeleteCompletedRoundMessage" xml:space="preserve">
+    <value>완료된 이 라운드를 삭제하시겠습니까?</value>
+    <comment>Delete completed round confirmation message</comment>
   </data>
 
   <data name="Recent" xml:space="preserve">

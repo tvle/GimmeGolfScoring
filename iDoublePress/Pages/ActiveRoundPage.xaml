@@ -265,14 +265,16 @@
                                     Scale="1" />
                     </VerticalStackLayout>
                     <!-- FH Buttons -->
-                    <sf:SfSegmentedControl Grid.Row="1" Grid.Column="1" x:Name="FairwaySegmentedControl" WidthRequest="150" SegmentWidth="50" 
+                    <sf:SfSegmentedControl Grid.Row="1" Grid.Column="1" x:Name="FairwaySegmentedControl" WidthRequest="150"
+                                            SegmentWidth="50"
                                             CornerRadius="16" HorizontalOptions="Center"
-                                            SelectedIndex="{Binding CurrentHole.FairwayResultIndex, Mode=TwoWay}">
+                                            SelectedIndex="{Binding CurrentHole.FairwayResultIndex, Mode=TwoWay}"
+                                            SelectionMode="SingleDeselect">
                         <sf:SfSegmentedControl.ItemsSource>
                             <x:Array Type="{x:Type sf:SfSegmentItem}">
-                                <sf:SfSegmentItem Text="&lt;&lt;&lt;" />
-                                <sf:SfSegmentItem Text="OOO" />
-                                <sf:SfSegmentItem Text="&gt;&gt;&gt;" />
+                                <sf:SfSegmentItem Text="&lt;&lt;&lt;" Width="50" />
+                                <sf:SfSegmentItem Text="OOO" Width="50" />
+                                <sf:SfSegmentItem Text="&gt;&gt;&gt;" Width="50" />
                             </x:Array>
                         </sf:SfSegmentedControl.ItemsSource>
                     </sf:SfSegmentedControl>

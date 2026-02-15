@@ -47,12 +47,15 @@ public partial class ShowGPSPage : ContentPage
                     AppResources.Tag_3H, AppResources.Tag_4H, AppResources.Tag_4I, AppResources.Tag_5I,
                     AppResources.Tag_6I, AppResources.Tag_7I, AppResources.Tag_8I, AppResources.Tag_9I,
                     AppResources.Tag_PW, AppResources.Tag_GW, AppResources.Tag_SW, AppResources.Tag_LW,
-                    AppResources.Tag_Front, AppResources.Tag_Center, AppResources.Tag_Back
+                    AppResources.Tag_Front, AppResources.Tag_Center, AppResources.Tag_Back, AppResources.RemoveTag
                 };
                 var result = await DisplayActionSheet(AppResources.SelectTag, AppResources.Cancel, null, options);
                 if (!string.IsNullOrEmpty(result) && result != AppResources.Cancel)
                 {
-                    segment.Tag = result;
+                    if (result == AppResources.RemoveTag)
+                        segment.Tag = null;
+                    else
+                        segment.Tag = result;
                     // Persist via ViewModel
                     await vm.PersistShotSegmentsAsync();
                 }

@@ -404,6 +404,9 @@ Veuillez redémarrer l'application.</value>
   <data name="Tag_Back" xml:space="preserve">
     <value>Arrière</value>
   </data>
+  <data name="RemoveTag" xml:space="preserve">
+    <value>Supprimer l'étiquette</value>
+  </data>
 
   <data name="Eagle" xml:space="preserve">
     <value>Eagle</value>
@@ -478,7 +481,7 @@ Veuillez redémarrer l'application.</value>
     <comment>Golf</comment>
   </data>
   <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ Démarrer une partie</value>
+    <value>⛳ Démarrer/Reprendre une partie</value>
     <comment>Start new round button</comment>
   </data>
   <data name="StartNewRoundDescription" xml:space="preserve">
@@ -568,6 +571,10 @@ Veuillez redémarrer l'application.</value>
   <data name="DeleteRoundMessage" xml:space="preserve">
     <value>Supprimer cette partie en cours ?</value>
     <comment>Delete in-progress round confirmation message</comment>
+  </data>
+  <data name="DeleteCompletedRoundMessage" xml:space="preserve">
+    <value>Supprimer cette partie terminée ?</value>
+    <comment>Delete completed round confirmation message</comment>
   </data>
 
   <data name="Recent" xml:space="preserve">

@@ -400,6 +400,9 @@ Vui lòng khởi động lại ứng dụng.</value>
   <data name="Tag_Back" xml:space="preserve">
     <value>Sau</value>
   </data>
+  <data name="RemoveTag" xml:space="preserve">
+    <value>Xóa thẻ</value>
+  </data>
   <data name="PracticeCourseCreated" xml:space="preserve">
     <value>Đã tạo sân tập</value>
     <comment>Log message when practice course is created</comment>
@@ -478,7 +481,7 @@ Vui lòng khởi động lại ứng dụng.</value>
     <comment>Golf</comment>
   </data>
   <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ Bắt Đầu Vòng Mới</value>
+    <value>⛳ Bắt đầu/Tiếp tục vòng</value>
     <comment>Start new round button</comment>
   </data>
   <data name="StartNewRoundDescription" xml:space="preserve">
@@ -568,6 +571,10 @@ Vui lòng khởi động lại ứng dụng.</value>
   <data name="DeleteRoundMessage" xml:space="preserve">
     <value>Xóa vòng chơi đang diễn ra này?</value>
     <comment>Delete in-progress round confirmation message</comment>
+  </data>
+  <data name="DeleteCompletedRoundMessage" xml:space="preserve">
+    <value>Xóa vòng chơi đã hoàn thành này?</value>
+    <comment>Delete completed round confirmation message</comment>
   </data>
 
   <data name="Recent" xml:space="preserve">

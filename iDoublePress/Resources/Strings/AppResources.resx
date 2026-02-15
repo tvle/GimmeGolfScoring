@@ -464,6 +464,9 @@ Resume it?</value>
   <data name="Tag_Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="RemoveTag" xml:space="preserve">
+    <value>Remove Tag</value>
+  </data>
   <data name="PracticeCourseCreated" xml:space="preserve">
     <value>Practice course created</value>
     <comment>Log message when practice course is created</comment>
@@ -541,7 +544,7 @@ Resume it?</value>
     <comment>Golf</comment>
   </data>
   <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ Start New Round</value>
+    <value>⛳ Start/Resume Round</value>
     <comment>Start new round button</comment>
   </data>
   <data name="StartNewRoundDescription" xml:space="preserve">

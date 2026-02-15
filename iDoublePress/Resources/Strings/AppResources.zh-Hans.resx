@@ -212,6 +212,9 @@
   <data name="Tag_Back" xml:space="preserve">
     <value>后</value>
   </data>
+  <data name="RemoveTag" xml:space="preserve">
+    <value>移除标签</value>
+  </data>
   <data name="RoundCompleted" xml:space="preserve">
     <value>球局已完成！
 成绩：{0}</value>
@@ -478,7 +481,7 @@
     <comment>Golf</comment>
   </data>
   <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ 开始新球局</value>
+    <value>⛳ 开始/继续球局</value>
     <comment>Start new round button</comment>
   </data>
   <data name="StartNewRoundDescription" xml:space="preserve">
@@ -568,6 +571,10 @@
   <data name="DeleteRoundMessage" xml:space="preserve">
     <value>删除此进行中的球局？</value>
     <comment>Delete in-progress round confirmation message</comment>
+  </data>
+  <data name="DeleteCompletedRoundMessage" xml:space="preserve">
+    <value>删除这场已完成的球局？</value>
+    <comment>Delete completed round confirmation message</comment>
   </data>
 
   <data name="Recent" xml:space="preserve">

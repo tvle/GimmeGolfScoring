@@ -400,6 +400,9 @@
   <data name="Tag_Back" xml:space="preserve">
     <value>バック</value>
   </data>
+  <data name="RemoveTag" xml:space="preserve">
+    <value>タグを削除</value>
+  </data>
   <data name="PracticeCourseCreated" xml:space="preserve">
     <value>練習コースを作成しました</value>
     <comment>Log message when practice course is created</comment>
@@ -478,7 +481,7 @@
     <comment>Golf</comment>
   </data>
   <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ 新しいラウンドを開始</value>
+    <value>⛳ ラウンド開始/再開</value>
     <comment>Start new round button</comment>
   </data>
   <data name="StartNewRoundDescription" xml:space="preserve">
@@ -568,6 +571,10 @@
   <data name="DeleteRoundMessage" xml:space="preserve">
     <value>この進行中のラウンドを削除しますか？</value>
     <comment>Delete in-progress round confirmation message</comment>
+  </data>
+  <data name="DeleteCompletedRoundMessage" xml:space="preserve">
+    <value>この完了したラウンドを削除しますか？</value>
+    <comment>Delete completed round confirmation message</comment>
   </data>
 
   <data name="Recent" xml:space="preserve">

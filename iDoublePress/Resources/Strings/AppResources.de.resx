@@ -400,6 +400,9 @@ Bitte starte die App neu.</value>
   <data name="Tag_Back" xml:space="preserve">
     <value>Hinten</value>
   </data>
+  <data name="RemoveTag" xml:space="preserve">
+    <value>Tag entfernen</value>
+  </data>
   <data name="PracticeCourseCreated" xml:space="preserve">
     <value>Übungsplatz erstellt</value>
     <comment>Log message when practice course is created</comment>
@@ -478,7 +481,7 @@ Bitte starte die App neu.</value>
     <comment>Golf</comment>
   </data>
   <data name="StartNewRoundButton" xml:space="preserve">
-    <value>⛳ Neue Runde starten</value>
+    <value>⛳ Runde starten/fortsetzen</value>
     <comment>Start new round button</comment>
   </data>
   <data name="StartNewRoundDescription" xml:space="preserve">
@@ -568,6 +571,10 @@ Bitte starte die App neu.</value>
   <data name="DeleteRoundMessage" xml:space="preserve">
     <value>Diese laufende Runde löschen?</value>
     <comment>Delete in-progress round confirmation message</comment>
+  </data>
+  <data name="DeleteCompletedRoundMessage" xml:space="preserve">
+    <value>Diese abgeschlossene Runde löschen?</value>
+    <comment>Delete completed round confirmation message</comment>
   </data>
 
   <data name="Recent" xml:space="preserve">
