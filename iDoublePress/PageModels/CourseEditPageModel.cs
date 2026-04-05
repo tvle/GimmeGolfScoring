@@ -42,6 +42,11 @@ public partial class CourseEditPageModel : ObservableObject
     [ObservableProperty]
     private bool isBusy;
 
+    [ObservableProperty]
+    private bool isDirty;
+
+    private bool _suppressDirtyTracking;
+
     public CourseEditPageModel(CourseRepository courseRepository)
     {
         _courseRepository = courseRepository;
@@ -67,6 +72,11 @@ public partial class CourseEditPageModel : ObservableObject
         }
 
         UpdateTotals();
+
+        if (!_suppressDirtyTracking && (e.Action != NotifyCollectionChangedAction.Reset || e.NewItems != null || e.OldItems != null))
+        {
+            IsDirty = true;
+        }
     }
 
     private void OnHolePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -74,6 +84,11 @@ public partial class CourseEditPageModel : ObservableObject
         if (e.PropertyName == nameof(CourseHole.Par) || e.PropertyName == nameof(CourseHole.Yardage))
         {
             UpdateTotals();
+
+            if (!_suppressDirtyTracking)
+            {
+                IsDirty = true;
+            }
         }
     }
 
@@ -90,6 +105,22 @@ public partial class CourseEditPageModel : ObservableObject
         TotalYardage = yards.Count == 0 ? null : yards.Sum();
     }
 
+    partial void OnNameChanged(string value) => MarkDirty();
+
+    partial void OnNumberOfHolesChanged(int value) => MarkDirty();
+
+    partial void OnCourseRatingChanged(string? value) => MarkDirty();
+
+    partial void OnSlopeChanged(string? value) => MarkDirty();
+
+    private void MarkDirty()
+    {
+        if (!_suppressDirtyTracking && !IsBusy)
+        {
+            IsDirty = true;
+        }
+    }
+
     [RelayCommand]
     private async Task NavigatedToAsync()
     {
@@ -99,6 +130,7 @@ public partial class CourseEditPageModel : ObservableObject
         try
         {
             IsBusy = true;
+            _suppressDirtyTracking = true;
             
             if (CourseId > 0)
             {
@@ -130,9 +162,11 @@ public partial class CourseEditPageModel : ObservableObject
             }
 
             UpdateTotals();
+            IsDirty = false;
         }
         finally
         {
+            _suppressDirtyTracking = false;
             IsBusy = false;
         }
     }
@@ -182,6 +216,7 @@ public partial class CourseEditPageModel : ObservableObject
         }
 
         UpdateTotals();
+        MarkDirty();
     }
 
     private void InitializeHoles()
@@ -219,8 +254,13 @@ public partial class CourseEditPageModel : ObservableObject
     [RelayCommand]
     private async Task SaveAsync()
     {
+        await SaveCourseAsync(navigateBack: true);
+    }
+
+    public async Task<bool> SaveCourseAsync(bool navigateBack)
+    {
         if (IsBusy)
-            return;
+            return false;
 
         try
         {
@@ -232,7 +272,7 @@ public partial class CourseEditPageModel : ObservableObject
                 // Update existing course
                 course = await _courseRepository.GetAsync(CourseId);
                 if (course is null)
-                    return;
+                    return false;
             }
             else
             {
@@ -282,7 +322,14 @@ public partial class CourseEditPageModel : ObservableObject
             }
 
             await _courseRepository.SaveItemAsync(course);
-            await Shell.Current.GoToAsync("..");
+            IsDirty = false;
+
+            if (navigateBack)
+            {
+                await Shell.Current.GoToAsync("..");
+            }
+
+            return true;
         }
         finally
         {

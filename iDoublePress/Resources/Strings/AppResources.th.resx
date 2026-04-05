@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0"/>
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string"/>
+              <xs:attribute name="type" type="xsd:string"/>
+              <xs:attribute name="mimetype" type="xsd:string"/>
+              <xs:attribute ref="xml:space"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string"/>
+              <xs:attribute name="name" type="xsd:string"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1"/>
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3"/>
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4"/>
+              <xs:attribute ref="xml:space" ns1:Ordinal="5"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -58,7 +58,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
   <data name="AppName" xml:space="preserve">
     <value>Gimme</value>
     <comment>Application name</comment>
@@ -91,7 +90,6 @@
     <value>ลบ</value>
     <comment>Delete button text</comment>
   </data>
-
   <data name="Resume" xml:space="preserve">
     <value>ทำต่อ</value>
     <comment>Resume button text</comment>
@@ -108,7 +106,6 @@
     <value>คุณมีการออกรอบที่ยังไม่จบที่ {0}
 เริ่มเมื่อ: {1}
 ความคืบหน้า: {2}/{3} หลุม
-
 ต้องการเล่นต่อหรือไม่?</value>
     <comment>Message for resume round dialog. {0}=course name, {1}=time ago, {2}=holes completed, {3}=total holes</comment>
   </data>
@@ -128,16 +125,15 @@
     <value>เลือกสนามกอล์ฟ</value>
     <comment>Select course instruction label</comment>
   </data>
-
   <data name="CompleteRoundTitle" xml:space="preserve">
     <value>จบการออกรอบ?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-	<data name="GPSPageTitle" xml:space="preserve">
+  <data name="GPSPageTitle" xml:space="preserve">
     <value>หน้า GPS</value>
     <comment>Title for GPS Page</comment>
   </data>
-	<data name="CompleteRoundMessage" xml:space="preserve">
+  <data name="CompleteRoundMessage" xml:space="preserve">
     <value>คะแนนรวมของคุณคือ {0} ({1})
 ทำเครื่องหมายว่าจบการออกรอบนี้หรือไม่?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>
@@ -168,7 +164,6 @@
     <value>ยกเลิก</value>
     <comment>Abandon button text</comment>
   </data>
-
   <data name="ActiveRound" xml:space="preserve">
     <value>การออกรอบปัจจุบัน</value>
     <comment>Active round page title</comment>
@@ -213,7 +208,6 @@
     <value>เพนัลตี้</value>
     <comment>Penalty label</comment>
   </data>
-
   <data name="Front9" xml:space="preserve">
     <value>9 หลุมแรก</value>
     <comment>Front nine holes label</comment>
@@ -254,14 +248,14 @@
     <value>ระยะ &gt; 20 ฟุต</value>
     <comment>Proximity to hole - long range</comment>
   </data>
-<data name="Fairways" xml:space="preserve">
-  <value>แฟร์เวย์</value>
-  <comment>Fairways section label</comment>
-</data>
-<data name="Proximity" xml:space="preserve">
-  <value>ระยะ</value>
-  <comment>Proximity section label</comment>
-</data>
+  <data name="Fairways" xml:space="preserve">
+    <value>แฟร์เวย์</value>
+    <comment>Fairways section label</comment>
+  </data>
+  <data name="Proximity" xml:space="preserve">
+    <value>ระยะ</value>
+    <comment>Proximity section label</comment>
+  </data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>ไม่พบข้อมูลการออกรอบ หรือไม่มีข้อมูลหลุม</value>
     <comment>Error when round cannot be loaded</comment>
@@ -271,7 +265,6 @@
 กรุณารีสตาร์ทแอป</value>
     <comment>Error when no player exists</comment>
   </data>
-
   <data name="JustNow" xml:space="preserve">
     <value>เมื่อสักครู่</value>
     <comment>Time ago: less than 1 minute</comment>
@@ -300,7 +293,6 @@
     <value>เล่นล่าสุด: {0}</value>
     <comment>Last played date display. {0}=formatted date</comment>
   </data>
-
   <data name="StandardCourse" xml:space="preserve">
     <value>สนามมาตรฐาน</value>
     <comment>Default 18-hole par 72 course name</comment>
@@ -321,7 +313,6 @@
     <value>ฉัน</value>
     <comment>Default player name</comment>
   </data>
-
   <data name="DefaultPlayerCreated" xml:space="preserve">
     <value>สร้างผู้เล่นเริ่มต้นแล้ว</value>
     <comment>Log message when default player is created</comment>
@@ -342,7 +333,6 @@
     <value>เกิดข้อผิดพลาดขณะโหลดหน้า: {0}</value>
     <comment>Displayed when a page fails to initialize. {0}=exception message</comment>
   </data>
-  <!-- Tag options -->
   <data name="Tag_TeeBox" xml:space="preserve">
     <value>ทีบ็อกซ์</value>
   </data>
@@ -407,7 +397,6 @@
     <value>สร้างสนามฝึกซ้อมแล้ว</value>
     <comment>Log message when practice course is created</comment>
   </data>
-
   <data name="Eagle" xml:space="preserve">
     <value>อีเกิ้ล</value>
     <comment>2 under par</comment>
@@ -432,7 +421,6 @@
     <value>ทริปเปิ้ลโบกี้</value>
     <comment>3 over par</comment>
   </data>
-
   <data name="ScoreEven" xml:space="preserve">
     <value>E</value>
     <comment>Even par score display</comment>
@@ -445,7 +433,6 @@
     <value>+{0}</value>
     <comment>Over par score display. {0}=strokes over</comment>
   </data>
-
   <data name="Home" xml:space="preserve">
     <value>หน้าแรก</value>
     <comment>Home page navigation</comment>
@@ -462,7 +449,6 @@
     <value>การตั้งค่า</value>
     <comment>Settings page navigation</comment>
   </data>
-
   <data name="SelectLanguage" xml:space="preserve">
     <value>เลือกภาษา</value>
     <comment>Language selection dialog title</comment>
@@ -475,7 +461,6 @@
     <value>กรุณารีสตาร์ทแอปเพื่อให้การเปลี่ยนภาษามีผลสมบูรณ์</value>
     <comment>Message shown after language change</comment>
   </data>
-
   <data name="Golf" xml:space="preserve">
     <value>กอล์ฟ</value>
     <comment>Golf</comment>
@@ -492,12 +477,10 @@
     <value>การออกรอบล่าสุด</value>
     <comment>Recent Rounds</comment>
   </data>
-
   <data name="Nav_Scoring" xml:space="preserve">
     <value>การทำคะแนน</value>
     <comment>Flyout/menu item for scoring</comment>
   </data>
-
   <data name="Theme_Light" xml:space="preserve">
     <value>โหมดสว่าง</value>
     <comment>Accessibility description for light theme toggle</comment>
@@ -506,7 +489,6 @@
     <value>โหมดมืด</value>
     <comment>Accessibility description for dark theme toggle</comment>
   </data>
-
   <data name="Courses" xml:space="preserve">
     <value>สนามกอล์ฟ</value>
     <comment>Courses page title</comment>
@@ -563,7 +545,6 @@
     <value>ลบ '{0}' หรือไม่?</value>
     <comment>Delete course confirmation message. {0}=course name</comment>
   </data>
-
   <data name="DeleteRoundTitle" xml:space="preserve">
     <value>ลบการออกรอบ?</value>
     <comment>Delete in-progress round dialog title</comment>
@@ -576,7 +557,6 @@
     <value>ลบรอบที่เสร็จสิ้นนี้หรือไม่?</value>
     <comment>Delete completed round confirmation message</comment>
   </data>
-
   <data name="Recent" xml:space="preserve">
     <value>ล่าสุด</value>
     <comment>Recent courses tab</comment>
@@ -678,38 +658,38 @@
     <comment>Score to par axis name</comment>
   </data>
   <data name="All" xml:space="preserve">
-  <value>ทั้งหมด</value>
-  <comment>All years picker entry</comment>
-</data>
-<data name="RoundsCountFormat" xml:space="preserve">
-  <value>รอบ ({0})</value>
-  <comment>Rounds page title with count. {0}=number of rounds</comment>
-</data>
-<data name="InProgressRounds" xml:space="preserve">
-  <value>รอบที่กำลังดำเนินการ</value>
-  <comment>Title for in-progress rounds modal/page</comment>
+    <value>ทั้งหมด</value>
+    <comment>All years picker entry</comment>
   </data>
-	<data name="DrivingStats" xml:space="preserve">
-  <value>ประสิทธิภาพการไดร์ฟ</value>
-</data>
-	<data name="LongestDrive" xml:space="preserve">
-  <value>ไกลที่สุด</value>
-</data>
-	<data name="AverageDrive" xml:space="preserve">
-  <value>เฉลี่ย</value>
-</data>
-	<data name="ClubDistances" xml:space="preserve">
-  <value>ระยะไม้กอล์ฟ</value>
-</data>
-	<data name="ApproachAccuracy" xml:space="preserve">
-  <value>ความแม่นยำในการขึ้นกรีน</value>
-</data>
-	<data name="ApproachZones" xml:space="preserve">
-  <value>การตีขึ้นกรีนแบ่งตามโซน</value>
-</data>
-	<data name="DrivingPerformance" xml:space="preserve">
-  <value>ประสิทธิภาพการไดร์ฟ</value>
-</data>
+  <data name="RoundsCountFormat" xml:space="preserve">
+    <value>รอบ ({0})</value>
+    <comment>Rounds page title with count. {0}=number of rounds</comment>
+  </data>
+  <data name="InProgressRounds" xml:space="preserve">
+    <value>รอบที่กำลังดำเนินการ</value>
+    <comment>Title for in-progress rounds modal/page</comment>
+  </data>
+  <data name="DrivingStats" xml:space="preserve">
+    <value>ประสิทธิภาพการไดร์ฟ</value>
+  </data>
+  <data name="LongestDrive" xml:space="preserve">
+    <value>ไกลที่สุด</value>
+  </data>
+  <data name="AverageDrive" xml:space="preserve">
+    <value>เฉลี่ย</value>
+  </data>
+  <data name="ClubDistances" xml:space="preserve">
+    <value>ระยะไม้กอล์ฟ</value>
+  </data>
+  <data name="ApproachAccuracy" xml:space="preserve">
+    <value>ความแม่นยำในการขึ้นกรีน</value>
+  </data>
+  <data name="ApproachZones" xml:space="preserve">
+    <value>การตีขึ้นกรีนแบ่งตามโซน</value>
+  </data>
+  <data name="DrivingPerformance" xml:space="preserve">
+    <value>ประสิทธิภาพการไดร์ฟ</value>
+  </data>
   <data name="GpsPermissionDenied" xml:space="preserve">
     <value>🔴 ถูกปฏิเสธสิทธิ์</value>
   </data>
@@ -739,5 +719,13 @@
   </data>
   <data name="GpsLowAccuracyMessage" xml:space="preserve">
     <value>ไม่สามารถรับสัญญาณ GPS ที่แม่นยำได้ (ต้องการ ≤{0:F0}ม.) กรุณาย้ายไปยังพื้นที่โล่งห่างจากต้นไม้และอาคาร แล้วลองอีกครั้ง</value>
+  </data>
+  <data name="UnsavedChangesPrompt" xml:space="preserve">
+    <value>คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก</value>
+    <comment>Localized text for UnsavedChangesPrompt</comment>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>ละทิ้ง</value>
+    <comment>Localized text for Discard</comment>
   </data>
 </root>

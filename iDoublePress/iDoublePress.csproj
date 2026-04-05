@@ -139,9 +139,9 @@
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net10.0-ios'">
-	  <CodesignKey>iPhone Distribution</CodesignKey>
+	  <CodesignKey>Apple Development</CodesignKey>
 	  <ProvisioningType>manual</ProvisioningType>
-	  <CodesignProvision>Gimme Distribution Profile</CodesignProvision>
+	  <CodesignProvision>Gimme Development on HyperIOS</CodesignProvision>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">

@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0"/>
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string"/>
+              <xs:attribute name="type" type="xsd:string"/>
+              <xs:attribute name="mimetype" type="xsd:string"/>
+              <xs:attribute ref="xml:space"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string"/>
+              <xs:attribute name="name" type="xsd:string"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1"/>
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3"/>
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4"/>
+              <xs:attribute ref="xml:space" ns1:Ordinal="5"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -58,7 +58,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
   <data name="AppName" xml:space="preserve">
     <value>Gimme</value>
     <comment>Application name</comment>
@@ -91,7 +90,6 @@
     <value>삭제</value>
     <comment>Delete button text</comment>
   </data>
-
   <data name="Resume" xml:space="preserve">
     <value>재개</value>
     <comment>Resume button text</comment>
@@ -108,7 +106,6 @@
     <value>{0}에서 진행 중인 라운드가 있습니다.
 시작: {1}
 진행: {2}/{3} 홀
-
 재개하시겠습니까?</value>
     <comment>Message for resume round dialog. {0}=course name, {1}=time ago, {2}=holes completed, {3}=total holes</comment>
   </data>
@@ -128,16 +125,15 @@
     <value>코스를 선택하세요</value>
     <comment>Select course instruction label</comment>
   </data>
-
   <data name="CompleteRoundTitle" xml:space="preserve">
     <value>라운드 종료?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-	<data name="GPSPageTitle" xml:space="preserve">
+  <data name="GPSPageTitle" xml:space="preserve">
     <value>GPS 페이지</value>
     <comment>Title for GPS Page</comment>
   </data>
-	<data name="CompleteRoundMessage" xml:space="preserve">
+  <data name="CompleteRoundMessage" xml:space="preserve">
     <value>최종 스코어는 {0} ({1})입니다.
 이 라운드를 완료로 표시하시겠습니까?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>
@@ -168,7 +164,6 @@
     <value>포기</value>
     <comment>Abandon button text</comment>
   </data>
-
   <data name="ActiveRound" xml:space="preserve">
     <value>진행 중인 라운드</value>
     <comment>Active round page title</comment>
@@ -213,7 +208,6 @@
     <value>벌타</value>
     <comment>Penalty label</comment>
   </data>
-
   <data name="Front9" xml:space="preserve">
     <value>전반 9홀</value>
     <comment>Front nine holes label</comment>
@@ -254,14 +248,14 @@
     <value>거리 &gt; 20ft</value>
     <comment>Proximity to hole - long range</comment>
   </data>
-<data name="Fairways" xml:space="preserve">
-  <value>페어웨이</value>
-  <comment>Fairways section label</comment>
-</data>
-<data name="Proximity" xml:space="preserve">
-  <value>거리</value>
-  <comment>Proximity section label</comment>
-</data>
+  <data name="Fairways" xml:space="preserve">
+    <value>페어웨이</value>
+    <comment>Fairways section label</comment>
+  </data>
+  <data name="Proximity" xml:space="preserve">
+    <value>거리</value>
+    <comment>Proximity section label</comment>
+  </data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>라운드를 찾을 수 없거나 홀 정보가 없습니다</value>
     <comment>Error when round cannot be loaded</comment>
@@ -271,7 +265,6 @@
 앱을 다시 시작하세요.</value>
     <comment>Error when no player exists</comment>
   </data>
-
   <data name="JustNow" xml:space="preserve">
     <value>방금 전</value>
     <comment>Time ago: less than 1 minute</comment>
@@ -300,7 +293,6 @@
     <value>최근 플레이: {0}</value>
     <comment>Last played date display. {0}=formatted date</comment>
   </data>
-
   <data name="StandardCourse" xml:space="preserve">
     <value>표준 코스</value>
     <comment>Default 18-hole par 72 course name</comment>
@@ -321,7 +313,6 @@
     <value>나</value>
     <comment>Default player name</comment>
   </data>
-
   <data name="DefaultPlayerCreated" xml:space="preserve">
     <value>기본 플레이어 생성됨</value>
     <comment>Log message when default player is created</comment>
@@ -342,7 +333,6 @@
     <value>페이지 로드 오류: {0}</value>
     <comment>Displayed when a page fails to initialize. {0}=exception message</comment>
   </data>
-  <!-- Tag options -->
   <data name="Tag_TeeBox" xml:space="preserve">
     <value>티박스</value>
   </data>
@@ -407,7 +397,6 @@
     <value>연습 코스 생성됨</value>
     <comment>Log message when practice course is created</comment>
   </data>
-
   <data name="Eagle" xml:space="preserve">
     <value>이글</value>
     <comment>2 under par</comment>
@@ -432,7 +421,6 @@
     <value>트리플 보기</value>
     <comment>3 over par</comment>
   </data>
-
   <data name="ScoreEven" xml:space="preserve">
     <value>E</value>
     <comment>Even par score display</comment>
@@ -445,7 +433,6 @@
     <value>+{0}</value>
     <comment>Over par score display. {0}=strokes over</comment>
   </data>
-
   <data name="Home" xml:space="preserve">
     <value>홈</value>
     <comment>Home page navigation</comment>
@@ -462,7 +449,6 @@
     <value>설정</value>
     <comment>Settings page navigation</comment>
   </data>
-
   <data name="SelectLanguage" xml:space="preserve">
     <value>언어 선택</value>
     <comment>Language selection dialog title</comment>
@@ -475,7 +461,6 @@
     <value>언어 변경을 완전히 적용하려면 앱을 다시 시작하세요.</value>
     <comment>Message shown after language change</comment>
   </data>
-
   <data name="Golf" xml:space="preserve">
     <value>골프</value>
     <comment>Golf</comment>
@@ -492,12 +477,10 @@
     <value>최근 라운드</value>
     <comment>Recent Rounds</comment>
   </data>
-
   <data name="Nav_Scoring" xml:space="preserve">
     <value>스코어링</value>
     <comment>Flyout/menu item for scoring</comment>
   </data>
-
   <data name="Theme_Light" xml:space="preserve">
     <value>라이트 모드</value>
     <comment>Accessibility description for light theme toggle</comment>
@@ -506,7 +489,6 @@
     <value>다크 모드</value>
     <comment>Accessibility description for dark theme toggle</comment>
   </data>
-
   <data name="Courses" xml:space="preserve">
     <value>코스</value>
     <comment>Courses page title</comment>
@@ -563,7 +545,6 @@
     <value>'{0}' 코스를 삭제하시겠습니까?</value>
     <comment>Delete course confirmation message. {0}=course name</comment>
   </data>
-
   <data name="DeleteRoundTitle" xml:space="preserve">
     <value>라운드 삭제?</value>
     <comment>Delete in-progress round dialog title</comment>
@@ -576,7 +557,6 @@
     <value>완료된 이 라운드를 삭제하시겠습니까?</value>
     <comment>Delete completed round confirmation message</comment>
   </data>
-
   <data name="Recent" xml:space="preserve">
     <value>최근</value>
     <comment>Recent courses tab</comment>
@@ -678,38 +658,38 @@
     <comment>Score to par axis name</comment>
   </data>
   <data name="All" xml:space="preserve">
-  <value>모두</value>
-  <comment>All years picker entry</comment>
-</data>
-<data name="RoundsCountFormat" xml:space="preserve">
-  <value>라운드 ({0})</value>
-  <comment>Rounds page title with count. {0}=number of rounds</comment>
-</data>
-<data name="InProgressRounds" xml:space="preserve">
-  <value>진행 중인 라운드</value>
-  <comment>Title for in-progress rounds modal/page</comment>
-</data>
-	<data name="DrivingStats" xml:space="preserve">
-  <value>드라이브 퍼포먼스</value>
-</data>
-	<data name="LongestDrive" xml:space="preserve">
-  <value>최장 거리</value>
-</data>
-	<data name="AverageDrive" xml:space="preserve">
-  <value>평균</value>
-</data>
-	<data name="ClubDistances" xml:space="preserve">
-  <value>클럽별 거리</value>
-</data>
-	<data name="ApproachAccuracy" xml:space="preserve">
-  <value>어프로치 정확도</value>
-</data>
-	<data name="ApproachZones" xml:space="preserve">
-  <value>구역별 그린 적중</value>
-</data>
-	<data name="DrivingPerformance" xml:space="preserve">
-  <value>드라이빙 성과</value>
-</data>
+    <value>모두</value>
+    <comment>All years picker entry</comment>
+  </data>
+  <data name="RoundsCountFormat" xml:space="preserve">
+    <value>라운드 ({0})</value>
+    <comment>Rounds page title with count. {0}=number of rounds</comment>
+  </data>
+  <data name="InProgressRounds" xml:space="preserve">
+    <value>진행 중인 라운드</value>
+    <comment>Title for in-progress rounds modal/page</comment>
+  </data>
+  <data name="DrivingStats" xml:space="preserve">
+    <value>드라이브 퍼포먼스</value>
+  </data>
+  <data name="LongestDrive" xml:space="preserve">
+    <value>최장 거리</value>
+  </data>
+  <data name="AverageDrive" xml:space="preserve">
+    <value>평균</value>
+  </data>
+  <data name="ClubDistances" xml:space="preserve">
+    <value>클럽별 거리</value>
+  </data>
+  <data name="ApproachAccuracy" xml:space="preserve">
+    <value>어프로치 정확도</value>
+  </data>
+  <data name="ApproachZones" xml:space="preserve">
+    <value>구역별 그린 적중</value>
+  </data>
+  <data name="DrivingPerformance" xml:space="preserve">
+    <value>드라이빙 성과</value>
+  </data>
   <data name="GpsPermissionDenied" xml:space="preserve">
     <value>🔴 권한 거부됨</value>
   </data>
@@ -739,5 +719,13 @@
   </data>
   <data name="GpsLowAccuracyMessage" xml:space="preserve">
     <value>정확한 GPS 신호를 받을 수 없습니다 (≤{0:F0}m 필요). 나무와 건물에서 벗어난 개방된 곳으로 이동한 후 다시 시도하세요.</value>
+  </data>
+  <data name="UnsavedChangesPrompt" xml:space="preserve">
+    <value>저장되지 않은 변경 사항이 있습니다.</value>
+    <comment>Localized text for UnsavedChangesPrompt</comment>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>변경 내용 버리기</value>
+    <comment>Localized text for Discard</comment>
   </data>
 </root>

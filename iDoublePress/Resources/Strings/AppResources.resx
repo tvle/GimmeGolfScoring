@@ -1,110 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0"/>
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string"/>
+              <xs:attribute name="type" type="xsd:string"/>
+              <xs:attribute name="mimetype" type="xsd:string"/>
+              <xs:attribute ref="xml:space"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string"/>
+              <xs:attribute name="name" type="xsd:string"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1"/>
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3"/>
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4"/>
+              <xs:attribute ref="xml:space" ns1:Ordinal="5"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -117,7 +58,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <!-- Common UI Strings -->
   <data name="AppName" xml:space="preserve">
     <value>Gimme</value>
     <comment>Application name</comment>
@@ -158,7 +98,6 @@
     <value>Rounds ({0})</value>
     <comment>Rounds page title with count. {0}=number of rounds</comment>
   </data>
-  <!-- Golf Round Management -->
   <data name="Resume" xml:space="preserve">
     <value>Resume</value>
     <comment>Resume button text</comment>
@@ -175,7 +114,6 @@
     <value>You have a round in progress at {0}.
 Started: {1}
 Progress: {2}/{3} holes
-
 Resume it?</value>
     <comment>Message for resume round dialog. {0}=course name, {1}=time ago, {2}=holes completed, {3}=total holes</comment>
   </data>
@@ -195,12 +133,11 @@ Resume it?</value>
     <value>Select a course</value>
     <comment>Select course instruction label</comment>
   </data>
-  <!-- Complete/Abandon Round -->
   <data name="CompleteRoundTitle" xml:space="preserve">
     <value>Complete Round?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-	<data name="GPSPageTitle" xml:space="preserve">
+  <data name="GPSPageTitle" xml:space="preserve">
     <value>GPS Page</value>
     <comment>Title for GPS Page</comment>
   </data>
@@ -232,7 +169,6 @@ Resume it?</value>
     <value>Abandon</value>
     <comment>Abandon button text</comment>
   </data>
-  <!-- Active Round Page -->
   <data name="ActiveRound" xml:space="preserve">
     <value>Active Round</value>
     <comment>Active round page title</comment>
@@ -277,7 +213,6 @@ Resume it?</value>
     <value>Penalty</value>
     <comment>Penalty label</comment>
   </data>
-  <!-- Round Summary Stats -->
   <data name="Front9" xml:space="preserve">
     <value>Front 9</value>
     <comment>Front nine holes label</comment>
@@ -319,14 +254,13 @@ Resume it?</value>
     <comment>Proximity to hole - long range</comment>
   </data>
   <data name="Fairways" xml:space="preserve">
-  <value>Fairways</value>
-  <comment>Fairways section label</comment>
-</data>
+    <value>Fairways</value>
+    <comment>Fairways section label</comment>
+  </data>
   <data name="Proximity" xml:space="preserve">
-  <value>Proximity</value>
-  <comment>Proximity section label</comment>
-</data>
-  <!-- Error Messages -->
+    <value>Proximity</value>
+    <comment>Proximity section label</comment>
+  </data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>Round not found or has no holes</value>
     <comment>Error when round cannot be loaded</comment>
@@ -335,7 +269,6 @@ Resume it?</value>
     <value>No player found. Please restart the app.</value>
     <comment>Error when no player exists</comment>
   </data>
-  <!-- Time Formatting -->
   <data name="JustNow" xml:space="preserve">
     <value>Just now</value>
     <comment>Time ago: less than 1 minute</comment>
@@ -364,7 +297,6 @@ Resume it?</value>
     <value>Last played: {0}</value>
     <comment>Last played date display. {0}=formatted date</comment>
   </data>
-  <!-- Default Course/Player Names -->
   <data name="StandardCourse" xml:space="preserve">
     <value>Standard Course</value>
     <comment>Default 18-hole par 72 course name</comment>
@@ -385,7 +317,6 @@ Resume it?</value>
     <value>Me</value>
     <comment>Default player name</comment>
   </data>
-  <!-- Seed Data Messages -->
   <data name="DefaultPlayerCreated" xml:space="preserve">
     <value>Default player created</value>
     <comment>Log message when default player is created</comment>
@@ -406,7 +337,6 @@ Resume it?</value>
     <value>Page load error: {0}</value>
     <comment>Displayed when a page fails to initialize. {0}=exception message</comment>
   </data>
-  <!-- Tag options -->
   <data name="Tag_TeeBox" xml:space="preserve">
     <value>Tee Box</value>
   </data>
@@ -471,7 +401,6 @@ Resume it?</value>
     <value>Practice course created</value>
     <comment>Log message when practice course is created</comment>
   </data>
-  <!-- Golf Scoring Terms -->
   <data name="Eagle" xml:space="preserve">
     <value>Eagle</value>
     <comment>2 under par</comment>
@@ -496,7 +425,6 @@ Resume it?</value>
     <value>Triple Bogey</value>
     <comment>3 over par</comment>
   </data>
-  <!-- Score Display -->
   <data name="ScoreEven" xml:space="preserve">
     <value>E</value>
     <comment>Even par score display</comment>
@@ -509,7 +437,6 @@ Resume it?</value>
     <value>+{0}</value>
     <comment>Over par score display. {0}=strokes over</comment>
   </data>
-  <!-- Navigation -->
   <data name="Home" xml:space="preserve">
     <value>Home</value>
     <comment>Home page navigation</comment>
@@ -526,7 +453,6 @@ Resume it?</value>
     <value>Settings</value>
     <comment>Settings page navigation</comment>
   </data>
-  <!-- Language Selection -->
   <data name="SelectLanguage" xml:space="preserve">
     <value>Select Language</value>
     <comment>Language selection dialog title</comment>
@@ -555,12 +481,10 @@ Resume it?</value>
     <value>Recent Rounds</value>
     <comment>Recent Rounds</comment>
   </data>
-  <!-- Navigation -->
   <data name="Nav_Scoring" xml:space="preserve">
     <value>Scoring</value>
     <comment>Flyout/menu item for scoring</comment>
   </data>
-  <!-- Theme -->
   <data name="Theme_Light" xml:space="preserve">
     <value>Light mode</value>
     <comment>Accessibility description for light theme toggle</comment>
@@ -569,7 +493,6 @@ Resume it?</value>
     <value>Dark mode</value>
     <comment>Accessibility description for dark theme toggle</comment>
   </data>
-  <!-- Courses -->
   <data name="Courses" xml:space="preserve">
     <value>Courses</value>
     <comment>Courses page title</comment>
@@ -626,7 +549,6 @@ Resume it?</value>
     <value>Delete '{0}'?</value>
     <comment>Delete course confirmation message. {0}=course name</comment>
   </data>
-  <!-- In-Progress Rounds -->
   <data name="DeleteRoundTitle" xml:space="preserve">
     <value>Delete round?</value>
     <comment>Delete in-progress round dialog title</comment>
@@ -635,15 +557,14 @@ Resume it?</value>
     <value>Delete this in-progress round?</value>
     <comment>Delete in-progress round confirmation message</comment>
   </data>
-	<data name="DeleteCompletedRoundMessage" xml:space="preserve">
+  <data name="DeleteCompletedRoundMessage" xml:space="preserve">
     <value>Delete this completed round?</value>
     <comment>Delete in-progress round confirmation message</comment>
   </data>
-	<data name="InProgressRounds" xml:space="preserve">
+  <data name="InProgressRounds" xml:space="preserve">
     <value>In-Progress Rounds</value>
     <comment>Title for in-progress rounds modal/page</comment>
   </data>
-  <!-- Course Selection Tabs -->
   <data name="Recent" xml:space="preserve">
     <value>Recent</value>
     <comment>Recent courses tab</comment>
@@ -652,7 +573,6 @@ Resume it?</value>
     <value>All Courses</value>
     <comment>All courses tab</comment>
   </data>
-  <!-- Analysis Page -->
   <data name="Analysis" xml:space="preserve">
     <value>Analysis</value>
     <comment>Analysis page title</comment>
@@ -745,26 +665,26 @@ Resume it?</value>
     <value>Score to Par</value>
     <comment>Score to par axis name</comment>
   </data>
-	<data name="DrivingStats" xml:space="preserve">
-  <value>Driving Performance</value>
-</data>
-	<data name="LongestDrive" xml:space="preserve">
-  <value>Longest</value>
-</data>
-	<data name="AverageDrive" xml:space="preserve">
-  <value>Average</value>
-</data>
-	<data name="ClubDistances" xml:space="preserve">
-  <value>Club Distances</value>
-</data>
-	<data name="ApproachAccuracy" xml:space="preserve">
-  <value>Approach Accuracy</value>
-</data>
-	<data name="DrivingPerformance" xml:space="preserve">
+  <data name="DrivingStats" xml:space="preserve">
+    <value>Driving Performance</value>
+  </data>
+  <data name="LongestDrive" xml:space="preserve">
+    <value>Longest</value>
+  </data>
+  <data name="AverageDrive" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="ClubDistances" xml:space="preserve">
+    <value>Club Distances</value>
+  </data>
+  <data name="ApproachAccuracy" xml:space="preserve">
+    <value>Approach Accuracy</value>
+  </data>
+  <data name="DrivingPerformance" xml:space="preserve">
     <value>Driving Performance</value>
     <comment>Driving performance section title</comment>
   </data>
-	<data name="ApproachZones" xml:space="preserve">
+  <data name="ApproachZones" xml:space="preserve">
     <value>Green hits by zone</value>
     <comment>Subtitle for approach accuracy chart</comment>
   </data>
@@ -807,5 +727,13 @@ Resume it?</value>
   <data name="GpsLowAccuracyMessage" xml:space="preserve">
     <value>Unable to get an accurate GPS fix (need ≤{0:F0}m). Please move to an open area away from trees and buildings, then try again.</value>
     <comment>Alert message when GPS accuracy is too low. {0}=threshold meters</comment>
+  </data>
+  <data name="UnsavedChangesPrompt" xml:space="preserve">
+    <value>You have unsaved changes.</value>
+    <comment>Localized text for UnsavedChangesPrompt</comment>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>Discard</value>
+    <comment>Localized text for Discard</comment>
   </data>
 </root>

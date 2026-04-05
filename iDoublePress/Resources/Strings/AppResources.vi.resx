@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0"/>
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string"/>
+              <xs:attribute name="type" type="xsd:string"/>
+              <xs:attribute name="mimetype" type="xsd:string"/>
+              <xs:attribute ref="xml:space"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string"/>
+              <xs:attribute name="name" type="xsd:string"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1"/>
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3"/>
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4"/>
+              <xs:attribute ref="xml:space" ns1:Ordinal="5"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -58,7 +58,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
   <data name="AppName" xml:space="preserve">
     <value>Gimme</value>
     <comment>Application name</comment>
@@ -91,7 +90,6 @@
     <value>Xóa</value>
     <comment>Delete button text</comment>
   </data>
-
   <data name="Resume" xml:space="preserve">
     <value>Tiếp tục</value>
     <comment>Resume button text</comment>
@@ -108,7 +106,6 @@
     <value>Bạn có một vòng chơi đang dang dở tại {0}.
 Bắt đầu: {1}
 Tiến độ: {2}/{3} hố
-
 Bạn có muốn tiếp tục không?</value>
     <comment>Message for resume round dialog. {0}=course name, {1}=time ago, {2}=holes completed, {3}=total holes</comment>
   </data>
@@ -128,16 +125,15 @@ Bạn có muốn tiếp tục không?</value>
     <value>Chọn một sân golf</value>
     <comment>Select course instruction label</comment>
   </data>
-
   <data name="CompleteRoundTitle" xml:space="preserve">
     <value>Hoàn thành vòng chơi?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-	<data name="GPSPageTitle" xml:space="preserve">
+  <data name="GPSPageTitle" xml:space="preserve">
     <value>Trang GPS</value>
     <comment>Title for GPS Page</comment>
   </data>
-	<data name="CompleteRoundMessage" xml:space="preserve">
+  <data name="CompleteRoundMessage" xml:space="preserve">
     <value>Tổng điểm của bạn là {0} ({1}).
 Đánh dấu vòng chơi này là hoàn thành?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>
@@ -168,7 +164,6 @@ Dữ liệu sẽ không được lưu.</value>
     <value>Hủy bỏ</value>
     <comment>Abandon button text</comment>
   </data>
-
   <data name="ActiveRound" xml:space="preserve">
     <value>Vòng đang chơi</value>
     <comment>Active round page title</comment>
@@ -213,7 +208,6 @@ Dữ liệu sẽ không được lưu.</value>
     <value>Phạt</value>
     <comment>Penalty label</comment>
   </data>
-
   <data name="Front9" xml:space="preserve">
     <value>9 Hố Đầu</value>
     <comment>Front nine holes label</comment>
@@ -254,14 +248,14 @@ Dữ liệu sẽ không được lưu.</value>
     <value>Khoảng cách &gt; 20ft</value>
     <comment>Proximity to hole - long range</comment>
   </data>
-<data name="Fairways" xml:space="preserve">
-  <value>Fairway</value>
-  <comment>Fairways section label</comment>
-</data>
-<data name="Proximity" xml:space="preserve">
-  <value>Khoảng cách</value>
-  <comment>Proximity section label</comment>
-</data>
+  <data name="Fairways" xml:space="preserve">
+    <value>Fairway</value>
+    <comment>Fairways section label</comment>
+  </data>
+  <data name="Proximity" xml:space="preserve">
+    <value>Khoảng cách</value>
+    <comment>Proximity section label</comment>
+  </data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>Không tìm thấy vòng chơi hoặc không có hố nào</value>
     <comment>Error when round cannot be loaded</comment>
@@ -271,7 +265,6 @@ Dữ liệu sẽ không được lưu.</value>
 Vui lòng khởi động lại ứng dụng.</value>
     <comment>Error when no player exists</comment>
   </data>
-
   <data name="JustNow" xml:space="preserve">
     <value>Vừa xong</value>
     <comment>Time ago: less than 1 minute</comment>
@@ -300,7 +293,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Chơi lần cuối: {0}</value>
     <comment>Last played date display. {0}=formatted date</comment>
   </data>
-
   <data name="StandardCourse" xml:space="preserve">
     <value>Sân Tiêu Chuẩn</value>
     <comment>Default 18-hole par 72 course name</comment>
@@ -321,7 +313,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Tôi</value>
     <comment>Default player name</comment>
   </data>
-
   <data name="DefaultPlayerCreated" xml:space="preserve">
     <value>Đã tạo người chơi mặc định</value>
     <comment>Log message when default player is created</comment>
@@ -342,7 +333,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Lỗi tải trang: {0}</value>
     <comment>Displayed when a page fails to initialize. {0}=exception message</comment>
   </data>
-  <!-- Tag options -->
   <data name="Tag_TeeBox" xml:space="preserve">
     <value>Khu phát bóng</value>
   </data>
@@ -407,7 +397,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Đã tạo sân tập</value>
     <comment>Log message when practice course is created</comment>
   </data>
-
   <data name="Eagle" xml:space="preserve">
     <value>Eagle</value>
     <comment>2 under par</comment>
@@ -432,7 +421,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Triple Bogey</value>
     <comment>3 over par</comment>
   </data>
-
   <data name="ScoreEven" xml:space="preserve">
     <value>E</value>
     <comment>Even par score display</comment>
@@ -445,7 +433,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>+{0}</value>
     <comment>Over par score display. {0}=strokes over</comment>
   </data>
-
   <data name="Home" xml:space="preserve">
     <value>Trang chủ</value>
     <comment>Home page navigation</comment>
@@ -462,7 +449,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Cài đặt</value>
     <comment>Settings page navigation</comment>
   </data>
-
   <data name="SelectLanguage" xml:space="preserve">
     <value>Chọn Ngôn Ngữ</value>
     <comment>Language selection dialog title</comment>
@@ -475,7 +461,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Vui lòng khởi động lại ứng dụng để thay đổi ngôn ngữ có hiệu lực hoàn toàn.</value>
     <comment>Message shown after language change</comment>
   </data>
-
   <data name="Golf" xml:space="preserve">
     <value>Golf</value>
     <comment>Golf</comment>
@@ -492,12 +477,10 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Vòng Chơi Gần Đây</value>
     <comment>Recent Rounds</comment>
   </data>
-
   <data name="Nav_Scoring" xml:space="preserve">
     <value>Ghi điểm</value>
     <comment>Flyout/menu item for scoring</comment>
   </data>
-
   <data name="Theme_Light" xml:space="preserve">
     <value>Chế độ sáng</value>
     <comment>Accessibility description for light theme toggle</comment>
@@ -506,7 +489,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Chế độ tối</value>
     <comment>Accessibility description for dark theme toggle</comment>
   </data>
-
   <data name="Courses" xml:space="preserve">
     <value>Sân golf</value>
     <comment>Courses page title</comment>
@@ -563,7 +545,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Xóa '{0}'?</value>
     <comment>Delete course confirmation message. {0}=course name</comment>
   </data>
-
   <data name="DeleteRoundTitle" xml:space="preserve">
     <value>Xóa vòng chơi?</value>
     <comment>Delete in-progress round dialog title</comment>
@@ -576,7 +557,6 @@ Vui lòng khởi động lại ứng dụng.</value>
     <value>Xóa vòng chơi đã hoàn thành này?</value>
     <comment>Delete completed round confirmation message</comment>
   </data>
-
   <data name="Recent" xml:space="preserve">
     <value>Gần đây</value>
     <comment>Recent courses tab</comment>
@@ -678,38 +658,38 @@ Vui lòng khởi động lại ứng dụng.</value>
     <comment>Score to par axis name</comment>
   </data>
   <data name="All" xml:space="preserve">
-  <value>Tất cả</value>
-  <comment>All years picker entry</comment>
-</data>
-<data name="RoundsCountFormat" xml:space="preserve">
-  <value>Vòng ({0})</value>
-  <comment>Rounds page title with count. {0}=number of rounds</comment>
-</data>
-<data name="InProgressRounds" xml:space="preserve">
-  <value>Các vòng đang tiến hành</value>
-  <comment>Title for in-progress rounds modal/page</comment>
-</data>
-	<data name="DrivingStats" xml:space="preserve">
-  <value>Hiệu suất phát bóng</value>
-</data>
-	<data name="LongestDrive" xml:space="preserve">
-  <value>Xa nhất</value>
-</data>
-	<data name="AverageDrive" xml:space="preserve">
-  <value>Trung bình</value>
-</data>
-	<data name="ClubDistances" xml:space="preserve">
-  <value>Khoảng cách gậy</value>
-</data>
-	<data name="ApproachAccuracy" xml:space="preserve">
-  <value>Độ chính xác tiếp cận</value>
-</data>
-	<data name="ApproachZones" xml:space="preserve">
-  <value>Lên green theo khu vực</value>
-</data>
-	<data name="DrivingPerformance" xml:space="preserve">
-  <value>Hiệu suất phát bóng</value>
-</data>
+    <value>Tất cả</value>
+    <comment>All years picker entry</comment>
+  </data>
+  <data name="RoundsCountFormat" xml:space="preserve">
+    <value>Vòng ({0})</value>
+    <comment>Rounds page title with count. {0}=number of rounds</comment>
+  </data>
+  <data name="InProgressRounds" xml:space="preserve">
+    <value>Các vòng đang tiến hành</value>
+    <comment>Title for in-progress rounds modal/page</comment>
+  </data>
+  <data name="DrivingStats" xml:space="preserve">
+    <value>Hiệu suất phát bóng</value>
+  </data>
+  <data name="LongestDrive" xml:space="preserve">
+    <value>Xa nhất</value>
+  </data>
+  <data name="AverageDrive" xml:space="preserve">
+    <value>Trung bình</value>
+  </data>
+  <data name="ClubDistances" xml:space="preserve">
+    <value>Khoảng cách gậy</value>
+  </data>
+  <data name="ApproachAccuracy" xml:space="preserve">
+    <value>Độ chính xác tiếp cận</value>
+  </data>
+  <data name="ApproachZones" xml:space="preserve">
+    <value>Lên green theo khu vực</value>
+  </data>
+  <data name="DrivingPerformance" xml:space="preserve">
+    <value>Hiệu suất phát bóng</value>
+  </data>
   <data name="GpsPermissionDenied" xml:space="preserve">
     <value>🔴 Quyền bị từ chối</value>
   </data>
@@ -740,4 +720,12 @@ Vui lòng khởi động lại ứng dụng.</value>
   <data name="GpsLowAccuracyMessage" xml:space="preserve">
     <value>Không thể nhận tín hiệu GPS chính xác (cần ≤{0:F0}m). Vui lòng di chuyển đến khu vực trống tránh xa cây cối và tòa nhà, rồi thử lại.</value>
   </data>
-  </root>
+  <data name="UnsavedChangesPrompt" xml:space="preserve">
+    <value>Bạn có các thay đổi chưa được lưu.</value>
+    <comment>Localized text for UnsavedChangesPrompt</comment>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>Bỏ thay đổi</value>
+    <comment>Localized text for Discard</comment>
+  </data>
+</root>

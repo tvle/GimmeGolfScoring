@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0"/>
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string"/>
+              <xs:attribute name="type" type="xsd:string"/>
+              <xs:attribute name="mimetype" type="xsd:string"/>
+              <xs:attribute ref="xml:space"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string"/>
+              <xs:attribute name="name" type="xsd:string"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1"/>
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3"/>
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4"/>
+              <xs:attribute ref="xml:space" ns1:Ordinal="5"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1"/>
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -58,7 +58,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
   <data name="AppName" xml:space="preserve">
     <value>Gimme</value>
     <comment>Application name</comment>
@@ -91,7 +90,6 @@
     <value>Elimina</value>
     <comment>Delete button text</comment>
   </data>
-
   <data name="Resume" xml:space="preserve">
     <value>Riprendi</value>
     <comment>Resume button text</comment>
@@ -108,7 +106,6 @@
     <value>Hai un giro in corso a {0}.
 Iniziato: {1}
 Progresso: {2}/{3} buche
-
 Vuoi riprenderlo?</value>
     <comment>Message for resume round dialog. {0}=course name, {1}=time ago, {2}=holes completed, {3}=total holes</comment>
   </data>
@@ -128,16 +125,15 @@ Vuoi riprenderlo?</value>
     <value>Seleziona un campo</value>
     <comment>Select course instruction label</comment>
   </data>
-
   <data name="CompleteRoundTitle" xml:space="preserve">
     <value>Completare il giro?</value>
     <comment>Title for complete round confirmation</comment>
   </data>
-	<data name="GPSPageTitle" xml:space="preserve">
+  <data name="GPSPageTitle" xml:space="preserve">
     <value>Pagina GPS</value>
     <comment>Title for GPS Page</comment>
   </data>
-	<data name="CompleteRoundMessage" xml:space="preserve">
+  <data name="CompleteRoundMessage" xml:space="preserve">
     <value>Il tuo punteggio finale è {0} ({1}).
 Segnare questo giro come completato?</value>
     <comment>Complete round message. {0}=total score, {1}=score relative to par</comment>
@@ -168,7 +164,6 @@ Non verrà salvato.</value>
     <value>Abbandona</value>
     <comment>Abandon button text</comment>
   </data>
-
   <data name="ActiveRound" xml:space="preserve">
     <value>Giro attivo</value>
     <comment>Active round page title</comment>
@@ -213,7 +208,6 @@ Non verrà salvato.</value>
     <value>Penalità</value>
     <comment>Penalty label</comment>
   </data>
-
   <data name="Front9" xml:space="preserve">
     <value>Prime 9</value>
     <comment>Front nine holes label</comment>
@@ -254,14 +248,14 @@ Non verrà salvato.</value>
     <value>Distanza &gt; 20ft</value>
     <comment>Proximity to hole - long range</comment>
   </data>
-<data name="Fairways" xml:space="preserve">
-  <value>Fairway</value>
-  <comment>Fairways section label</comment>
-</data>
-<data name="Proximity" xml:space="preserve">
-  <value>Distanza</value>
-  <comment>Proximity section label</comment>
-</data>
+  <data name="Fairways" xml:space="preserve">
+    <value>Fairway</value>
+    <comment>Fairways section label</comment>
+  </data>
+  <data name="Proximity" xml:space="preserve">
+    <value>Distanza</value>
+    <comment>Proximity section label</comment>
+  </data>
   <data name="RoundNotFound" xml:space="preserve">
     <value>Giro non trovato o senza buche</value>
     <comment>Error when round cannot be loaded</comment>
@@ -271,7 +265,6 @@ Non verrà salvato.</value>
 Riavvia l'applicazione.</value>
     <comment>Error when no player exists</comment>
   </data>
-
   <data name="JustNow" xml:space="preserve">
     <value>Proprio ora</value>
     <comment>Time ago: less than 1 minute</comment>
@@ -300,7 +293,6 @@ Riavvia l'applicazione.</value>
     <value>Ultima partita: {0}</value>
     <comment>Last played date display. {0}=formatted date</comment>
   </data>
-
   <data name="StandardCourse" xml:space="preserve">
     <value>Campo Standard</value>
     <comment>Default 18-hole par 72 course name</comment>
@@ -321,7 +313,6 @@ Riavvia l'applicazione.</value>
     <value>Io</value>
     <comment>Default player name</comment>
   </data>
-
   <data name="DefaultPlayerCreated" xml:space="preserve">
     <value>Giocatore predefinito creato</value>
     <comment>Log message when default player is created</comment>
@@ -406,7 +397,6 @@ Riavvia l'applicazione.</value>
     <value>Campo pratica creato</value>
     <comment>Log message when practice course is created</comment>
   </data>
-
   <data name="Eagle" xml:space="preserve">
     <value>Eagle</value>
     <comment>2 under par</comment>
@@ -431,7 +421,6 @@ Riavvia l'applicazione.</value>
     <value>Triplo Bogey</value>
     <comment>3 over par</comment>
   </data>
-
   <data name="ScoreEven" xml:space="preserve">
     <value>E</value>
     <comment>Even par score display</comment>
@@ -444,7 +433,6 @@ Riavvia l'applicazione.</value>
     <value>+{0}</value>
     <comment>Over par score display. {0}=strokes over</comment>
   </data>
-
   <data name="Home" xml:space="preserve">
     <value>Home</value>
     <comment>Home page navigation</comment>
@@ -461,7 +449,6 @@ Riavvia l'applicazione.</value>
     <value>Impostazioni</value>
     <comment>Settings page navigation</comment>
   </data>
-
   <data name="SelectLanguage" xml:space="preserve">
     <value>Seleziona lingua</value>
     <comment>Language selection dialog title</comment>
@@ -474,7 +461,6 @@ Riavvia l'applicazione.</value>
     <value>Riavvia l'app per rendere effettiva la modifica della lingua.</value>
     <comment>Message shown after language change</comment>
   </data>
-
   <data name="Golf" xml:space="preserve">
     <value>Golf</value>
     <comment>Golf</comment>
@@ -491,12 +477,10 @@ Riavvia l'applicazione.</value>
     <value>Giri recenti</value>
     <comment>Recent Rounds</comment>
   </data>
-
   <data name="Nav_Scoring" xml:space="preserve">
     <value>Punteggio</value>
     <comment>Flyout/menu item for scoring</comment>
   </data>
-
   <data name="Theme_Light" xml:space="preserve">
     <value>Modalità chiara</value>
     <comment>Accessibility description for light theme toggle</comment>
@@ -505,7 +489,6 @@ Riavvia l'applicazione.</value>
     <value>Modalità scura</value>
     <comment>Accessibility description for dark theme toggle</comment>
   </data>
-
   <data name="Courses" xml:space="preserve">
     <value>Campi</value>
     <comment>Courses page title</comment>
@@ -562,7 +545,6 @@ Riavvia l'applicazione.</value>
     <value>Eliminare '{0}'?</value>
     <comment>Delete course confirmation message. {0}=course name</comment>
   </data>
-
   <data name="DeleteRoundTitle" xml:space="preserve">
     <value>Elimina giro?</value>
     <comment>Delete in-progress round dialog title</comment>
@@ -575,7 +557,6 @@ Riavvia l'applicazione.</value>
     <value>Eliminare questo giro completato?</value>
     <comment>Delete completed round confirmation message</comment>
   </data>
-
   <data name="Recent" xml:space="preserve">
     <value>Recenti</value>
     <comment>Recent courses tab</comment>
@@ -677,38 +658,38 @@ Riavvia l'applicazione.</value>
     <comment>Score to par axis name</comment>
   </data>
   <data name="All" xml:space="preserve">
-  <value>Tutti</value>
-  <comment>All years picker entry</comment>
-</data>
-<data name="RoundsCountFormat" xml:space="preserve">
-  <value>Partite ({0})</value>
-  <comment>Rounds page title with count. {0}=number of rounds</comment>
-</data>
-<data name="InProgressRounds" xml:space="preserve">
-  <value>Partite in corso</value>
-  <comment>Title for in-progress rounds modal/page</comment>
-</data>
-	<data name="DrivingStats" xml:space="preserve">
-  <value>Prestazioni Drive</value>
-</data>
-	<data name="LongestDrive" xml:space="preserve">
-  <value>Più Lungo</value>
-</data>
-	<data name="AverageDrive" xml:space="preserve">
-  <value>Media</value>
-</data>
-	<data name="ClubDistances" xml:space="preserve">
-  <value>Distanze Bastoni</value>
-</data>
-	<data name="ApproachAccuracy" xml:space="preserve">
-  <value>Precisione Approccio</value>
-</data>
-	<data name="ApproachZones" xml:space="preserve">
-  <value>Green presi per zona</value>
-</data>
-	<data name="DrivingPerformance" xml:space="preserve">
-  <value>Prestazioni drive</value>
-</data>
+    <value>Tutti</value>
+    <comment>All years picker entry</comment>
+  </data>
+  <data name="RoundsCountFormat" xml:space="preserve">
+    <value>Partite ({0})</value>
+    <comment>Rounds page title with count. {0}=number of rounds</comment>
+  </data>
+  <data name="InProgressRounds" xml:space="preserve">
+    <value>Partite in corso</value>
+    <comment>Title for in-progress rounds modal/page</comment>
+  </data>
+  <data name="DrivingStats" xml:space="preserve">
+    <value>Prestazioni Drive</value>
+  </data>
+  <data name="LongestDrive" xml:space="preserve">
+    <value>Più Lungo</value>
+  </data>
+  <data name="AverageDrive" xml:space="preserve">
+    <value>Media</value>
+  </data>
+  <data name="ClubDistances" xml:space="preserve">
+    <value>Distanze Bastoni</value>
+  </data>
+  <data name="ApproachAccuracy" xml:space="preserve">
+    <value>Precisione Approccio</value>
+  </data>
+  <data name="ApproachZones" xml:space="preserve">
+    <value>Green presi per zona</value>
+  </data>
+  <data name="DrivingPerformance" xml:space="preserve">
+    <value>Prestazioni drive</value>
+  </data>
   <data name="GpsPermissionDenied" xml:space="preserve">
     <value>🔴 Permesso negato</value>
   </data>
@@ -738,5 +719,13 @@ Riavvia l'applicazione.</value>
   </data>
   <data name="GpsLowAccuracyMessage" xml:space="preserve">
     <value>Impossibile ottenere un segnale GPS preciso (necessita ≤{0:F0}m). Spostati in un'area aperta lontano da alberi e edifici, poi riprova.</value>
+  </data>
+  <data name="UnsavedChangesPrompt" xml:space="preserve">
+    <value>Hai modifiche non salvate.</value>
+    <comment>Localized text for UnsavedChangesPrompt</comment>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>Scarta</value>
+    <comment>Localized text for Discard</comment>
   </data>
 </root>
