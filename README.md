@@ -42,7 +42,8 @@ This app will set the standard for golf scoring applications by making it as eas
 5. Build and run
 
 Debug builds do not require release signing material.
-Release Android keystores, Java keystores, Apple certificates, and provisioning profiles must be supplied securely outside the repository, such as through untracked local build configuration or CI secrets. Do not commit them to source control.
+Release Android keystores, Java keystores, Apple certificates, and provisioning profiles must be supplied securely outside the repository.
+For example, provide them through untracked local build configuration or CI secrets. Do not commit them to source control.
 
 ## Project Structure
 
