@@ -2,9 +2,6 @@ using iDoublePress.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using System.Threading;
-using System.IO;
-using System.Text;
-using System;
 
 namespace iDoublePress.Data;
 
@@ -17,34 +14,6 @@ public class RoundRepository : RepositoryBase
     private readonly SemaphoreSlim _holeWriteSemaphore = new(3, 3); // Allow concurrent hole writes
     private readonly CourseRepository _courseRepository;
     private readonly PlayerRepository _playerRepository;
-
-    // Simple on-device SQL trace to capture last statements and parameter values.
-    // Helps diagnosing native sqlite crashes by recording the SQL being prepared.
-    private void LogSql(SqliteCommand cmd, string? note = null)
-    {
-        try
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("----- " + DateTime.Now.ToString("o") + (note != null ? " " + note : ""));
-            sb.AppendLine(cmd.CommandText ?? string.Empty);
-            if (cmd.Parameters != null && cmd.Parameters.Count > 0)
-            {
-                foreach (SqliteParameter p in cmd.Parameters)
-                {
-                    var val = p.Value == null || p.Value == DBNull.Value ? "<null>" : p.Value.ToString();
-                    sb.AppendLine($"{p.ParameterName} = {val}");
-                }
-            }
-            sb.AppendLine();
-
-            var path = Path.Combine(FileSystem.AppDataDirectory, "sqlite_trace.log");
-            File.AppendAllText(path, sb.ToString());
-        }
-        catch
-        {
-            // swallow logging errors
-        }
-    }
 
     public RoundRepository(CourseRepository courseRepository, PlayerRepository playerRepository, ILogger<RoundRepository> logger) : base(logger)
     {
@@ -65,12 +34,10 @@ public class RoundRepository : RepositoryBase
         {
             var pragmaFk = connection.CreateCommand();
             pragmaFk.CommandText = "PRAGMA foreign_keys = ON;";
-            LogSql(pragmaFk, "PRAGMA foreign_keys");
             await pragmaFk.ExecuteNonQueryAsync();
 
             var pragmaBusy = connection.CreateCommand();
             pragmaBusy.CommandText = "PRAGMA busy_timeout = 5000;";
-            LogSql(pragmaBusy, "PRAGMA busy_timeout");
             await pragmaBusy.ExecuteNonQueryAsync();
 
             var createRoundTableCmd = connection.CreateCommand();
@@ -90,7 +57,6 @@ public class RoundRepository : RepositoryBase
                 FOREIGN KEY (PlayerID) REFERENCES Player(ID) ON DELETE CASCADE,
                 FOREIGN KEY (CourseID) REFERENCES Course(ID) ON DELETE RESTRICT
             );";
-            LogSql(createRoundTableCmd, "DDL Round");
             await createRoundTableCmd.ExecuteNonQueryAsync();
 
             var createHoleTableCmd = connection.CreateCommand();
@@ -116,12 +82,10 @@ public class RoundRepository : RepositoryBase
                 FOREIGN KEY (RoundID) REFERENCES Round(ID) ON DELETE CASCADE,
                 UNIQUE(RoundID, HoleNumber)
             );";
-            LogSql(createHoleTableCmd, "DDL Hole");
             await createHoleTableCmd.ExecuteNonQueryAsync();
 
             var checkColumnCmd = connection.CreateCommand();
             checkColumnCmd.CommandText = "PRAGMA table_info(Hole);";
-            LogSql(checkColumnCmd, "PRAGMA table_info(Hole)");
 
             var existingColumns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             await using (var reader = await checkColumnCmd.ExecuteReaderAsync())
@@ -137,7 +101,6 @@ public class RoundRepository : RepositoryBase
                 _logger.LogInformation("Adding Putts column to Hole table");
                 var addColumnCmd = connection.CreateCommand();
                 addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Putts INTEGER;";
-                LogSql(addColumnCmd, "ALTER TABLE ADD Putts");
                 await addColumnCmd.ExecuteNonQueryAsync();
             }
 
@@ -146,7 +109,6 @@ public class RoundRepository : RepositoryBase
                 _logger.LogInformation("Adding IsScored column to Hole table");
                 var addColumnCmd = connection.CreateCommand();
                 addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN IsScored INTEGER DEFAULT 0;";
-                LogSql(addColumnCmd, "ALTER TABLE ADD IsScored");
                 await addColumnCmd.ExecuteNonQueryAsync();
             }
 
@@ -155,7 +117,6 @@ public class RoundRepository : RepositoryBase
                 _logger.LogInformation("Adding FairwayResult column to Hole table");
                 var addColumnCmd = connection.CreateCommand();
                 addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayResult INTEGER DEFAULT 0;";
-                LogSql(addColumnCmd, "ALTER TABLE ADD FairwayResult");
                 await addColumnCmd.ExecuteNonQueryAsync();
 
                 if (existingColumns.Contains("FairwayHit"))
@@ -169,7 +130,6 @@ public class RoundRepository : RepositoryBase
                         ELSE 0
                     END
                     WHERE FairwayResult = 0;";
-                    LogSql(migrateCmd, "MIGRATE FairwayResult");
                     await migrateCmd.ExecuteNonQueryAsync();
                 }
             }
@@ -179,7 +139,6 @@ public class RoundRepository : RepositoryBase
                 _logger.LogInformation("Adding FairwayMissPenalty column to Hole table");
                 var addColumnCmd = connection.CreateCommand();
                 addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayMissPenalty INTEGER DEFAULT 0;";
-                LogSql(addColumnCmd, "ALTER TABLE ADD FairwayMissPenalty");
                 await addColumnCmd.ExecuteNonQueryAsync();
             }
 
@@ -188,7 +147,6 @@ public class RoundRepository : RepositoryBase
                 _logger.LogInformation("Adding Proximity column to Hole table");
                 var addColumnCmd = connection.CreateCommand();
                 addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Proximity TEXT;";
-                LogSql(addColumnCmd, "ALTER TABLE ADD Proximity");
                 await addColumnCmd.ExecuteNonQueryAsync();
             }
 
@@ -197,7 +155,6 @@ public class RoundRepository : RepositoryBase
                 _logger.LogInformation("Adding Yardage column to Hole table");
                 var addColumnCmd = connection.CreateCommand();
                 addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Yardage INTEGER;";
-                LogSql(addColumnCmd, "ALTER TABLE ADD Yardage");
                 await addColumnCmd.ExecuteNonQueryAsync();
             }
 
@@ -208,7 +165,6 @@ public class RoundRepository : RepositoryBase
             CREATE INDEX IF NOT EXISTS IDX_Round_StartTime ON Round(StartTime DESC);
             CREATE INDEX IF NOT EXISTS IDX_Round_Status ON Round(Status);
             CREATE INDEX IF NOT EXISTS IDX_Hole_RoundID ON Hole(RoundID);";
-            LogSql(createIndexes, "CREATE INDEXES");
             await createIndexes.ExecuteNonQueryAsync();
 
             var createShotSegmentTableCmd = connection.CreateCommand();
@@ -223,20 +179,17 @@ public class RoundRepository : RepositoryBase
                 CreatedAt TEXT NOT NULL,
                 FOREIGN KEY (HoleID) REFERENCES Hole(ID) ON DELETE CASCADE
             );";
-            LogSql(createShotSegmentTableCmd, "DDL ShotSegment");
             await createShotSegmentTableCmd.ExecuteNonQueryAsync();
 
             var createShotIndexes = connection.CreateCommand();
             createShotIndexes.CommandText = @"
             CREATE INDEX IF NOT EXISTS IDX_ShotSegment_HoleID ON ShotSegment(HoleID);
             CREATE INDEX IF NOT EXISTS IDX_ShotSegment_HoleID_Sequence ON ShotSegment(HoleID, Sequence);";
-            LogSql(createShotIndexes, "CREATE INDEXES ShotSegment");
             await createShotIndexes.ExecuteNonQueryAsync();
 
             // Ensure Tag column exists for older databases
             var checkShotCols = connection.CreateCommand();
             checkShotCols.CommandText = "PRAGMA table_info(ShotSegment);";
-            LogSql(checkShotCols, "PRAGMA table_info(ShotSegment)");
             var existingShotCols = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             await using (var readerCols = await checkShotCols.ExecuteReaderAsync())
             {
@@ -250,7 +203,6 @@ public class RoundRepository : RepositoryBase
             {
                 var addTagCmd = connection.CreateCommand();
                 addTagCmd.CommandText = "ALTER TABLE ShotSegment ADD COLUMN Tag TEXT;";
-                LogSql(addTagCmd, "ALTER TABLE ADD Tag ShotSegment");
                 await addTagCmd.ExecuteNonQueryAsync();
             }
 
@@ -258,7 +210,6 @@ public class RoundRepository : RepositoryBase
             {
                 var addAccuracyCmd = connection.CreateCommand();
                 addAccuracyCmd.CommandText = "ALTER TABLE ShotSegment ADD COLUMN Accuracy REAL;";
-                LogSql(addAccuracyCmd, "ALTER TABLE ADD Accuracy ShotSegment");
                 await addAccuracyCmd.ExecuteNonQueryAsync();
             }
         }
@@ -279,7 +230,6 @@ public class RoundRepository : RepositoryBase
 
         var selectCmd = connection.CreateCommand();
         selectCmd.CommandText = "SELECT * FROM Round ORDER BY StartTime DESC";
-        LogSql(selectCmd, "ListAsync");
         var rounds = new List<Round>();
 
         await using var reader = await selectCmd.ExecuteReaderAsync();
@@ -301,7 +251,6 @@ public class RoundRepository : RepositoryBase
         var selectCmd = connection.CreateCommand();
         selectCmd.CommandText = "SELECT * FROM Round WHERE ID = @id";
         selectCmd.Parameters.AddWithValue("@id", id);
-        LogSql(selectCmd, "GetAsync");
 
         await using var reader = await selectCmd.ExecuteReaderAsync();
         if (await reader.ReadAsync())
@@ -321,7 +270,6 @@ public class RoundRepository : RepositoryBase
         var selectCmd = connection.CreateCommand();
         selectCmd.CommandText = "SELECT * FROM Round WHERE PlayerID = @playerId AND Status = 'InProgress' ORDER BY StartTime DESC LIMIT 1";
         selectCmd.Parameters.AddWithValue("@playerId", playerId);
-        LogSql(selectCmd, "GetInProgressRoundAsync");
 
         await using var reader = await selectCmd.ExecuteReaderAsync();
         if (await reader.ReadAsync())
@@ -341,7 +289,6 @@ public class RoundRepository : RepositoryBase
         var selectCmd = connection.CreateCommand();
         selectCmd.CommandText = "SELECT * FROM Round WHERE PlayerID = @playerId AND Status = 'InProgress' ORDER BY StartTime DESC";
         selectCmd.Parameters.AddWithValue("@playerId", playerId);
-        LogSql(selectCmd, "GetInProgressRoundsAsync");
 
         var rounds = new List<Round>();
         await using var reader = await selectCmd.ExecuteReaderAsync();
@@ -389,7 +336,6 @@ public class RoundRepository : RepositoryBase
             WHERE RoundID = @roundId
             ORDER BY HoleNumber";
         selectHolesCmd.Parameters.AddWithValue("@roundId", roundId);
-        LogSql(selectHolesCmd, "GetHolesAsync");
 
         var holes = new List<Hole>();
         await using var reader = await selectHolesCmd.ExecuteReaderAsync();
@@ -459,7 +405,6 @@ public class RoundRepository : RepositoryBase
             WHERE HoleID = @holeId
             ORDER BY Sequence DESC";
         cmd.Parameters.AddWithValue("@holeId", holeId);
-        LogSql(cmd, "GetShotSegmentsForHoleAsync");
 
         var list = new List<ShotSegment>();
         await using var reader = await cmd.ExecuteReaderAsync();
@@ -511,7 +456,6 @@ public class RoundRepository : RepositoryBase
             deleteCmd.Transaction = transaction;
             deleteCmd.CommandText = "DELETE FROM ShotSegment WHERE HoleID = @holeId";
             deleteCmd.Parameters.AddWithValue("@holeId", holeId);
-            LogSql(deleteCmd, "DeleteShotSegmentsForHole");
             await deleteCmd.ExecuteNonQueryAsync();
 
             int seq = 0; // newer first expected
@@ -529,7 +473,6 @@ public class RoundRepository : RepositoryBase
                 insertCmd.Parameters.AddWithValue("@Tag", (object?)s.Tag ?? DBNull.Value);
                 insertCmd.Parameters.AddWithValue("@CreatedAt", (s.CreatedAt == default ? DateTime.Now : s.CreatedAt).ToString("o"));
                 insertCmd.Parameters.AddWithValue("@Accuracy", (object?)s.AccuracyMeters ?? DBNull.Value);
-                LogSql(insertCmd, "InsertShotSegment");
                 await insertCmd.ExecuteNonQueryAsync();
                 seq++;
             }
@@ -550,7 +493,6 @@ public class RoundRepository : RepositoryBase
         var cmd = connection.CreateCommand();
         cmd.CommandText = "DELETE FROM ShotSegment WHERE HoleID = @holeId";
         cmd.Parameters.AddWithValue("@holeId", holeId);
-        LogSql(cmd, "DeleteShotSegmentsForHoleAsync");
         await cmd.ExecuteNonQueryAsync();
     }
 
@@ -593,7 +535,6 @@ public class RoundRepository : RepositoryBase
                 insertRoundCmd.Parameters.AddWithValue("@CreatedAt", round.CreatedAt.ToString("o"));
                 insertRoundCmd.Parameters.AddWithValue("@UpdatedAt", round.UpdatedAt.ToString("o"));
 
-                LogSql(insertRoundCmd, "CreateNewRound");
                 var result = await insertRoundCmd.ExecuteScalarAsync();
                 round.ID = Convert.ToInt32(result);
 
@@ -638,7 +579,6 @@ public class RoundRepository : RepositoryBase
         {
             var cmd = connection.CreateCommand();
             cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table' LIMIT 1;";
-            LogSql(cmd, "CheckDatabaseIntegrity");
             var result = await cmd.ExecuteScalarAsync();
             return true;
         }
@@ -689,7 +629,6 @@ public class RoundRepository : RepositoryBase
                 saveCmd.Parameters.AddWithValue("@Weather", (object?)item.Weather ?? DBNull.Value);
                 saveCmd.Parameters.AddWithValue("@UpdatedAt", item.UpdatedAt.ToString("o"));
 
-                LogSql(saveCmd, "SaveItem");
                 try
                 {
                     await saveCmd.ExecuteNonQueryAsync();
@@ -808,7 +747,6 @@ public class RoundRepository : RepositoryBase
         saveCmd.Parameters.AddWithValue("@CreatedAt", hole.CreatedAt.ToString("o"));
         saveCmd.Parameters.AddWithValue("@UpdatedAt", hole.UpdatedAt.ToString("o"));
 
-        LogSql(saveCmd, "SaveHole");
         try
         {
             if (hole.ID == 0)
@@ -844,7 +782,6 @@ public class RoundRepository : RepositoryBase
                 deleteCmd.CommandText = "DELETE FROM Round WHERE ID = @ID";
                 deleteCmd.Parameters.AddWithValue("@ID", item.ID);
 
-                LogSql(deleteCmd, "DeleteItem");
                 var result = await deleteCmd.ExecuteNonQueryAsync();
                 transaction.Commit();
                 return result;
