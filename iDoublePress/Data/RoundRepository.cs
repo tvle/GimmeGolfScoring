@@ -299,7 +299,7 @@ public class RoundRepository : RepositoryBase
     {
         await EnsureInitializedAsync();
         await using var connection = await CreateConnectionAsync();
-        var segments = await GetShotSegmentsForHoleAsync(connection, holeId, transaction);
+        var segments = await GetShotSegmentsForHoleAsync(connection, holeId);
         // FIX: Ensure segments are ordered Newest First (Desc) to match ToggleMeasurement logic
         // This ensures the logic in RecalculateDistances aligns tags with the correct intervals.
         var loaded = new List<ShotSegment>(segments.Count);

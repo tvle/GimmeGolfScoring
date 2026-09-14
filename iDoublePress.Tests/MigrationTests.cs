@@ -42,7 +42,7 @@ public sealed class MigrationTests : IDisposable
         (await ExecuteScalarAsync<long>("SELECT COUNT(*) FROM CourseHole WHERE HoleNumber IN (1, 2);")).Should().Be(2);
         (await ExecuteScalarAsync<long>("SELECT COUNT(*) FROM Hole WHERE HoleNumber IN (1, 2);")).Should().Be(2);
         (await ExecuteScalarAsync<long>("SELECT COUNT(*) FROM ShotSegment WHERE Sequence IN (0, 1);")).Should().Be(2);
-        (await ExecuteScalarAsync<string>("SELECT Operation FROM sqlite_master WHERE name = 'SyncOutbox' AND type = 'table' LIMIT 1;".Replace("Operation", "'table'"))).Should().Be("table");
+        (await ExecuteScalarAsync<string>("SELECT 'table' FROM sqlite_master WHERE name = 'SyncOutbox' AND type = 'table' LIMIT 1;")).Should().Be("table");
     }
 
     [Fact]
