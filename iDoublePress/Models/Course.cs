@@ -3,7 +3,7 @@ namespace iDoublePress.Models;
 /// <summary>
 /// Represents a golf course.
 /// </summary>
-public class Course
+public class Course : ISyncEntity
 {
     public int ID { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -14,6 +14,12 @@ public class Course
     public int? Slope { get; set; }
     public bool IsCustom { get; set; }
     public DateTime CreatedAt { get; set; }
+    public string PublicId { get; set; } = string.Empty;
+    public DateTime SyncUpdatedAtUtc { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
+    public string? ServerRevision { get; set; }
+    public bool PendingSync { get; set; }
 
     public List<CourseHole> CourseHoles { get; set; } = new();
 
@@ -23,7 +29,7 @@ public class Course
 /// <summary>
 /// Represents a hole on a golf course.
 /// </summary>
-public partial class CourseHole : CommunityToolkit.Mvvm.ComponentModel.ObservableObject
+public partial class CourseHole : CommunityToolkit.Mvvm.ComponentModel.ObservableObject, ISyncEntity
 {
     public int ID { get; set; }
     public int CourseID { get; set; }
@@ -39,4 +45,10 @@ public partial class CourseHole : CommunityToolkit.Mvvm.ComponentModel.Observabl
 
     public int? Handicap { get; set; }
     public int? Yardage { get; set; }
+    public string PublicId { get; set; } = string.Empty;
+    public DateTime SyncUpdatedAtUtc { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
+    public string? ServerRevision { get; set; }
+    public bool PendingSync { get; set; }
 }

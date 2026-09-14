@@ -55,7 +55,7 @@ public partial class ImportCoursePageModel : ObservableObject
 
             // 3. Data Cleanup (Ensure we create a NEW course, don't overwrite existing IDs)
             course.ID = 0;
-            course.CreatedAt = DateTime.Now;
+            course.CreatedAt = DateTime.UtcNow;
 
             // Recalculate Total Par based on holes to ensure data integrity
             course.TotalPar = course.CourseHoles.Sum(h => h.Par);

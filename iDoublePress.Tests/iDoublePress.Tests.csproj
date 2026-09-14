@@ -17,4 +17,9 @@
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.1" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.5" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\iDoublePress\Data\DatabaseDateTime.cs" Link="Shared\DatabaseDateTime.cs" />
+    <Compile Include="..\iDoublePress\Data\DatabaseMigrator.cs" Link="Shared\DatabaseMigrator.cs" />
+  </ItemGroup>
 </Project>
