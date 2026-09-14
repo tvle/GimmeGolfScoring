@@ -40,6 +40,8 @@ public partial class Hole : ObservableObject
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
+    public List<ShotSegment> ShotSegments { get; set; } = new();
+
     // Calculated properties
     public int ScoreRelativeToPar => Score - Par;
     public ScoreType ScoreTypeEnum => CalculateScoreType();

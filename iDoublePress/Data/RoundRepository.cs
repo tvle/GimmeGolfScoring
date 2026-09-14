@@ -384,48 +384,67 @@ public class RoundRepository : RepositoryBase
             });
         }
 
-        // Load shot segments for each hole
-        foreach (var hole in holes)
+        // Load all shot segments for all holes in a single query and attach them.
+        if (holes.Count > 0)
         {
-            hole.Notes = hole.Notes; // keep
-            var segments = await GetShotSegmentsForHoleAsync(connection, hole.ID);
-            // Attach segments to hole via a property if needed; currently Hole doesn't have property for segments.
-            // We'll store in a transient dictionary in memory on Round if needed. For now, leave hole unchanged.
+            var holeIdLookup = holes.ToDictionary(h => h.ID);
+            var allSegments = await GetShotSegmentsForHolesAsync(connection, holeIdLookup.Keys);
+            foreach (var seg in allSegments)
+            {
+                if (holeIdLookup.TryGetValue(seg.HoleID, out var hole))
+                    hole.ShotSegments.Add(seg);
+            }
         }
 
         return holes;
     }
 
-    private async Task<List<ShotSegment>> GetShotSegmentsForHoleAsync(SqliteConnection connection, int holeId)
+    private async Task<List<ShotSegment>> GetShotSegmentsForHolesAsync(SqliteConnection connection, IEnumerable<int> holeIds)
     {
+        var idList = holeIds.ToList();
+        if (idList.Count == 0)
+            return new List<ShotSegment>();
+
         var cmd = connection.CreateCommand();
-        cmd.CommandText = @"
+        var paramNames = new string[idList.Count];
+        for (int i = 0; i < idList.Count; i++)
+        {
+            paramNames[i] = $"@hid{i}";
+            cmd.Parameters.AddWithValue(paramNames[i], idList[i]);
+        }
+
+        cmd.CommandText = $@"
             SELECT ID, HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt, Accuracy
             FROM ShotSegment
-            WHERE HoleID = @holeId
-            ORDER BY Sequence DESC";
-        cmd.Parameters.AddWithValue("@holeId", holeId);
+            WHERE HoleID IN ({string.Join(",", paramNames)})
+            ORDER BY HoleID, Sequence DESC";
 
         var list = new List<ShotSegment>();
         await using var reader = await cmd.ExecuteReaderAsync();
         while (await reader.ReadAsync())
         {
-            var seg = new ShotSegment
+            var lat = reader.GetDouble(3);
+            var lon = reader.GetDouble(4);
+            list.Add(new ShotSegment
             {
                 ID = reader.GetInt32(0),
                 HoleID = reader.GetInt32(1),
                 Sequence = reader.GetInt32(2),
-                Point = new Location(reader.GetDouble(3), reader.GetDouble(4)),
+                Point = new Location(lat, lon),
                 Tag = reader.IsDBNull(5) ? null : reader.GetString(5),
                 CreatedAt = DateTime.Parse(reader.GetString(6)),
                 AccuracyMeters = reader.IsDBNull(7) ? null : reader.GetDouble(7),
-                LocationDisplay = $"{reader.GetDouble(3):F7}, {reader.GetDouble(4):F7}",
+                LocationDisplay = $"{lat:F7}, {lon:F7}",
                 DistanceDisplay = "---"
-            };
-            list.Add(seg);
+            });
         }
 
         return list;
+    }
+
+    private async Task<List<ShotSegment>> GetShotSegmentsForHoleAsync(SqliteConnection connection, int holeId)
+    {
+        return await GetShotSegmentsForHolesAsync(connection, new[] { holeId });
     }
 
     public async Task<List<ShotSegment>> GetShotSegmentsForHoleAsync(int holeId)
