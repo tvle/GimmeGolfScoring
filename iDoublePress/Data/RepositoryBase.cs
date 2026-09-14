@@ -117,10 +117,22 @@ public abstract class RepositoryBase
             INSERT INTO SyncOutbox (EntityType, EntityPublicId, Operation, QueuedAtUtc, AttemptCount, LastError)
             VALUES (@EntityType, @EntityPublicId, @Operation, @QueuedAtUtc, 0, NULL)
             ON CONFLICT(EntityType, EntityPublicId) DO UPDATE SET
-                Operation = excluded.Operation,
-                QueuedAtUtc = excluded.QueuedAtUtc,
-                AttemptCount = 0,
-                LastError = NULL;";
+                Operation = CASE
+                    WHEN SyncOutbox.Operation = 'delete' AND excluded.Operation <> 'delete' THEN SyncOutbox.Operation
+                    ELSE excluded.Operation
+                END,
+                QueuedAtUtc = CASE
+                    WHEN SyncOutbox.Operation = 'delete' AND excluded.Operation <> 'delete' THEN SyncOutbox.QueuedAtUtc
+                    ELSE excluded.QueuedAtUtc
+                END,
+                AttemptCount = CASE
+                    WHEN SyncOutbox.Operation = 'delete' AND excluded.Operation <> 'delete' THEN SyncOutbox.AttemptCount
+                    ELSE 0
+                END,
+                LastError = CASE
+                    WHEN SyncOutbox.Operation = 'delete' AND excluded.Operation <> 'delete' THEN SyncOutbox.LastError
+                    ELSE NULL
+                END;";
         cmd.Parameters.AddWithValue("@EntityType", entityType);
         cmd.Parameters.AddWithValue("@EntityPublicId", entity.PublicId);
         cmd.Parameters.AddWithValue("@Operation", operation);

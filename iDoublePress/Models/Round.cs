@@ -42,7 +42,7 @@ public class Round : ISyncEntity
             return totalScore - totalPar;
         }
     }
-    public TimeSpan Duration => (EndTime ?? DateTime.Now) - StartTime;
+    public TimeSpan Duration => (EndTime ?? DateTime.UtcNow) - StartTime;
 
     public string ScoreDisplay => ScoreRelativeToPar switch
     {

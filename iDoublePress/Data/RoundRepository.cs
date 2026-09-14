@@ -487,7 +487,7 @@ public class RoundRepository : RepositoryBase
             {
                 PlayerID = playerId,
                 CourseID = courseId,
-                StartTime = DateTime.Now,
+                StartTime = DateTime.UtcNow,
                 Status = RoundStatus.InProgress,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,

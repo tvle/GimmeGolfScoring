@@ -364,6 +364,10 @@ public static class DatabaseMigrator
         string columnName,
         string columnDefinition)
     {
+        ValidateIdentifier(tableName);
+        ValidateIdentifier(columnName);
+        ValidateColumnDefinition(columnDefinition);
+
         if (await ColumnExistsAsync(connection, transaction, tableName, columnName))
             return;
 
@@ -371,5 +375,21 @@ public static class DatabaseMigrator
         cmd.Transaction = transaction;
         cmd.CommandText = $"ALTER TABLE {tableName} ADD COLUMN {columnName} {columnDefinition};";
         await cmd.ExecuteNonQueryAsync();
+    }
+
+    private static void ValidateIdentifier(string identifier)
+    {
+        if (string.IsNullOrWhiteSpace(identifier) || identifier.Any(ch => !char.IsLetterOrDigit(ch) && ch != '_'))
+            throw new ArgumentOutOfRangeException(nameof(identifier), $"Unexpected SQL identifier: {identifier}");
+    }
+
+    private static void ValidateColumnDefinition(string columnDefinition)
+    {
+        if (string.IsNullOrWhiteSpace(columnDefinition)
+            || columnDefinition.Contains(';', StringComparison.Ordinal)
+            || columnDefinition.Contains("--", StringComparison.Ordinal))
+        {
+            throw new ArgumentOutOfRangeException(nameof(columnDefinition), $"Unexpected column definition: {columnDefinition}");
+        }
     }
 }

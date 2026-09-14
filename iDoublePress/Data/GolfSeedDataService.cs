@@ -44,8 +44,8 @@ public class GolfSeedDataService
         {
             Name = AppResources.Me,
             Handicap = 0,
-            CreatedAt = DateTime.Now,
-            UpdatedAt = DateTime.Now
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         await _playerRepository.SaveItemAsync(defaultPlayer);
@@ -68,7 +68,7 @@ public class GolfSeedDataService
             Rating = 72.0m,
             Slope = 113,
             IsCustom = false,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.UtcNow
         };
 
         // Standard par 72: 4 par 3s, 10 par 4s, 4 par 5s
@@ -106,7 +106,7 @@ public class GolfSeedDataService
             Rating = 36.0m,
             Slope = 113,
             IsCustom = false,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.UtcNow
         };
 
         var par36Holes = new List<CourseHole>();

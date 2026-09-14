@@ -319,7 +319,7 @@ public partial class ActiveRoundPageModel : ObservableObject
         {
             IsBusy = true;
             CurrentRound.Status = RoundStatus.Completed;
-            CurrentRound.EndTime = DateTime.Now;
+            CurrentRound.EndTime = DateTime.UtcNow;
             await _roundRepository.SaveItemAsync(CurrentRound);
 
             await Shell.Current.GoToAsync("..");
