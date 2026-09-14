@@ -28,208 +28,21 @@ public class RoundRepository : RepositoryBase
 
     protected override async Task InitializeInternalAsync()
     {
-        await using var connection = await CreateConnectionAsync();
-
-        try
-        {
-            var pragmaFk = connection.CreateCommand();
-            pragmaFk.CommandText = "PRAGMA foreign_keys = ON;";
-            await pragmaFk.ExecuteNonQueryAsync();
-
-            var pragmaBusy = connection.CreateCommand();
-            pragmaBusy.CommandText = "PRAGMA busy_timeout = 5000;";
-            await pragmaBusy.ExecuteNonQueryAsync();
-
-            var createRoundTableCmd = connection.CreateCommand();
-            createRoundTableCmd.CommandText = @"
-            CREATE TABLE IF NOT EXISTS Round (
-                ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                PlayerID INTEGER NOT NULL,
-                CourseID INTEGER NOT NULL,
-                StartTime TEXT NOT NULL,
-                EndTime TEXT,
-                TotalScore INTEGER DEFAULT 0,
-                Status TEXT DEFAULT 'InProgress',
-                Notes TEXT,
-                Weather TEXT,
-                CreatedAt TEXT NOT NULL,
-                UpdatedAt TEXT NOT NULL,
-                FOREIGN KEY (PlayerID) REFERENCES Player(ID) ON DELETE CASCADE,
-                FOREIGN KEY (CourseID) REFERENCES Course(ID) ON DELETE RESTRICT
-            );";
-            await createRoundTableCmd.ExecuteNonQueryAsync();
-
-            var createHoleTableCmd = connection.CreateCommand();
-            createHoleTableCmd.CommandText = @"
-            CREATE TABLE IF NOT EXISTS Hole (
-                ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                RoundID INTEGER NOT NULL,
-                HoleNumber INTEGER NOT NULL,
-                Par INTEGER NOT NULL,
-                Yardage INTEGER,
-                Score INTEGER DEFAULT 0,
-                IsScored INTEGER DEFAULT 0,
-                Putts INTEGER,
-                FairwayHit INTEGER,
-                FairwayResult INTEGER DEFAULT 0,
-                FairwayMissPenalty INTEGER DEFAULT 0,
-                GreenInRegulation INTEGER,
-                Penalties INTEGER DEFAULT 0,
-                Proximity TEXT,
-                Notes TEXT,
-                CreatedAt TEXT NOT NULL,
-                UpdatedAt TEXT NOT NULL,
-                FOREIGN KEY (RoundID) REFERENCES Round(ID) ON DELETE CASCADE,
-                UNIQUE(RoundID, HoleNumber)
-            );";
-            await createHoleTableCmd.ExecuteNonQueryAsync();
-
-            var checkColumnCmd = connection.CreateCommand();
-            checkColumnCmd.CommandText = "PRAGMA table_info(Hole);";
-
-            var existingColumns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            await using (var reader = await checkColumnCmd.ExecuteReaderAsync())
-            {
-                while (await reader.ReadAsync())
-                {
-                    existingColumns.Add(reader.GetString(1));
-                }
-            }
-
-            if (!existingColumns.Contains("Putts"))
-            {
-                _logger.LogInformation("Adding Putts column to Hole table");
-                var addColumnCmd = connection.CreateCommand();
-                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Putts INTEGER;";
-                await addColumnCmd.ExecuteNonQueryAsync();
-            }
-
-            if (!existingColumns.Contains("IsScored"))
-            {
-                _logger.LogInformation("Adding IsScored column to Hole table");
-                var addColumnCmd = connection.CreateCommand();
-                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN IsScored INTEGER DEFAULT 0;";
-                await addColumnCmd.ExecuteNonQueryAsync();
-            }
-
-            if (!existingColumns.Contains("FairwayResult"))
-            {
-                _logger.LogInformation("Adding FairwayResult column to Hole table");
-                var addColumnCmd = connection.CreateCommand();
-                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayResult INTEGER DEFAULT 0;";
-                await addColumnCmd.ExecuteNonQueryAsync();
-
-                if (existingColumns.Contains("FairwayHit"))
-                {
-                    var migrateCmd = connection.CreateCommand();
-                    migrateCmd.CommandText = @"
-                    UPDATE Hole
-                    SET FairwayResult = CASE
-                        WHEN FairwayHit IS NULL THEN 0
-                        WHEN FairwayHit = 1 THEN 2
-                        ELSE 0
-                    END
-                    WHERE FairwayResult = 0;";
-                    await migrateCmd.ExecuteNonQueryAsync();
-                }
-            }
-
-            if (!existingColumns.Contains("FairwayMissPenalty"))
-            {
-                _logger.LogInformation("Adding FairwayMissPenalty column to Hole table");
-                var addColumnCmd = connection.CreateCommand();
-                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN FairwayMissPenalty INTEGER DEFAULT 0;";
-                await addColumnCmd.ExecuteNonQueryAsync();
-            }
-
-            if (!existingColumns.Contains("Proximity"))
-            {
-                _logger.LogInformation("Adding Proximity column to Hole table");
-                var addColumnCmd = connection.CreateCommand();
-                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Proximity TEXT;";
-                await addColumnCmd.ExecuteNonQueryAsync();
-            }
-
-            if (!existingColumns.Contains("Yardage"))
-            {
-                _logger.LogInformation("Adding Yardage column to Hole table");
-                var addColumnCmd = connection.CreateCommand();
-                addColumnCmd.CommandText = "ALTER TABLE Hole ADD COLUMN Yardage INTEGER;";
-                await addColumnCmd.ExecuteNonQueryAsync();
-            }
-
-            var createIndexes = connection.CreateCommand();
-            createIndexes.CommandText = @"
-            CREATE INDEX IF NOT EXISTS IDX_Round_PlayerID ON Round(PlayerID);
-            CREATE INDEX IF NOT EXISTS IDX_Round_COURSEID ON Round(CourseID);
-            CREATE INDEX IF NOT EXISTS IDX_Round_StartTime ON Round(StartTime DESC);
-            CREATE INDEX IF NOT EXISTS IDX_Round_Status ON Round(Status);
-            CREATE INDEX IF NOT EXISTS IDX_Hole_RoundID ON Hole(RoundID);";
-            await createIndexes.ExecuteNonQueryAsync();
-
-            var createShotSegmentTableCmd = connection.CreateCommand();
-            createShotSegmentTableCmd.CommandText = @"
-            CREATE TABLE IF NOT EXISTS ShotSegment (
-                ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                HoleID INTEGER NOT NULL,
-                Sequence INTEGER NOT NULL,
-                Latitude REAL NOT NULL,
-                Longitude REAL NOT NULL,
-                Tag TEXT,
-                CreatedAt TEXT NOT NULL,
-                FOREIGN KEY (HoleID) REFERENCES Hole(ID) ON DELETE CASCADE
-            );";
-            await createShotSegmentTableCmd.ExecuteNonQueryAsync();
-
-            var createShotIndexes = connection.CreateCommand();
-            createShotIndexes.CommandText = @"
-            CREATE INDEX IF NOT EXISTS IDX_ShotSegment_HoleID ON ShotSegment(HoleID);
-            CREATE INDEX IF NOT EXISTS IDX_ShotSegment_HoleID_Sequence ON ShotSegment(HoleID, Sequence);";
-            await createShotIndexes.ExecuteNonQueryAsync();
-
-            // Ensure Tag column exists for older databases
-            var checkShotCols = connection.CreateCommand();
-            checkShotCols.CommandText = "PRAGMA table_info(ShotSegment);";
-            var existingShotCols = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            await using (var readerCols = await checkShotCols.ExecuteReaderAsync())
-            {
-                while (await readerCols.ReadAsync())
-                {
-                    existingShotCols.Add(readerCols.GetString(1));
-                }
-            }
-
-            if (!existingShotCols.Contains("Tag"))
-            {
-                var addTagCmd = connection.CreateCommand();
-                addTagCmd.CommandText = "ALTER TABLE ShotSegment ADD COLUMN Tag TEXT;";
-                await addTagCmd.ExecuteNonQueryAsync();
-            }
-
-            if (!existingShotCols.Contains("Accuracy"))
-            {
-                var addAccuracyCmd = connection.CreateCommand();
-                addAccuracyCmd.CommandText = "ALTER TABLE ShotSegment ADD COLUMN Accuracy REAL;";
-                await addAccuracyCmd.ExecuteNonQueryAsync();
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error creating Round tables");
-            throw;
-        }
-
-        _hasBeenInitialized = true;
+        await Task.CompletedTask;
     }
 
     public async Task<List<Round>> ListAsync()
     {
         await Init();
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
-        await connection.OpenAsync();
+        await using var connection = await CreateConnectionAsync();
 
         var selectCmd = connection.CreateCommand();
-        selectCmd.CommandText = "SELECT * FROM Round ORDER BY StartTime DESC";
+        selectCmd.CommandText = @"
+            SELECT ID, PlayerID, CourseID, StartTime, EndTime, TotalScore, Status, Notes, Weather,
+                   CreatedAt, UpdatedAt, PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync
+            FROM Round
+            WHERE IsDeleted = 0
+            ORDER BY StartTime DESC";
         var rounds = new List<Round>();
 
         await using var reader = await selectCmd.ExecuteReaderAsync();
@@ -245,11 +58,14 @@ public class RoundRepository : RepositoryBase
     public async Task<Round?> GetAsync(int id)
     {
         await Init();
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
-        await connection.OpenAsync();
+        await using var connection = await CreateConnectionAsync();
 
         var selectCmd = connection.CreateCommand();
-        selectCmd.CommandText = "SELECT * FROM Round WHERE ID = @id";
+        selectCmd.CommandText = @"
+            SELECT ID, PlayerID, CourseID, StartTime, EndTime, TotalScore, Status, Notes, Weather,
+                   CreatedAt, UpdatedAt, PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync
+            FROM Round
+            WHERE ID = @id AND IsDeleted = 0";
         selectCmd.Parameters.AddWithValue("@id", id);
 
         await using var reader = await selectCmd.ExecuteReaderAsync();
@@ -264,11 +80,16 @@ public class RoundRepository : RepositoryBase
     public async Task<Round?> GetInProgressRoundAsync(int playerId)
     {
         await Init();
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
-        await connection.OpenAsync();
+        await using var connection = await CreateConnectionAsync();
 
         var selectCmd = connection.CreateCommand();
-        selectCmd.CommandText = "SELECT * FROM Round WHERE PlayerID = @playerId AND Status = 'InProgress' ORDER BY StartTime DESC LIMIT 1";
+        selectCmd.CommandText = @"
+            SELECT ID, PlayerID, CourseID, StartTime, EndTime, TotalScore, Status, Notes, Weather,
+                   CreatedAt, UpdatedAt, PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync
+            FROM Round
+            WHERE PlayerID = @playerId AND Status = 'InProgress' AND IsDeleted = 0
+            ORDER BY StartTime DESC
+            LIMIT 1";
         selectCmd.Parameters.AddWithValue("@playerId", playerId);
 
         await using var reader = await selectCmd.ExecuteReaderAsync();
@@ -283,11 +104,15 @@ public class RoundRepository : RepositoryBase
     public async Task<List<Round>> GetInProgressRoundsAsync(int playerId)
     {
         await Init();
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
-        await connection.OpenAsync();
+        await using var connection = await CreateConnectionAsync();
 
         var selectCmd = connection.CreateCommand();
-        selectCmd.CommandText = "SELECT * FROM Round WHERE PlayerID = @playerId AND Status = 'InProgress' ORDER BY StartTime DESC";
+        selectCmd.CommandText = @"
+            SELECT ID, PlayerID, CourseID, StartTime, EndTime, TotalScore, Status, Notes, Weather,
+                   CreatedAt, UpdatedAt, PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync
+            FROM Round
+            WHERE PlayerID = @playerId AND Status = 'InProgress' AND IsDeleted = 0
+            ORDER BY StartTime DESC";
         selectCmd.Parameters.AddWithValue("@playerId", playerId);
 
         var rounds = new List<Round>();
@@ -314,12 +139,18 @@ public class RoundRepository : RepositoryBase
             Status = Enum.Parse<RoundStatus>(reader.GetString(6)),
             Notes = reader.IsDBNull(7) ? null : reader.GetString(7),
             Weather = reader.IsDBNull(8) ? null : reader.GetString(8),
-            CreatedAt = DateTime.Parse(reader.GetString(9)),
-            UpdatedAt = DateTime.Parse(reader.GetString(10))
+            CreatedAt = DatabaseDateTime.ParseUtc(reader.GetString(9)),
+            UpdatedAt = DatabaseDateTime.ParseUtc(reader.GetString(10)),
+            PublicId = reader.GetString(11),
+            SyncUpdatedAtUtc = DatabaseDateTime.ParseUtc(reader.GetString(12)),
+            IsDeleted = reader.GetInt32(13) == 1,
+            DeletedAtUtc = reader.IsDBNull(14) ? null : DatabaseDateTime.ParseUtc(reader.GetString(14)),
+            ServerRevision = reader.IsDBNull(15) ? null : reader.GetString(15),
+            PendingSync = reader.GetInt32(16) == 1
         };
 
-        round.Player = await _playerRepository.GetAsync(round.PlayerID);
-        round.Course = await _courseRepository.GetAsync(round.CourseID);
+        round.Player = await _playerRepository.GetAsync(round.PlayerID, includeDeleted: true);
+        round.Course = await _courseRepository.GetAsync(round.CourseID, includeDeleted: true);
         round.Holes = await GetHolesAsync(connection, round.ID);
 
         return round;
@@ -331,9 +162,11 @@ public class RoundRepository : RepositoryBase
         selectHolesCmd.CommandText = @"
             SELECT ID, RoundID, HoleNumber, Par, Yardage, Score, IsScored, Putts,
                    FairwayHit, FairwayResult, FairwayMissPenalty,
-                   GreenInRegulation, Penalties, Proximity, Notes, CreatedAt, UpdatedAt
+                   GreenInRegulation, Penalties, Proximity, Notes, CreatedAt, UpdatedAt,
+                   PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync
             FROM Hole
             WHERE RoundID = @roundId
+              AND IsDeleted = 0
             ORDER BY HoleNumber";
         selectHolesCmd.Parameters.AddWithValue("@roundId", roundId);
 
@@ -379,8 +212,14 @@ public class RoundRepository : RepositoryBase
                 Penalties = reader.GetInt32(12),
                 Proximity = proximity,
                 Notes = reader.IsDBNull(14) ? null : reader.GetString(14),
-                CreatedAt = DateTime.Parse(reader.GetString(15)),
-                UpdatedAt = DateTime.Parse(reader.GetString(16))
+                CreatedAt = DatabaseDateTime.ParseUtc(reader.GetString(15)),
+                UpdatedAt = DatabaseDateTime.ParseUtc(reader.GetString(16)),
+                PublicId = reader.GetString(17),
+                SyncUpdatedAtUtc = DatabaseDateTime.ParseUtc(reader.GetString(18)),
+                IsDeleted = reader.GetInt32(19) == 1,
+                DeletedAtUtc = reader.IsDBNull(20) ? null : DatabaseDateTime.ParseUtc(reader.GetString(20)),
+                ServerRevision = reader.IsDBNull(21) ? null : reader.GetString(21),
+                PendingSync = reader.GetInt32(22) == 1
             });
         }
 
@@ -399,13 +238,14 @@ public class RoundRepository : RepositoryBase
         return holes;
     }
 
-    private async Task<List<ShotSegment>> GetShotSegmentsForHolesAsync(SqliteConnection connection, IEnumerable<int> holeIds)
+    private async Task<List<ShotSegment>> GetShotSegmentsForHolesAsync(SqliteConnection connection, IEnumerable<int> holeIds, SqliteTransaction? transaction = null)
     {
         var idList = holeIds.ToList();
         if (idList.Count == 0)
             return new List<ShotSegment>();
 
         var cmd = connection.CreateCommand();
+        cmd.Transaction = transaction;
         var paramNames = new string[idList.Count];
         for (int i = 0; i < idList.Count; i++)
         {
@@ -414,9 +254,11 @@ public class RoundRepository : RepositoryBase
         }
 
         cmd.CommandText = $@"
-            SELECT ID, HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt, Accuracy
+            SELECT ID, HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt, Accuracy,
+                   PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync
             FROM ShotSegment
             WHERE HoleID IN ({string.Join(",", paramNames)})
+              AND IsDeleted = 0
             ORDER BY HoleID, Sequence DESC";
 
         var list = new List<ShotSegment>();
@@ -432,8 +274,14 @@ public class RoundRepository : RepositoryBase
                 Sequence = reader.GetInt32(2),
                 Point = new Location(lat, lon),
                 Tag = reader.IsDBNull(5) ? null : reader.GetString(5),
-                CreatedAt = DateTime.Parse(reader.GetString(6)),
+                CreatedAt = DatabaseDateTime.ParseUtc(reader.GetString(6)),
                 AccuracyMeters = reader.IsDBNull(7) ? null : reader.GetDouble(7),
+                PublicId = reader.GetString(8),
+                SyncUpdatedAtUtc = DatabaseDateTime.ParseUtc(reader.GetString(9)),
+                IsDeleted = reader.GetInt32(10) == 1,
+                DeletedAtUtc = reader.IsDBNull(11) ? null : DatabaseDateTime.ParseUtc(reader.GetString(11)),
+                ServerRevision = reader.IsDBNull(12) ? null : reader.GetString(12),
+                PendingSync = reader.GetInt32(13) == 1,
                 LocationDisplay = $"{lat:F7}, {lon:F7}",
                 DistanceDisplay = "---"
             });
@@ -442,16 +290,16 @@ public class RoundRepository : RepositoryBase
         return list;
     }
 
-    private async Task<List<ShotSegment>> GetShotSegmentsForHoleAsync(SqliteConnection connection, int holeId)
+    private async Task<List<ShotSegment>> GetShotSegmentsForHoleAsync(SqliteConnection connection, int holeId, SqliteTransaction? transaction = null)
     {
-        return await GetShotSegmentsForHolesAsync(connection, new[] { holeId });
+        return await GetShotSegmentsForHolesAsync(connection, new[] { holeId }, transaction);
     }
 
     public async Task<List<ShotSegment>> GetShotSegmentsForHoleAsync(int holeId)
     {
         await EnsureInitializedAsync();
         await using var connection = await CreateConnectionAsync();
-        var segments = await GetShotSegmentsForHoleAsync(connection, holeId);
+        var segments = await GetShotSegmentsForHoleAsync(connection, holeId, transaction);
         // FIX: Ensure segments are ordered Newest First (Desc) to match ToggleMeasurement logic
         // This ensures the logic in RecalculateDistances aligns tags with the correct intervals.
         var loaded = new List<ShotSegment>(segments.Count);
@@ -470,30 +318,118 @@ public class RoundRepository : RepositoryBase
         using var transaction = connection.BeginTransaction();
         try
         {
-            // Delete existing segments for hole then insert provided list with proper sequence
-            var deleteCmd = connection.CreateCommand();
-            deleteCmd.Transaction = transaction;
-            deleteCmd.CommandText = "DELETE FROM ShotSegment WHERE HoleID = @holeId";
-            deleteCmd.Parameters.AddWithValue("@holeId", holeId);
-            await deleteCmd.ExecuteNonQueryAsync();
+            var existingSegments = new Dictionary<int, ShotSegment>();
+            var existingSegmentCmd = connection.CreateCommand();
+            existingSegmentCmd.Transaction = transaction;
+            existingSegmentCmd.CommandText = @"
+                SELECT ID, PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync
+                FROM ShotSegment
+                WHERE HoleID = @HoleID";
+            existingSegmentCmd.Parameters.AddWithValue("@HoleID", holeId);
 
-            int seq = 0; // newer first expected
+            await using (var reader = await existingSegmentCmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    existingSegments[reader.GetInt32(0)] = new ShotSegment
+                    {
+                        ID = reader.GetInt32(0),
+                        HoleID = holeId,
+                        PublicId = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                        SyncUpdatedAtUtc = reader.IsDBNull(2) ? DateTime.UtcNow : DatabaseDateTime.ParseUtc(reader.GetString(2)),
+                        IsDeleted = !reader.IsDBNull(3) && reader.GetInt32(3) == 1,
+                        DeletedAtUtc = reader.IsDBNull(4) ? null : DatabaseDateTime.ParseUtc(reader.GetString(4)),
+                        ServerRevision = reader.IsDBNull(5) ? null : reader.GetString(5),
+                        PendingSync = !reader.IsDBNull(6) && reader.GetInt32(6) == 1
+                    };
+                }
+            }
+
+            var retainedIds = new HashSet<int>();
+            int seq = 0;
             foreach (var s in segments)
             {
-                var insertCmd = connection.CreateCommand();
-                insertCmd.Transaction = transaction;
-                insertCmd.CommandText = @"
-                    INSERT INTO ShotSegment (HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt, Accuracy)
-                    VALUES (@HoleID, @Sequence, @Latitude, @Longitude, @Tag, @CreatedAt, @Accuracy);";
-                insertCmd.Parameters.AddWithValue("@HoleID", holeId);
-                insertCmd.Parameters.AddWithValue("@Sequence", seq);
-                insertCmd.Parameters.AddWithValue("@Latitude", s.Point.Latitude);
-                insertCmd.Parameters.AddWithValue("@Longitude", s.Point.Longitude);
-                insertCmd.Parameters.AddWithValue("@Tag", (object?)s.Tag ?? DBNull.Value);
-                insertCmd.Parameters.AddWithValue("@CreatedAt", (s.CreatedAt == default ? DateTime.Now : s.CreatedAt).ToString("o"));
-                insertCmd.Parameters.AddWithValue("@Accuracy", (object?)s.AccuracyMeters ?? DBNull.Value);
-                await insertCmd.ExecuteNonQueryAsync();
+                s.HoleID = holeId;
+                s.Sequence = seq;
+                s.CreatedAt = s.CreatedAt == default ? DateTime.UtcNow : DatabaseDateTime.EnsureUtc(s.CreatedAt);
+
+                if (s.ID != 0 && existingSegments.TryGetValue(s.ID, out var existing))
+                {
+                    s.PublicId = existing.PublicId;
+                    s.ServerRevision = existing.ServerRevision;
+                    retainedIds.Add(s.ID);
+                }
+
+                MarkEntityForUpsert(s);
+
+                var saveCmd = connection.CreateCommand();
+                saveCmd.Transaction = transaction;
+                if (s.ID == 0)
+                {
+                    saveCmd.CommandText = @"
+                        INSERT INTO ShotSegment (HoleID, Sequence, Latitude, Longitude, Tag, CreatedAt, Accuracy,
+                                                 PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync)
+                        VALUES (@HoleID, @Sequence, @Latitude, @Longitude, @Tag, @CreatedAt, @Accuracy,
+                                @PublicId, @SyncUpdatedAtUtc, @IsDeleted, @DeletedAtUtc, @ServerRevision, @PendingSync);
+                        SELECT last_insert_rowid();";
+                }
+                else
+                {
+                    saveCmd.CommandText = @"
+                        UPDATE ShotSegment
+                        SET HoleID = @HoleID, Sequence = @Sequence, Latitude = @Latitude, Longitude = @Longitude,
+                            Tag = @Tag, CreatedAt = @CreatedAt, Accuracy = @Accuracy,
+                            PublicId = @PublicId, SyncUpdatedAtUtc = @SyncUpdatedAtUtc, IsDeleted = @IsDeleted,
+                            DeletedAtUtc = @DeletedAtUtc, ServerRevision = @ServerRevision, PendingSync = @PendingSync
+                        WHERE ID = @ID";
+                    saveCmd.Parameters.AddWithValue("@ID", s.ID);
+                    retainedIds.Add(s.ID);
+                }
+
+                saveCmd.Parameters.AddWithValue("@HoleID", holeId);
+                saveCmd.Parameters.AddWithValue("@Sequence", seq);
+                saveCmd.Parameters.AddWithValue("@Latitude", s.Point.Latitude);
+                saveCmd.Parameters.AddWithValue("@Longitude", s.Point.Longitude);
+                saveCmd.Parameters.AddWithValue("@Tag", (object?)s.Tag ?? DBNull.Value);
+                saveCmd.Parameters.AddWithValue("@CreatedAt", DatabaseDateTime.ToUtcString(s.CreatedAt));
+                saveCmd.Parameters.AddWithValue("@Accuracy", (object?)s.AccuracyMeters ?? DBNull.Value);
+                saveCmd.Parameters.AddWithValue("@PublicId", s.PublicId);
+                saveCmd.Parameters.AddWithValue("@SyncUpdatedAtUtc", DatabaseDateTime.ToUtcString(s.SyncUpdatedAtUtc));
+                saveCmd.Parameters.AddWithValue("@IsDeleted", s.IsDeleted ? 1 : 0);
+                saveCmd.Parameters.AddWithValue("@DeletedAtUtc", s.DeletedAtUtc.HasValue ? DatabaseDateTime.ToUtcString(s.DeletedAtUtc.Value) : DBNull.Value);
+                saveCmd.Parameters.AddWithValue("@ServerRevision", (object?)s.ServerRevision ?? DBNull.Value);
+                saveCmd.Parameters.AddWithValue("@PendingSync", s.PendingSync ? 1 : 0);
+
+                var result = await saveCmd.ExecuteScalarAsync();
+                if (s.ID == 0)
+                {
+                    s.ID = Convert.ToInt32(result);
+                    retainedIds.Add(s.ID);
+                }
+
+                await QueueOutboxAsync(connection, transaction, nameof(ShotSegment), s, "upsert");
                 seq++;
+            }
+
+            foreach (var existing in existingSegments.Values.Where(x => !x.IsDeleted && !retainedIds.Contains(x.ID)))
+            {
+                MarkEntityForDelete(existing);
+
+                var deleteCmd = connection.CreateCommand();
+                deleteCmd.Transaction = transaction;
+                deleteCmd.CommandText = @"
+                    UPDATE ShotSegment
+                    SET IsDeleted = 1,
+                        DeletedAtUtc = @DeletedAtUtc,
+                        SyncUpdatedAtUtc = @SyncUpdatedAtUtc,
+                        PendingSync = 1
+                    WHERE ID = @ID";
+                deleteCmd.Parameters.AddWithValue("@ID", existing.ID);
+                deleteCmd.Parameters.AddWithValue("@DeletedAtUtc", DatabaseDateTime.ToUtcString(existing.DeletedAtUtc ?? DateTime.UtcNow));
+                deleteCmd.Parameters.AddWithValue("@SyncUpdatedAtUtc", DatabaseDateTime.ToUtcString(existing.SyncUpdatedAtUtc));
+                await deleteCmd.ExecuteNonQueryAsync();
+
+                await QueueOutboxAsync(connection, transaction, nameof(ShotSegment), existing, "delete");
             }
 
             transaction.Commit();
@@ -509,10 +445,31 @@ public class RoundRepository : RepositoryBase
     {
         await EnsureInitializedAsync();
         await using var connection = await CreateConnectionAsync();
-        var cmd = connection.CreateCommand();
-        cmd.CommandText = "DELETE FROM ShotSegment WHERE HoleID = @holeId";
-        cmd.Parameters.AddWithValue("@holeId", holeId);
-        await cmd.ExecuteNonQueryAsync();
+        using var transaction = connection.BeginTransaction();
+
+        var segments = await GetShotSegmentsForHoleAsync(connection, holeId);
+        foreach (var segment in segments)
+        {
+            MarkEntityForDelete(segment);
+
+            var cmd = connection.CreateCommand();
+            cmd.Transaction = transaction;
+            cmd.CommandText = @"
+                UPDATE ShotSegment
+                SET IsDeleted = 1,
+                    DeletedAtUtc = @DeletedAtUtc,
+                    SyncUpdatedAtUtc = @SyncUpdatedAtUtc,
+                    PendingSync = 1
+                WHERE ID = @ID";
+            cmd.Parameters.AddWithValue("@ID", segment.ID);
+            cmd.Parameters.AddWithValue("@DeletedAtUtc", DatabaseDateTime.ToUtcString(segment.DeletedAtUtc ?? DateTime.UtcNow));
+            cmd.Parameters.AddWithValue("@SyncUpdatedAtUtc", DatabaseDateTime.ToUtcString(segment.SyncUpdatedAtUtc));
+            await cmd.ExecuteNonQueryAsync();
+
+            await QueueOutboxAsync(connection, transaction, nameof(ShotSegment), segment, "delete");
+        }
+
+        transaction.Commit();
     }
 
     public async Task<Round> CreateNewRoundAsync(int playerId, int courseId)
@@ -532,10 +489,11 @@ public class RoundRepository : RepositoryBase
                 CourseID = courseId,
                 StartTime = DateTime.Now,
                 Status = RoundStatus.InProgress,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
                 Course = course
             };
+            MarkEntityForUpsert(round);
 
             await using var connection = await CreateConnectionAsync();
 
@@ -543,19 +501,29 @@ public class RoundRepository : RepositoryBase
             try
             {
                 var insertRoundCmd = connection.CreateCommand();
+                insertRoundCmd.Transaction = transaction;
                 insertRoundCmd.CommandText = @"
-                INSERT INTO Round (PlayerID, CourseID, StartTime, Status, CreatedAt, UpdatedAt)
-                VALUES (@PlayerID, @CourseID, @StartTime, @Status, @CreatedAt, @UpdatedAt);
+                INSERT INTO Round (PlayerID, CourseID, StartTime, Status, CreatedAt, UpdatedAt,
+                                   PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync)
+                VALUES (@PlayerID, @CourseID, @StartTime, @Status, @CreatedAt, @UpdatedAt,
+                        @PublicId, @SyncUpdatedAtUtc, @IsDeleted, @DeletedAtUtc, @ServerRevision, @PendingSync);
                 SELECT last_insert_rowid();";
                 insertRoundCmd.Parameters.AddWithValue("@PlayerID", round.PlayerID);
                 insertRoundCmd.Parameters.AddWithValue("@CourseID", round.CourseID);
                 insertRoundCmd.Parameters.AddWithValue("@StartTime", round.StartTime.ToString("o"));
                 insertRoundCmd.Parameters.AddWithValue("@Status", round.Status.ToString());
-                insertRoundCmd.Parameters.AddWithValue("@CreatedAt", round.CreatedAt.ToString("o"));
-                insertRoundCmd.Parameters.AddWithValue("@UpdatedAt", round.UpdatedAt.ToString("o"));
+                insertRoundCmd.Parameters.AddWithValue("@CreatedAt", DatabaseDateTime.ToUtcString(round.CreatedAt));
+                insertRoundCmd.Parameters.AddWithValue("@UpdatedAt", DatabaseDateTime.ToUtcString(round.UpdatedAt));
+                insertRoundCmd.Parameters.AddWithValue("@PublicId", round.PublicId);
+                insertRoundCmd.Parameters.AddWithValue("@SyncUpdatedAtUtc", DatabaseDateTime.ToUtcString(round.SyncUpdatedAtUtc));
+                insertRoundCmd.Parameters.AddWithValue("@IsDeleted", round.IsDeleted ? 1 : 0);
+                insertRoundCmd.Parameters.AddWithValue("@DeletedAtUtc", DBNull.Value);
+                insertRoundCmd.Parameters.AddWithValue("@ServerRevision", (object?)round.ServerRevision ?? DBNull.Value);
+                insertRoundCmd.Parameters.AddWithValue("@PendingSync", round.PendingSync ? 1 : 0);
 
                 var result = await insertRoundCmd.ExecuteScalarAsync();
                 round.ID = Convert.ToInt32(result);
+                await QueueOutboxAsync(connection, transaction, nameof(Round), round, "upsert");
 
                 foreach (var courseHole in course.CourseHoles.OrderBy(h => h.HoleNumber))
                 {
@@ -567,8 +535,8 @@ public class RoundRepository : RepositoryBase
                         Yardage = courseHole.Yardage,
                         Score = courseHole.Par,
                         IsScored = false,
-                        CreatedAt = DateTime.Now,
-                        UpdatedAt = DateTime.Now
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
                     };
 
                     await SaveHoleAsync(connection, hole, transaction);
@@ -623,8 +591,9 @@ public class RoundRepository : RepositoryBase
                 throw new InvalidOperationException("Database appears corrupt. Aborting save.");
             }
 
-            item.UpdatedAt = DateTime.Now;
+            item.UpdatedAt = DateTime.UtcNow;
             item.TotalScore = item.Holes.Where(h => h.IsScored).Sum(h => h.Score);
+            MarkEntityForUpsert(item);
 
             using var transaction = connection.BeginTransaction();
             try
@@ -634,7 +603,9 @@ public class RoundRepository : RepositoryBase
                 saveCmd.CommandText = @"
             UPDATE Round
             SET PlayerID = @PlayerID, CourseID = @CourseID, StartTime = @StartTime, EndTime = @EndTime,
-                TotalScore = @TotalScore, Status = @Status, Notes = @Notes, Weather = @Weather, UpdatedAt = @UpdatedAt
+                TotalScore = @TotalScore, Status = @Status, Notes = @Notes, Weather = @Weather, UpdatedAt = @UpdatedAt,
+                PublicId = @PublicId, SyncUpdatedAtUtc = @SyncUpdatedAtUtc, IsDeleted = @IsDeleted,
+                DeletedAtUtc = @DeletedAtUtc, ServerRevision = @ServerRevision, PendingSync = @PendingSync
             WHERE ID = @ID";
 
                 saveCmd.Parameters.AddWithValue("@ID", item.ID);
@@ -646,7 +617,13 @@ public class RoundRepository : RepositoryBase
                 saveCmd.Parameters.AddWithValue("@Status", item.Status.ToString());
                 saveCmd.Parameters.AddWithValue("@Notes", (object?)item.Notes ?? DBNull.Value);
                 saveCmd.Parameters.AddWithValue("@Weather", (object?)item.Weather ?? DBNull.Value);
-                saveCmd.Parameters.AddWithValue("@UpdatedAt", item.UpdatedAt.ToString("o"));
+                saveCmd.Parameters.AddWithValue("@UpdatedAt", DatabaseDateTime.ToUtcString(item.UpdatedAt));
+                saveCmd.Parameters.AddWithValue("@PublicId", item.PublicId);
+                saveCmd.Parameters.AddWithValue("@SyncUpdatedAtUtc", DatabaseDateTime.ToUtcString(item.SyncUpdatedAtUtc));
+                saveCmd.Parameters.AddWithValue("@IsDeleted", item.IsDeleted ? 1 : 0);
+                saveCmd.Parameters.AddWithValue("@DeletedAtUtc", item.DeletedAtUtc.HasValue ? DatabaseDateTime.ToUtcString(item.DeletedAtUtc.Value) : DBNull.Value);
+                saveCmd.Parameters.AddWithValue("@ServerRevision", (object?)item.ServerRevision ?? DBNull.Value);
+                saveCmd.Parameters.AddWithValue("@PendingSync", item.PendingSync ? 1 : 0);
 
                 try
                 {
@@ -663,6 +640,7 @@ public class RoundRepository : RepositoryBase
                     await SaveHoleAsync(connection, hole, transaction);
                 }
 
+                await QueueOutboxAsync(connection, transaction, nameof(Round), item, "upsert");
                 transaction.Commit();
                 return item.ID;
             }
@@ -712,7 +690,7 @@ public class RoundRepository : RepositoryBase
 
     private async Task SaveHoleAsync(SqliteConnection connection, Hole hole, SqliteTransaction? transaction = null)
     {
-        hole.UpdatedAt = DateTime.Now;
+        hole.UpdatedAt = DateTime.UtcNow;
 
         // Defensive parameter normalization
         if (!string.IsNullOrEmpty(hole.Notes) && hole.Notes.Length > 20000)
@@ -725,15 +703,20 @@ public class RoundRepository : RepositoryBase
             saveCmd.Transaction = transaction;
         if (hole.ID == 0)
         {
-            hole.CreatedAt = DateTime.Now;
+            hole.CreatedAt = DatabaseDateTime.EnsureUtc(hole.CreatedAt);
+            MarkEntityForUpsert(hole);
 
             saveCmd.CommandText = @"
-                INSERT INTO Hole (RoundID, HoleNumber, Par, Yardage, Score, IsScored, Putts, FairwayHit, FairwayResult, FairwayMissPenalty, GreenInRegulation, Penalties, Proximity, Notes, CreatedAt, UpdatedAt)
-                VALUES (@RoundID, @HoleNumber, @Par, @Yardage, @Score, @IsScored, @Putts, @FairwayHit, @FairwayResult, @FairwayMissPenalty, @GreenInRegulation, @Penalties, @Proximity, @Notes, @CreatedAt, @UpdatedAt);
+                INSERT INTO Hole (RoundID, HoleNumber, Par, Yardage, Score, IsScored, Putts, FairwayHit, FairwayResult, FairwayMissPenalty, GreenInRegulation, Penalties, Proximity, Notes, CreatedAt, UpdatedAt,
+                                  PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync)
+                VALUES (@RoundID, @HoleNumber, @Par, @Yardage, @Score, @IsScored, @Putts, @FairwayHit, @FairwayResult, @FairwayMissPenalty, @GreenInRegulation, @Penalties, @Proximity, @Notes, @CreatedAt, @UpdatedAt,
+                        @PublicId, @SyncUpdatedAtUtc, @IsDeleted, @DeletedAtUtc, @ServerRevision, @PendingSync);
                 SELECT last_insert_rowid();";
         }
         else
         {
+            hole.CreatedAt = DatabaseDateTime.EnsureUtc(hole.CreatedAt);
+            MarkEntityForUpsert(hole);
             saveCmd.CommandText = @"
                 UPDATE Hole
                 SET RoundID = @RoundID, HoleNumber = @HoleNumber, Par = @Par, Yardage = @Yardage, Score = @Score, IsScored = @IsScored, Putts = @Putts,
@@ -743,7 +726,8 @@ public class RoundRepository : RepositoryBase
                     GreenInRegulation = @GreenInRegulation,
                     Penalties = @Penalties,
                     Proximity = @Proximity,
-                    Notes = @Notes, UpdatedAt = @UpdatedAt
+                    Notes = @Notes, UpdatedAt = @UpdatedAt, PublicId = @PublicId, SyncUpdatedAtUtc = @SyncUpdatedAtUtc,
+                    IsDeleted = @IsDeleted, DeletedAtUtc = @DeletedAtUtc, ServerRevision = @ServerRevision, PendingSync = @PendingSync
                 WHERE ID = @ID";
             saveCmd.Parameters.AddWithValue("@ID", hole.ID);
         }
@@ -763,8 +747,14 @@ public class RoundRepository : RepositoryBase
         saveCmd.Parameters.AddWithValue("@Penalties", hole.Penalties);
         saveCmd.Parameters.AddWithValue("@Proximity", hole.Proximity.HasValue ? hole.Proximity.Value.ToString() : (object)DBNull.Value);
         saveCmd.Parameters.AddWithValue("@Notes", (object?)hole.Notes ?? DBNull.Value);
-        saveCmd.Parameters.AddWithValue("@CreatedAt", hole.CreatedAt.ToString("o"));
-        saveCmd.Parameters.AddWithValue("@UpdatedAt", hole.UpdatedAt.ToString("o"));
+        saveCmd.Parameters.AddWithValue("@CreatedAt", DatabaseDateTime.ToUtcString(hole.CreatedAt));
+        saveCmd.Parameters.AddWithValue("@UpdatedAt", DatabaseDateTime.ToUtcString(hole.UpdatedAt));
+        saveCmd.Parameters.AddWithValue("@PublicId", hole.PublicId);
+        saveCmd.Parameters.AddWithValue("@SyncUpdatedAtUtc", DatabaseDateTime.ToUtcString(hole.SyncUpdatedAtUtc));
+        saveCmd.Parameters.AddWithValue("@IsDeleted", hole.IsDeleted ? 1 : 0);
+        saveCmd.Parameters.AddWithValue("@DeletedAtUtc", hole.DeletedAtUtc.HasValue ? DatabaseDateTime.ToUtcString(hole.DeletedAtUtc.Value) : DBNull.Value);
+        saveCmd.Parameters.AddWithValue("@ServerRevision", (object?)hole.ServerRevision ?? DBNull.Value);
+        saveCmd.Parameters.AddWithValue("@PendingSync", hole.PendingSync ? 1 : 0);
 
         try
         {
@@ -777,6 +767,8 @@ public class RoundRepository : RepositoryBase
             {
                 await saveCmd.ExecuteNonQueryAsync();
             }
+
+            await QueueOutboxAsync(connection, transaction, nameof(Hole), hole, "upsert");
         }
         catch (SqliteException ex)
         {
@@ -796,12 +788,106 @@ public class RoundRepository : RepositoryBase
             using var transaction = connection.BeginTransaction();
             try
             {
+                MarkEntityForDelete(item);
+
                 var deleteCmd = connection.CreateCommand();
                 deleteCmd.Transaction = transaction;
-                deleteCmd.CommandText = "DELETE FROM Round WHERE ID = @ID";
+                deleteCmd.CommandText = @"
+                    UPDATE Round
+                    SET IsDeleted = 1,
+                        DeletedAtUtc = @DeletedAtUtc,
+                        SyncUpdatedAtUtc = @SyncUpdatedAtUtc,
+                        PendingSync = 1,
+                        PublicId = @PublicId
+                    WHERE ID = @ID";
                 deleteCmd.Parameters.AddWithValue("@ID", item.ID);
+                deleteCmd.Parameters.AddWithValue("@DeletedAtUtc", DatabaseDateTime.ToUtcString(item.DeletedAtUtc ?? DateTime.UtcNow));
+                deleteCmd.Parameters.AddWithValue("@SyncUpdatedAtUtc", DatabaseDateTime.ToUtcString(item.SyncUpdatedAtUtc));
+                deleteCmd.Parameters.AddWithValue("@PublicId", item.PublicId);
 
                 var result = await deleteCmd.ExecuteNonQueryAsync();
+
+                var selectHolesCmd = connection.CreateCommand();
+                selectHolesCmd.Transaction = transaction;
+                selectHolesCmd.CommandText = @"
+                    SELECT ID, RoundID, HoleNumber, Par, Yardage, Score, IsScored, Putts,
+                           FairwayHit, FairwayResult, FairwayMissPenalty, GreenInRegulation, Penalties, Proximity, Notes,
+                           CreatedAt, UpdatedAt, PublicId, SyncUpdatedAtUtc, IsDeleted, DeletedAtUtc, ServerRevision, PendingSync
+                    FROM Hole
+                    WHERE RoundID = @RoundID AND IsDeleted = 0";
+                selectHolesCmd.Parameters.AddWithValue("@RoundID", item.ID);
+
+                var holes = new List<Hole>();
+                await using (var reader = await selectHolesCmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        holes.Add(new Hole
+                        {
+                            ID = reader.GetInt32(0),
+                            RoundID = reader.GetInt32(1),
+                            HoleNumber = reader.GetInt32(2),
+                            Par = reader.GetInt32(3),
+                            Yardage = reader.IsDBNull(4) ? null : reader.GetInt32(4),
+                            Score = reader.GetInt32(5),
+                            IsScored = reader.GetInt32(6) == 1,
+                            Putts = reader.IsDBNull(7) ? null : reader.GetInt32(7),
+                            Penalties = reader.GetInt32(12),
+                            Notes = reader.IsDBNull(14) ? null : reader.GetString(14),
+                            CreatedAt = DatabaseDateTime.ParseUtc(reader.GetString(15)),
+                            UpdatedAt = DatabaseDateTime.ParseUtc(reader.GetString(16)),
+                            PublicId = reader.GetString(17),
+                            SyncUpdatedAtUtc = DatabaseDateTime.ParseUtc(reader.GetString(18)),
+                            IsDeleted = reader.GetInt32(19) == 1,
+                            DeletedAtUtc = reader.IsDBNull(20) ? null : DatabaseDateTime.ParseUtc(reader.GetString(20)),
+                            ServerRevision = reader.IsDBNull(21) ? null : reader.GetString(21),
+                            PendingSync = reader.GetInt32(22) == 1
+                        });
+                    }
+                }
+
+                foreach (var hole in holes)
+                {
+                    MarkEntityForDelete(hole);
+
+                    var deleteHoleCmd = connection.CreateCommand();
+                    deleteHoleCmd.Transaction = transaction;
+                    deleteHoleCmd.CommandText = @"
+                        UPDATE Hole
+                        SET IsDeleted = 1,
+                            DeletedAtUtc = @DeletedAtUtc,
+                            SyncUpdatedAtUtc = @SyncUpdatedAtUtc,
+                            PendingSync = 1
+                        WHERE ID = @ID";
+                    deleteHoleCmd.Parameters.AddWithValue("@ID", hole.ID);
+                    deleteHoleCmd.Parameters.AddWithValue("@DeletedAtUtc", DatabaseDateTime.ToUtcString(hole.DeletedAtUtc ?? DateTime.UtcNow));
+                    deleteHoleCmd.Parameters.AddWithValue("@SyncUpdatedAtUtc", DatabaseDateTime.ToUtcString(hole.SyncUpdatedAtUtc));
+                    await deleteHoleCmd.ExecuteNonQueryAsync();
+                    await QueueOutboxAsync(connection, transaction, nameof(Hole), hole, "delete");
+
+                    var segments = await GetShotSegmentsForHoleAsync(connection, hole.ID, transaction);
+                    foreach (var segment in segments)
+                    {
+                        MarkEntityForDelete(segment);
+
+                        var deleteSegmentCmd = connection.CreateCommand();
+                        deleteSegmentCmd.Transaction = transaction;
+                        deleteSegmentCmd.CommandText = @"
+                            UPDATE ShotSegment
+                            SET IsDeleted = 1,
+                                DeletedAtUtc = @DeletedAtUtc,
+                                SyncUpdatedAtUtc = @SyncUpdatedAtUtc,
+                                PendingSync = 1
+                            WHERE ID = @ID";
+                        deleteSegmentCmd.Parameters.AddWithValue("@ID", segment.ID);
+                        deleteSegmentCmd.Parameters.AddWithValue("@DeletedAtUtc", DatabaseDateTime.ToUtcString(segment.DeletedAtUtc ?? DateTime.UtcNow));
+                        deleteSegmentCmd.Parameters.AddWithValue("@SyncUpdatedAtUtc", DatabaseDateTime.ToUtcString(segment.SyncUpdatedAtUtc));
+                        await deleteSegmentCmd.ExecuteNonQueryAsync();
+                        await QueueOutboxAsync(connection, transaction, nameof(ShotSegment), segment, "delete");
+                    }
+                }
+
+                await QueueOutboxAsync(connection, transaction, nameof(Round), item, "delete");
                 transaction.Commit();
                 return result;
             }

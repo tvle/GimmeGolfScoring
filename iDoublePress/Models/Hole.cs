@@ -5,7 +5,7 @@ namespace iDoublePress.Models;
 /// <summary>
 /// Represents a hole score in a round.
 /// </summary>
-public partial class Hole : ObservableObject
+public partial class Hole : ObservableObject, ISyncEntity
 {
     public int ID { get; set; }
     public int RoundID { get; set; }
@@ -39,6 +39,12 @@ public partial class Hole : ObservableObject
     public string? Notes { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public string PublicId { get; set; } = string.Empty;
+    public DateTime SyncUpdatedAtUtc { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
+    public string? ServerRevision { get; set; }
+    public bool PendingSync { get; set; }
 
     public List<ShotSegment> ShotSegments { get; set; } = new();
 

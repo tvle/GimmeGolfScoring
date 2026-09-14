@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
+using iDoublePress.Models;
 
 namespace iDoublePress.Data;
 
@@ -9,6 +10,9 @@ namespace iDoublePress.Data;
 /// </summary>
 public abstract class RepositoryBase
 {
+    private static readonly SemaphoreSlim MigrationSemaphore = new(1, 1);
+    private static volatile bool _databaseMigrated;
+
     protected readonly SemaphoreSlim _initSemaphore = new(1, 1);
     protected volatile bool _hasBeenInitialized = false;
     protected readonly ILogger _logger;
@@ -32,7 +36,8 @@ public abstract class RepositoryBase
         {
             if (_hasBeenInitialized)
                 return;
-                
+
+            await EnsureDatabaseMigratedAsync();
             await InitializeInternalAsync();
             _hasBeenInitialized = true;
         }
@@ -56,6 +61,70 @@ public abstract class RepositoryBase
     {
         var connection = new SqliteConnection(Constants.DatabasePath);
         await connection.OpenAsync();
+        await DatabaseMigrator.ConfigureConnectionAsync(connection);
         return connection;
+    }
+
+    private static async Task EnsureDatabaseMigratedAsync()
+    {
+        if (_databaseMigrated)
+            return;
+
+        await MigrationSemaphore.WaitAsync();
+        try
+        {
+            if (_databaseMigrated)
+                return;
+
+            await using var connection = new SqliteConnection(Constants.DatabasePath);
+            await connection.OpenAsync();
+            await DatabaseMigrator.MigrateAsync(connection);
+            _databaseMigrated = true;
+        }
+        finally
+        {
+            MigrationSemaphore.Release();
+        }
+    }
+
+    protected static void MarkEntityForUpsert(ISyncEntity entity)
+    {
+        entity.PublicId = string.IsNullOrWhiteSpace(entity.PublicId)
+            ? Guid.NewGuid().ToString("D")
+            : entity.PublicId;
+        entity.SyncUpdatedAtUtc = DateTime.UtcNow;
+        entity.IsDeleted = false;
+        entity.DeletedAtUtc = null;
+        entity.PendingSync = true;
+    }
+
+    protected static void MarkEntityForDelete(ISyncEntity entity)
+    {
+        entity.PublicId = string.IsNullOrWhiteSpace(entity.PublicId)
+            ? Guid.NewGuid().ToString("D")
+            : entity.PublicId;
+        entity.SyncUpdatedAtUtc = DateTime.UtcNow;
+        entity.IsDeleted = true;
+        entity.DeletedAtUtc = DateTime.UtcNow;
+        entity.PendingSync = true;
+    }
+
+    protected async Task QueueOutboxAsync(SqliteConnection connection, SqliteTransaction? transaction, string entityType, ISyncEntity entity, string operation)
+    {
+        var cmd = connection.CreateCommand();
+        cmd.Transaction = transaction;
+        cmd.CommandText = @"
+            INSERT INTO SyncOutbox (EntityType, EntityPublicId, Operation, QueuedAtUtc, AttemptCount, LastError)
+            VALUES (@EntityType, @EntityPublicId, @Operation, @QueuedAtUtc, 0, NULL)
+            ON CONFLICT(EntityType, EntityPublicId) DO UPDATE SET
+                Operation = excluded.Operation,
+                QueuedAtUtc = excluded.QueuedAtUtc,
+                AttemptCount = 0,
+                LastError = NULL;";
+        cmd.Parameters.AddWithValue("@EntityType", entityType);
+        cmd.Parameters.AddWithValue("@EntityPublicId", entity.PublicId);
+        cmd.Parameters.AddWithValue("@Operation", operation);
+        cmd.Parameters.AddWithValue("@QueuedAtUtc", DatabaseDateTime.ToUtcString(DateTime.UtcNow));
+        await cmd.ExecuteNonQueryAsync();
     }
 }

@@ -2,13 +2,19 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace iDoublePress.Models
 {
-    public partial class ShotSegment : ObservableObject
+    public partial class ShotSegment : ObservableObject, ISyncEntity
     {
         // Database identity and relationship
         public int ID { get; set; }
         public int HoleID { get; set; }
         public int Sequence { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string PublicId { get; set; } = string.Empty;
+        public DateTime SyncUpdatedAtUtc { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedAtUtc { get; set; }
+        public string? ServerRevision { get; set; }
+        public bool PendingSync { get; set; }
 
         // Store the raw GPS data for recalculation
         public Location Point { get; set; }

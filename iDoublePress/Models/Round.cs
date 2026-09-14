@@ -3,7 +3,7 @@ namespace iDoublePress.Models;
 /// <summary>
 /// Represents a golf round.
 /// </summary>
-public class Round
+public class Round : ISyncEntity
 {
     public int ID { get; set; }
     public int PlayerID { get; set; }
@@ -16,6 +16,12 @@ public class Round
     public string? Weather { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public string PublicId { get; set; } = string.Empty;
+    public DateTime SyncUpdatedAtUtc { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAtUtc { get; set; }
+    public string? ServerRevision { get; set; }
+    public bool PendingSync { get; set; }
 
     // Navigation properties
     public Player? Player { get; set; }
