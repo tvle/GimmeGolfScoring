@@ -7,6 +7,12 @@ namespace iDoublePress.Tests;
 /// supports the CRUD operations used by PlayerRepository, CourseRepository, and
 /// RoundRepository.  These tests exercise an in-memory database so they run without
 /// any MAUI runtime.
+///
+/// NOTE: The test project does not include a ProjectReference to iDoublePress.csproj
+/// because that project targets MAUI platforms (net10.0-android, net10.0-ios, etc.)
+/// which are not available in this CI/test environment.  The schema reproduced in
+/// CreateSchema() below must be kept in sync with the migration scripts in
+/// iDoublePress/Data/ whenever production schema changes are made.
 /// </summary>
 public sealed class SqliteRegressionTests : IDisposable
 {
@@ -224,7 +230,8 @@ public sealed class SqliteRegressionTests : IDisposable
         InsertPlayer("Bob", 12.0);
 
         using var cmd = _db.CreateCommand();
-        cmd.CommandText = "SELECT Name, Handicap FROM Player WHERE Name = 'Bob';";
+        cmd.CommandText = "SELECT Name, Handicap FROM Player WHERE Name = $name;";
+        cmd.Parameters.AddWithValue("$name", "Bob");
         using var reader = cmd.ExecuteReader();
 
         reader.Read().Should().BeTrue();
@@ -408,6 +415,7 @@ public sealed class SqliteRegressionTests : IDisposable
 
         try
         {
+            // Insert a valid CourseHole inside the transaction.
             using var cmd = _db.CreateCommand();
             cmd.Transaction = txn;
             cmd.CommandText = @"
@@ -416,13 +424,14 @@ public sealed class SqliteRegressionTests : IDisposable
             cmd.Parameters.AddWithValue("$cid", courseId);
             cmd.ExecuteNonQuery();
 
-            // Force a failure: duplicate HoleNumber violates no constraint here,
-            // but a bad CourseID will violate FK.
+            // Reference a non-existent CourseID to trigger a FK violation and force a rollback.
+            // PRAGMA foreign_keys = ON was enabled in the constructor on the same connection,
+            // so it applies to all commands on this connection regardless of transaction context.
             using var badCmd = _db.CreateCommand();
             badCmd.Transaction = txn;
             badCmd.CommandText = @"
                 INSERT INTO CourseHole (CourseID, HoleNumber, Par)
-                VALUES (99999, 1, 4);";
+                VALUES (99999, 2, 4);";
             badCmd.ExecuteNonQuery();
 
             txn.Commit();
